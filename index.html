@@ -5,168 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LivingADs — Autonomous AI Growth & Marketing Platform</title>
   
-  <!-- Fonts -->
+  <!-- Modern SaaS & Editorial Typography Pairing -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- CDN Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- App Stylesheet -->
   <link rel="stylesheet" href="app.css">
 </head>
-<body class="dark-theme">
+<body class="bento-saas-theme">
 
-  <!-- Background WebGL Ambient Canvas -->
+  <!-- Minimal Ambient WebGL Backdrop -->
   <canvas id="ambient-canvas"></canvas>
 
   <!-- GSAP Magnetic Follower Cursor -->
   <div id="magnetic-cursor"></div>
   <div id="magnetic-cursor-dot"></div>
 
-  <!-- App Shell Container -->
+  <!-- App Structure -->
   <div id="app-shell">
 
-    <!-- Left Sidebar Navigation -->
+    <!-- Minimalist Sidebar -->
     <aside id="sidebar">
       <div class="sidebar-header">
         <div class="brand-logo">
-          <div class="logo-icon">
-            <span class="logo-pulse"></span>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <div class="logo-mark">
+            <span class="logo-inner-dot"></span>
           </div>
-          <div class="logo-text">
+          <div class="brand-meta">
             <span class="brand-name">LivingADs</span>
-            <span class="brand-badge">AI 2.0</span>
+            <span class="brand-tag">Autonomous</span>
           </div>
         </div>
 
-        <div class="workspace-selector" id="workspace-dropdown-btn">
-          <div class="ws-avatar">☕</div>
-          <div class="ws-info">
-            <span class="ws-name">Northwind Coffee</span>
-            <span class="ws-plan">Scale Plan • Connected</span>
+        <div class="brand-workspace-pill">
+          <div class="ws-icon">☕</div>
+          <div class="ws-meta">
+            <span class="ws-title">Northwind Coffee Co.</span>
+            <span class="ws-status"><span class="status-dot"></span> Streaming</span>
           </div>
-          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-title">CORE PLATFORM</div>
+        <div class="nav-group-label">WORKSPACE</div>
         <button class="nav-item active" data-tab="assistant">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 7v2M12 13h.01"/></svg>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span>AI Growth Agent</span>
-          <span class="nav-pill pulse">Live</span>
+          <span class="pill-chip">Live</span>
         </button>
 
-        <button class="nav-item" data-tab="overview">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-          <span>Overview & Pulse</span>
+        <button class="nav-item" data-tab="bento-overview">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Bento Intelligence</span>
         </button>
 
         <button class="nav-item" data-tab="campaigns">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
-          <span>Campaign Engine</span>
-          <span class="nav-pill" id="campaigns-count-badge">3 Active</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+          <span>Campaign Blueprint</span>
+          <span class="pill-chip num">3</span>
         </button>
 
         <button class="nav-item" data-tab="topology">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          <span>3D Neural Topology</span>
-          <span class="nav-pill badge-3d">3D</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span>3D Neural Flow</span>
         </button>
 
         <button class="nav-item" data-tab="attribution">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          <span>Geo Attribution Deck</span>
-          <span class="nav-pill badge-deck">Deck.gl</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Attribution Globe</span>
         </button>
 
         <button class="nav-item" data-tab="creative">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          <span>3D Creative Studio</span>
-          <span class="nav-pill badge-spline">Spline</span>
-        </button>
-
-        <div class="nav-section-title">CHANNELS & DATA</div>
-        <button class="nav-item" data-tab="audiences">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span>Audiences & Segments</span>
-        </button>
-
-        <button class="nav-item" data-tab="deliveries">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <span>Conversions API & Pixels</span>
-          <span class="nav-pill status-ok">99.8%</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>3D Studio Mockup</span>
         </button>
       </nav>
 
-      <!-- Sidebar Footer -->
       <div class="sidebar-footer">
-        <div class="connected-nodes">
-          <div class="node-icon meta" title="Meta Ads Connected">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303z"/></svg>
-          </div>
-          <div class="node-icon google" title="Google Ads Connected">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.053 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>
-          </div>
-          <div class="node-icon tiktok" title="TikTok Pixel Connected">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-          </div>
-          <div class="node-status-text">All Channels Streaming</div>
+        <div class="channel-connectivity">
+          <div class="channel-pill meta">Meta</div>
+          <div class="channel-pill google">Google</div>
+          <div class="channel-pill tiktok">TikTok</div>
         </div>
-
-        <div class="user-profile">
+        <div class="user-card">
           <div class="user-avatar">A</div>
-          <div class="user-info">
+          <div class="user-details">
             <span class="user-name">Asha Syed</span>
-            <span class="user-email">asha@northwind.coffee</span>
+            <span class="user-sub">Deployment Admin</span>
           </div>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
+    <!-- Main Workspace -->
     <main id="main-content">
-
-      <!-- Top Glassmorphic Navigation Header -->
+      
+      <!-- Minimalist Header -->
       <header id="topbar">
-        <div class="topbar-left">
-          <div class="breadcrumb">
-            <span class="crumb-dim">Workspace</span>
-            <span class="crumb-sep">/</span>
-            <span class="crumb-brand">Northwind Coffee</span>
-            <span class="crumb-sep">/</span>
-            <span class="crumb-active" id="current-view-title">AI Growth Agent</span>
-          </div>
+        <div class="header-left">
+          <span class="editorial-eyebrow">Enterprise Telemetry</span>
+          <h1 class="header-title" id="page-heading">AI Growth Agent</h1>
         </div>
 
-        <div class="topbar-right">
-          <!-- Live Real-Time Metrics Bar -->
-          <div class="pulse-stats">
-            <div class="pulse-stat">
-              <span class="p-label">BLENDED ROAS</span>
-              <span class="p-val neon-green">3.87x</span>
-            </div>
-            <div class="pulse-stat-divider"></div>
-            <div class="pulse-stat">
-              <span class="p-label">30D SPEND</span>
-              <span class="p-val">₹59,470</span>
-            </div>
-            <div class="pulse-stat-divider"></div>
-            <div class="pulse-stat">
-              <span class="p-label">CONVERSIONS</span>
-              <span class="p-val neon-blue">1,310</span>
-            </div>
+        <div class="header-right">
+          <div class="bento-stat-pill">
+            <span class="label">BLENDED ROAS</span>
+            <span class="val highlight">3.87x</span>
           </div>
-
-          <!-- Quick Action Buttons -->
-          <button class="topbar-btn" id="btn-quick-audit">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            <span>Run AI Audit</span>
+          <div class="bento-stat-pill">
+            <span class="label">30D REVENUE</span>
+            <span class="val">₹2,30,149</span>
+          </div>
+          <button class="btn-editorial" id="btn-run-audit">
+            <span class="sparkle">✦</span> Synthesize Audit
           </button>
         </div>
       </header>
@@ -175,125 +131,128 @@
       <div id="views-container">
 
         <!-- ============================================================ -->
-        <!-- VIEW 1: AI GROWTH AGENT (Interactive Chat & Reasoning Suite) -->
+        <!-- VIEW 1: CONVERSATIONAL AI AGENT (Editorial Design)           -->
         <!-- ============================================================ -->
         <section class="view-panel active" id="view-assistant">
-          <div class="chat-layout">
-            <div class="chat-messages-container" id="chat-messages">
+          <div class="editorial-chat-wrap">
+            
+            <div class="chat-flow-container" id="chat-messages">
               
-              <!-- Welcome Banner Card -->
-              <div class="chat-card hero-agent-card">
-                <div class="hero-agent-header">
-                  <div class="agent-avatar-orb">
-                    <span class="agent-glow-ring"></span>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><polygon points="12 6 12 12 16 14"/></svg>
+              <!-- Editorial Banner -->
+              <div class="editorial-hero-banner">
+                <div class="hero-quote-mark">“</div>
+                <div class="hero-content">
+                  <h2 class="editorial-hero-title">How can LivingADs accelerate your <em>growth velocity</em> today?</h2>
+                  <p class="editorial-hero-desc">Your autonomous AI agent has cross-referenced last month’s Meta Conversion API signals with Google Search intent for <strong>Northwind Coffee</strong>.</p>
+                </div>
+              </div>
+
+              <!-- Editorial Prompt Cards -->
+              <div class="editorial-prompts-grid">
+                <div class="editorial-prompt-card" data-prompt="Synthesize 30-day ROAS trajectory across Meta and Google and outline scaling opportunities">
+                  <span class="prompt-num">01</span>
+                  <div class="prompt-text">
+                    <strong>Audit Performance & ROAS</strong>
+                    <p>Identify winning ad sets and profitable scaling thresholds.</p>
                   </div>
-                  <div>
-                    <h2 class="agent-title">LivingADs Autonomous Marketing Agent</h2>
-                    <p class="agent-subtitle">Connected to Meta Ads, Google Ads & GA4. Analyzing performance, scaling top ads, and optimizing spend in real-time.</p>
-                  </div>
+                  <span class="prompt-arrow">→</span>
                 </div>
 
-                <div class="quick-prompts-grid">
-                  <button class="quick-prompt-chip" data-prompt="Analyze last 30 days ROAS across Meta & Google Ads and tell me what to scale">
-                    <span class="chip-icon">📊</span>
-                    <span>Analyze 30-day ROAS & Scaling Opportunities</span>
-                  </button>
-                  <button class="quick-prompt-chip" data-prompt="Diagnose customer drop-off in our whole bean subscription funnel">
-                    <span class="chip-icon">🔍</span>
-                    <span>Diagnose Subscription Drop-Off & Funnel Churn</span>
-                  </button>
-                  <button class="quick-prompt-chip" data-prompt="Propose a 5-node autonomous retargeting campaign graph for cold brew shoppers">
-                    <span class="chip-icon">⚡</span>
-                    <span>Propose 5-Node Dynamic Retargeting Campaign</span>
-                  </button>
-                  <button class="quick-prompt-chip" data-prompt="Generate 3 high-converting ad copies and visual angles for Arabica Dark Roast">
-                    <span class="chip-icon">🎨</span>
-                    <span>Generate High-CTR Creative Angles & Hooks</span>
-                  </button>
+                <div class="editorial-prompt-card" data-prompt="Propose a 5-node autonomous retargeting campaign graph for cold brew shoppers">
+                  <span class="prompt-num">02</span>
+                  <div class="prompt-text">
+                    <strong>Generate Campaign Blueprint</strong>
+                    <p>Draft 5-node dynamic retargeting graph with custom incentives.</p>
+                  </div>
+                  <span class="prompt-arrow">→</span>
+                </div>
+
+                <div class="editorial-prompt-card" data-prompt="Generate 3 high-converting creative angles and sensory copywriting hooks for Arabica Dark Roast">
+                  <span class="prompt-num">03</span>
+                  <div class="prompt-text">
+                    <strong>Creative Angles & Copy</strong>
+                    <p>Sensory hooks for Instagram Reels and high-CTR carousels.</p>
+                  </div>
+                  <span class="prompt-arrow">→</span>
                 </div>
               </div>
 
               <!-- Default Conversation History -->
               <div class="chat-turn user-turn">
+                <div class="turn-meta">Asha Syed • Northwind Growth Lead</div>
                 <div class="turn-bubble user-bubble">
                   What was our performance last month across Meta and Google, and where should we reallocate budget?
                 </div>
               </div>
 
               <div class="chat-turn assistant-turn">
-                <!-- AI Reasoning Process Tree -->
+                <div class="turn-meta">LivingADs Autonomous Agent • 4.2s reasoning</div>
+                
+                <!-- Editorial Thought Process -->
                 <div class="thought-process-accordion open">
                   <div class="thought-header">
-                    <div class="thought-pulse"></div>
-                    <span class="thought-label">Thought for 4.2s • Called 3 Marketing Intelligence Tools</span>
+                    <div class="thought-indicator"></div>
+                    <span class="thought-label">Reasoned across 12,480 attribution events & verified 3 channel APIs</span>
                     <span class="thought-toggle">▼</span>
                   </div>
                   <div class="thought-body">
-                    <div class="thought-step ok">
-                      <span class="step-check">✓</span>
-                      <span class="step-text">Queried <strong>Meta Marketing API</strong> for 30-day ad set ROAS & CPM distribution</span>
-                      <span class="step-badge">meta_insights</span>
+                    <div class="thought-step">
+                      <span class="step-icon">✓</span>
+                      <span>Queried <strong>Meta Marketing API</strong>: 30-day ad set ROAS, CPM and Reel placement retention.</span>
                     </div>
-                    <div class="thought-step ok">
-                      <span class="step-check">✓</span>
-                      <span class="step-text">Queried <strong>Google Ads API</strong> for brand search keyword impression share</span>
-                      <span class="step-badge">google_ads_metrics</span>
-                    </div>
-                    <div class="thought-step ok">
-                      <span class="step-check">✓</span>
-                      <span class="step-text">Calculated attribution overlap across 12,480 conversion touchpoints</span>
-                      <span class="step-badge">attribution_matrix</span>
+                    <div class="thought-step">
+                      <span class="step-icon">✓</span>
+                      <span>Queried <strong>Google Ads Search API</strong>: Exact match brand keyword impression share (92%).</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Main Assistant Response Text -->
+                <!-- Assistant Response Body -->
                 <div class="turn-bubble assistant-bubble">
-                  <p>Here is your comprehensive growth audit for <strong>Northwind Coffee Co.</strong> across Meta and Google Ads over the last 30 days:</p>
+                  <p class="editorial-lead">Over the last 30 days, <strong>Northwind Coffee Co.</strong> generated <strong>₹2,30,149 in attributed revenue</strong> across 1,310 new customer acquisitions at a <strong>3.87x blended ROAS</strong>.</p>
 
-                  <!-- Dynamic Performance Card -->
-                  <div class="response-stat-grid">
-                    <div class="response-stat-box">
-                      <span class="r-label">Meta Ad Spend</span>
-                      <span class="r-val">₹43,900</span>
-                      <span class="r-change positive">+14% vs Prev Mo</span>
+                  <!-- Mini Bento Metrics in Chat -->
+                  <div class="chat-bento-metrics">
+                    <div class="c-bento-cell">
+                      <span class="cb-label">Meta Ad Spend</span>
+                      <span class="cb-val">₹43,900</span>
+                      <span class="cb-sub positive">+14% MoM</span>
                     </div>
-                    <div class="response-stat-box">
-                      <span class="r-label">Google Spend</span>
-                      <span class="r-val">₹15,570</span>
-                      <span class="r-change positive">+6% vs Prev Mo</span>
+                    <div class="c-bento-cell">
+                      <span class="cb-label">Google Ads Spend</span>
+                      <span class="cb-val">₹15,570</span>
+                      <span class="cb-sub positive">+6% MoM</span>
                     </div>
-                    <div class="response-stat-box">
-                      <span class="r-label">Blended ROAS</span>
-                      <span class="r-val" style="color: #10b981;">3.87x</span>
-                      <span class="r-change positive">+0.45x Gain</span>
+                    <div class="c-bento-cell">
+                      <span class="cb-label">Blended ROAS</span>
+                      <span class="cb-val highlight">3.87x</span>
+                      <span class="cb-sub positive">+0.45x Gain</span>
                     </div>
-                    <div class="response-stat-box">
-                      <span class="r-label">New Customers</span>
-                      <span class="r-val" style="color: #00f2fe;">1,310</span>
-                      <span class="r-change positive">₹45.40 CAC</span>
+                    <div class="c-bento-cell">
+                      <span class="cb-label">Customer Acquisition Cost</span>
+                      <span class="cb-val">₹45.40</span>
+                      <span class="cb-sub positive">-12.4% CAC</span>
                     </div>
                   </div>
 
-                  <h4 style="margin: 16px 0 8px 0; color: #fff; font-size: 15px;">Key Strategic Findings:</h4>
-                  <ul class="styled-list">
-                    <li><strong>Instagram Reels Winner:</strong> The <em>"Cold Brew Concentrate & Morning Routine"</em> Reel is crushing benchmarks with a <strong>4.62x ROAS</strong> at ₹32 CPA.</li>
-                    <li><strong>Google Brand Protection:</strong> Brand search captured 92% absolute top-of-page share, generating 310 repeat subscription purchases.</li>
-                    <li><strong>Budget Reallocation Recommendation:</strong> Shift ₹7,500 from the broad interest prospecting campaign into the high-intent Cold Brew retargeting flow.</li>
+                  <h4 class="editorial-section-title">Key Strategic Findings & Synthesis</h4>
+                  <ul class="editorial-list">
+                    <li><strong>Instagram Reels Dominance:</strong> The <em>"Morning Pour-Over Ritual"</em> Reel achieved a <strong>4.62x ROAS</strong> at ₹32 CPA, representing 71% of total conversions.</li>
+                    <li><strong>Brand Search Efficiency:</strong> Google Ads captured 92% absolute top-of-page share, generating 310 repeat subscription purchases with zero keyword cannibalization.</li>
+                    <li><strong>Actionable Recommendation:</strong> Shift ₹7,500 daily budget from the broad interest prospecting campaign into dynamic retargeting.</li>
                   </ul>
 
-                  <!-- Interactive Action Proposal -->
-                  <div class="proposal-card">
-                    <div class="proposal-header">
-                      <span class="proposal-badge">⚡ RECOMMENDED ACTION</span>
-                      <span class="proposal-impact">+₹48,000 Est. Monthly Revenue</span>
+                  <!-- Editorial Action Card -->
+                  <div class="editorial-action-card">
+                    <div class="action-card-header">
+                      <span class="action-tag">RECOMMENDED BLUEPRINT</span>
+                      <span class="action-meta">+₹48,000 Est. Monthly Revenue</span>
                     </div>
-                    <div class="proposal-title">Scale Dynamic Retargeting & Deploy Whole Bean Lookalike</div>
-                    <p class="proposal-desc">Automatically increase daily budget on Top 2 Reels by 20% and trigger dynamic catalog retargeting on Instagram.</p>
-                    <div class="proposal-actions">
-                      <button class="btn-primary" id="btn-approve-scaling">Approve & Execute via Meta API</button>
-                      <button class="btn-secondary" id="btn-inspect-graph">Inspect 3D Node Topology</button>
+                    <h3 class="action-title">Scale Dynamic Retargeting & Deploy Whole Bean Lookalike</h3>
+                    <p class="action-desc">Automatically scale daily budget on top 2 Instagram Reels by 20% and trigger personalized catalog retargeting via Meta Conversions API.</p>
+                    <div class="action-btns">
+                      <button class="btn-editorial primary" onclick="alert('✅ Campaign blueprint executed across Meta & Google APIs!')">Approve & Deploy</button>
+                      <button class="btn-editorial secondary" onclick="document.querySelector('.nav-item[data-tab=topology]').click()">Inspect 3D Node Topology</button>
                     </div>
                   </div>
                 </div>
@@ -301,164 +260,171 @@
 
             </div>
 
-            <!-- Chat Input Composer -->
-            <div class="chat-composer-wrap">
-              <form class="chat-form" id="agent-chat-form">
-                <div class="composer-toolbar">
-                  <div class="platform-tags">
-                    <span class="platform-tag active">Meta</span>
-                    <span class="platform-tag active">Google Ads</span>
-                    <span class="platform-tag active">GA4</span>
-                    <span class="platform-tag">+ Add Channel</span>
+            <!-- Chat Composer -->
+            <div class="editorial-composer-container">
+              <form class="editorial-composer-form" id="agent-chat-form">
+                <div class="composer-header">
+                  <div class="active-channels">
+                    <span class="channel-tag active">Meta CAPI</span>
+                    <span class="channel-tag active">Google Ads</span>
+                    <span class="channel-tag active">GA4 Cohorts</span>
                   </div>
-                  <div class="composer-tools">
-                    <button type="button" class="tool-btn" title="Attach Media or Creative Asset">📎 Attach</button>
-                    <button type="button" class="tool-btn" title="Select Target Campaign">🎯 Campaign</button>
-                  </div>
+                  <span class="ai-status-indicator">✦ Agent Online</span>
                 </div>
-                <div class="composer-input-row">
-                  <textarea id="chat-input" placeholder="Ask LivingADs to audit campaigns, adjust budgets, write ad creatives, or scale top performers..." rows="1"></textarea>
-                  <button type="submit" class="send-btn" id="btn-send-message">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <div class="composer-body">
+                  <textarea id="chat-input" placeholder="Ask LivingADs to synthesize metrics, draft blueprints, write ad copy, or optimize budgets…" rows="1"></textarea>
+                  <button type="submit" class="composer-submit-btn" id="btn-send-message">
+                    <span>Send</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
                 </div>
               </form>
             </div>
+
           </div>
         </section>
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 2: OVERVIEW & PULSE (Live Marketing Analytics)           -->
+        <!-- VIEW 2: BENTO GRID INTELLIGENCE DASHBOARD                    -->
         <!-- ============================================================ -->
-        <section class="view-panel" id="view-overview">
-          <div class="panel-header">
-            <div>
-              <h2 class="panel-title">Growth Pulse & Overview</h2>
-              <p class="panel-subtitle">Omnichannel marketing performance, live unit economics & real-time revenue telemetry.</p>
-            </div>
-            <div class="panel-actions">
-              <div class="time-filter">
-                <button class="time-btn">7D</button>
-                <button class="time-btn active">30D</button>
-                <button class="time-btn">90D</button>
-                <button class="time-btn">YTD</button>
+        <section class="view-panel" id="view-bento-overview">
+          
+          <div class="bento-grid">
+            
+            <!-- Bento Cell 1: Main Revenue & ROAS Trajectory (Col 1-2, Row 1-2) -->
+            <div class="bento-cell col-span-2 row-span-2">
+              <div class="bento-cell-header">
+                <div>
+                  <span class="bento-eyebrow">REVENUE TRAJECTORY</span>
+                  <h3 class="bento-title">Attributed Revenue & ROAS</h3>
+                </div>
+                <div class="bento-badge-group">
+                  <span class="b-badge active">30 Days</span>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Hero Metrics Cards -->
-          <div class="metrics-grid">
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-label">TOTAL REVENUE (ATTRIBUTED)</span>
-                <span class="metric-icon green">₹</span>
-              </div>
-              <div class="metric-val">₹2,30,149</div>
-              <div class="metric-footer positive">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-                <span>+24.8% vs previous month</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-label">BLENDED ROAS</span>
-                <span class="metric-icon blue">⚡</span>
-              </div>
-              <div class="metric-val" style="color: #00f2fe;">3.87x</div>
-              <div class="metric-footer positive">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
-                <span>Target: 3.20x (+21% above goal)</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-label">TOTAL AD SPEND</span>
-                <span class="metric-icon purple">💳</span>
-              </div>
-              <div class="metric-val">₹59,470</div>
-              <div class="metric-footer neutral">
-                <span>94% of monthly budget utilized</span>
-              </div>
-            </div>
-
-            <div class="metric-card">
-              <div class="metric-header">
-                <span class="metric-label">CUSTOMER ACQUISITION COST</span>
-                <span class="metric-icon yellow">🎯</span>
-              </div>
-              <div class="metric-val" style="color: #10b981;">₹45.40</div>
-              <div class="metric-footer positive">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                <span>-12.4% reduction in CAC</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Charts Row -->
-          <div class="charts-row">
-            <div class="chart-card">
-              <div class="chart-header">
-                <h3 class="chart-title">Revenue & ROAS Trajectory (Daily)</h3>
-                <span class="chart-legend"><span></span> Meta Ads <span></span> Google Ads</span>
-              </div>
-              <div class="chart-canvas-wrap">
+              <div class="bento-chart-container">
                 <canvas id="revenue-chart"></canvas>
               </div>
-            </div>
 
-            <div class="chart-card channel-split-card">
-              <div class="chart-header">
-                <h3 class="chart-title">Channel Spend Split</h3>
-              </div>
-              <div class="channel-split-body">
-                <div class="split-item">
-                  <div class="split-info">
-                    <span class="split-name"><span class="dot meta"></span> Meta (Instagram & FB)</span>
-                    <span class="split-val">₹43,900 (73.8%)</span>
-                  </div>
-                  <div class="split-bar"><div class="split-fill meta" style="width: 73.8%;"></div></div>
+              <div class="bento-stat-row">
+                <div>
+                  <span class="b-label">Total Revenue</span>
+                  <span class="b-val">₹2,30,149</span>
                 </div>
-
-                <div class="split-item">
-                  <div class="split-info">
-                    <span class="split-name"><span class="dot google"></span> Google Ads (Search/Shop)</span>
-                    <span class="split-val">₹12,150 (20.4%)</span>
-                  </div>
-                  <div class="split-bar"><div class="split-fill google" style="width: 20.4%;"></div></div>
+                <div>
+                  <span class="b-label">Blended ROAS</span>
+                  <span class="b-val highlight">3.87x</span>
                 </div>
-
-                <div class="split-item">
-                  <div class="split-info">
-                    <span class="split-name"><span class="dot tiktok"></span> TikTok Spark Ads</span>
-                    <span class="split-val">₹3,420 (5.8%)</span>
-                  </div>
-                  <div class="split-bar"><div class="split-fill tiktok" style="width: 5.8%;"></div></div>
+                <div>
+                  <span class="b-label">Average Order Value</span>
+                  <span class="b-val">₹1,750</span>
                 </div>
               </div>
             </div>
+
+            <!-- Bento Cell 2: Live AI Neural Core Orb (Col 3, Row 1) -->
+            <div class="bento-cell col-span-1 row-span-1 bento-orb-cell" id="bento-orb-cell">
+              <div class="bento-cell-header">
+                <span class="bento-eyebrow">AI NEURAL CORE</span>
+                <span class="pulse-indicator"></span>
+              </div>
+              <div class="bento-orb-visual">
+                <canvas id="bento-orb-canvas" width="130" height="130"></canvas>
+              </div>
+              <div class="bento-cell-footer">
+                <span class="b-sub-text">Autonomous optimization engine running.</span>
+              </div>
+            </div>
+
+            <!-- Bento Cell 3: Channel Spend Split (Col 3, Row 2) -->
+            <div class="bento-cell col-span-1 row-span-1">
+              <div class="bento-cell-header">
+                <span class="bento-eyebrow">CHANNEL DISTRIBUTION</span>
+                <h4 class="bento-sub-title">Omnichannel Spend</h4>
+              </div>
+              
+              <div class="channel-progress-stack">
+                <div class="stack-item">
+                  <div class="stack-meta"><span>Meta (Reels & Feed)</span><strong>73.8%</strong></div>
+                  <div class="stack-bar"><div class="stack-fill meta" style="width: 73.8%;"></div></div>
+                </div>
+                <div class="stack-item">
+                  <div class="stack-meta"><span>Google Search & Shop</span><strong>20.4%</strong></div>
+                  <div class="stack-bar"><div class="stack-fill google" style="width: 20.4%;"></div></div>
+                </div>
+                <div class="stack-item">
+                  <div class="stack-meta"><span>TikTok Spark Ads</span><strong>5.8%</strong></div>
+                  <div class="stack-bar"><div class="stack-fill tiktok" style="width: 5.8%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bento Cell 4: 3D Geo Attribution Snapshot (Col 1, Row 3) -->
+            <div class="bento-cell col-span-1 row-span-1 interactive-bento" onclick="document.querySelector('.nav-item[data-tab=attribution]').click()">
+              <div class="bento-cell-header">
+                <span class="bento-eyebrow">GEO ATTRIBUTION</span>
+                <span class="b-link">Open Globe →</span>
+              </div>
+              <h3 class="bento-title">Global Conversion Mesh</h3>
+              <p class="bento-desc">12,480 verified pixel touches across Delhi, Mumbai, Bengaluru & International nodes.</p>
+              <div class="bento-highlight-metric">98.4% Match Quality</div>
+            </div>
+
+            <!-- Bento Cell 5: 3D Product Creative Sandbox (Col 2, Row 3) -->
+            <div class="bento-cell col-span-1 row-span-1 interactive-bento" onclick="document.querySelector('.nav-item[data-tab=creative]').click()">
+              <div class="bento-cell-header">
+                <span class="bento-eyebrow">CREATIVE SANDBOX</span>
+                <span class="b-link">3D Studio →</span>
+              </div>
+              <h3 class="bento-title">Northwind Arabica Dark Roast</h3>
+              <p class="bento-desc">Interactive 3D packaging with real-time studio lighting & Gold Foil displacement.</p>
+              <div class="bento-highlight-metric" style="color: #00f2fe;">+42% CTR Lift</div>
+            </div>
+
+            <!-- Bento Cell 6: Unit Economics & CAC (Col 3, Row 3) -->
+            <div class="bento-cell col-span-1 row-span-1">
+              <div class="bento-cell-header">
+                <span class="bento-eyebrow">UNIT ECONOMICS</span>
+                <span class="b-status-pill">Healthy</span>
+              </div>
+              <div class="unit-eco-grid">
+                <div>
+                  <span class="ue-label">Blended CAC</span>
+                  <span class="ue-val highlight">₹45.40</span>
+                </div>
+                <div>
+                  <span class="ue-label">Customer LTV (6M)</span>
+                  <span class="ue-val">₹4,890</span>
+                </div>
+              </div>
+              <div class="bento-cell-footer">
+                <span class="b-sub-text" style="color: #10b981;">LTV : CAC ratio is 107.7x</span>
+              </div>
+            </div>
+
           </div>
+
         </section>
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 3: CAMPAIGN ENGINE (Interactive Active Campaigns)       -->
+        <!-- VIEW 3: CAMPAIGN BLUEPRINTS (Minimalist Table)               -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-campaigns">
-          <div class="panel-header">
+          <div class="minimal-panel-header">
             <div>
-              <h2 class="panel-title">Active Campaign Engine</h2>
-              <p class="panel-subtitle">Manage, pause, scale, and inspect real-time blueprints across all channels.</p>
+              <span class="editorial-eyebrow">Autonomous Execution</span>
+              <h2 class="minimal-title">Active Campaign Blueprints</h2>
             </div>
-            <button class="btn-primary" id="btn-create-campaign">
-              <span>+</span> New AI Campaign
+            <button class="btn-editorial primary" id="btn-create-campaign">
+              <span>+</span> Deploy New Blueprint
             </button>
           </div>
 
-          <div class="campaigns-table-container">
-            <table class="modern-table">
+          <div class="minimal-table-card">
+            <table class="minimal-table">
               <thead>
                 <tr>
                   <th>CAMPAIGN & BLUEPRINT</th>
@@ -472,7 +438,7 @@
                 </tr>
               </thead>
               <tbody id="campaigns-table-body">
-                <!-- Dynamically populated via JS -->
+                <!-- Dynamically populated -->
               </tbody>
             </table>
           </div>
@@ -480,154 +446,83 @@
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 4: 3D NEURAL TOPOLOGY (Three.js WebGL Graph)            -->
+        <!-- VIEW 4: 3D NEURAL TOPOLOGY                                   -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-topology">
-          <div class="panel-header">
+          <div class="minimal-panel-header">
             <div>
-              <h2 class="panel-title">3D Campaign Neural Topology</h2>
-              <p class="panel-subtitle">Interactive 3D graph representing dynamic audience flows, ad creative nodes, and conversion triggers.</p>
+              <span class="editorial-eyebrow">Three.js WebGL Graph</span>
+              <h2 class="minimal-title">Campaign Neural Topology</h2>
             </div>
-            <div class="topology-controls">
-              <button class="topbar-btn" id="btn-reset-topology-cam">Reset View</button>
-              <button class="topbar-btn" id="btn-pulse-topology-data">⚡ Pulse Conversion Wave</button>
+            <div class="header-actions">
+              <button class="btn-editorial" id="btn-pulse-topology-data">⚡ Pulse Conversion Wave</button>
+              <button class="btn-editorial" id="btn-reset-topology-cam">Reset Camera</button>
             </div>
           </div>
 
-          <div class="webgl-canvas-container">
+          <div class="canvas-3d-bento-wrap">
             <canvas id="topology-3d-canvas"></canvas>
-            <div class="topology-hud">
-              <div class="hud-node-info" id="topology-node-card">
-                <span class="hud-tag">SELECTED NODE</span>
-                <h4 id="hud-node-name">Meta Dynamic Catalog Retargeting</h4>
-                <p id="hud-node-desc">Targeting 14-day cart abandoners with personalized carousel ads.</p>
-                <div class="hud-node-stats">
-                  <span>ROAS: <strong>4.62x</strong></span>
-                  <span>Conversion Rate: <strong>5.8%</strong></span>
-                </div>
-              </div>
+            <div class="canvas-hud-pill">
+              <span class="hud-dot"></span>
+              <span>5 Active Nodes Connected • Real-time Conversion Propagation</span>
             </div>
           </div>
         </section>
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 5: GEO ATTRIBUTION DECK (Deck.gl / Three.js 3D Globe)   -->
+        <!-- VIEW 5: GEO ATTRIBUTION DECK                                 -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-attribution">
-          <div class="panel-header">
+          <div class="minimal-panel-header">
             <div>
-              <h2 class="panel-title">Global Real-Time Attribution Deck</h2>
-              <p class="panel-subtitle">Visualize geographic conversion density, ad delivery nodes, and cross-border ROAS attribution.</p>
+              <span class="editorial-eyebrow">Deck.gl Attribution Mesh</span>
+              <h2 class="minimal-title">Global Real-Time Conversion Globe</h2>
             </div>
           </div>
 
-          <div class="webgl-canvas-container">
+          <div class="canvas-3d-bento-wrap">
             <canvas id="attribution-3d-canvas"></canvas>
-            <div class="attribution-deck-hud">
-              <div class="deck-stat">
-                <span class="d-val">₹1,42,850</span>
-                <span class="d-lbl">Global Attributed GMV</span>
-              </div>
-              <div class="deck-stat">
-                <span class="d-val" style="color: #00f2fe;">12,480</span>
-                <span class="d-lbl">Live Pixel Touchpoints</span>
-              </div>
-              <div class="deck-stat">
-                <span class="d-val" style="color: #10b981;">98.4%</span>
-                <span class="d-lbl">Signal Match Quality</span>
-              </div>
+            <div class="canvas-hud-pill">
+              <span class="hud-dot"></span>
+              <span>Drag to orbit 360° • Global Ad Delivery Hubs & Attribution Arcs</span>
             </div>
           </div>
         </section>
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 6: 3D CREATIVE STUDIO (Spline-Style Product Showcase)   -->
+        <!-- VIEW 6: 3D CREATIVE STUDIO                                   -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-creative">
-          <div class="panel-header">
+          <div class="minimal-panel-header">
             <div>
-              <h2 class="panel-title">3D Creative Studio & Product Sandbox</h2>
-              <p class="panel-subtitle">Interactive 3D product visualizer for Northwind Coffee with real-time material & lighting controls.</p>
+              <span class="editorial-eyebrow">Spline 3D Sandbox</span>
+              <h2 class="minimal-title">Product Creative Visualizer</h2>
             </div>
-            <div class="creative-actions">
-              <button class="topbar-btn material-btn active" data-mat="gold">Gold Foil</button>
-              <button class="topbar-btn material-btn" data-mat="cyber">Cyber Obsidian</button>
-              <button class="topbar-btn material-btn" data-mat="emerald">Emerald Reserve</button>
+            <div class="header-actions">
+              <button class="btn-editorial material-btn active" data-mat="gold">Gold Foil</button>
+              <button class="btn-editorial material-btn" data-mat="cyber">Cyber Obsidian</button>
+              <button class="btn-editorial material-btn" data-mat="emerald">Emerald Reserve</button>
             </div>
           </div>
 
-          <div class="webgl-canvas-container">
+          <div class="canvas-3d-bento-wrap">
             <canvas id="creative-3d-canvas"></canvas>
-            <div class="creative-studio-hud">
-              <div class="studio-badge">HERO SKU 3D MOCKUP</div>
-              <h3>Northwind Arabica Dark Roast</h3>
-              <p>Drag mouse to orbit 360° • High-resolution studio reflections & metallic displacement.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- VIEW 7: AUDIENCES & DELIVERIES -->
-        <section class="view-panel" id="view-audiences">
-          <div class="panel-header">
-            <div>
-              <h2 class="panel-title">Audiences & High-Intent Clusters</h2>
-              <p class="panel-subtitle">Sync customer lists, lookalikes, and pixel cohorts across Meta and Google.</p>
-            </div>
-          </div>
-          <div class="audiences-grid">
-            <div class="audience-card">
-              <div class="aud-badge">SYNCED</div>
-              <h3>VIP Repeat Subscribers (3+ Orders)</h3>
-              <p>14,200 Profiles • High LTV Cluster • ROAS: 6.2x</p>
-            </div>
-            <div class="audience-card">
-              <div class="aud-badge">ACTIVE</div>
-              <h3>Whole Bean Cart Abandoners (30D)</h3>
-              <p>8,900 Profiles • Meta Dynamic Catalog Sync</p>
-            </div>
-            <div class="audience-card">
-              <div class="aud-badge">OPTIMIZING</div>
-              <h3>1% Lookalike of Top 10% Spenders</h3>
-              <p>1,250,000 Profiles • Meta India Expansion</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="view-panel" id="view-deliveries">
-          <div class="panel-header">
-            <div>
-              <h2 class="panel-title">Conversions API & Pixel Telemetry</h2>
-              <p class="panel-subtitle">Server-Side Tracking, Event Deduplication & Match Quality.</p>
-            </div>
-          </div>
-          <div class="delivery-status-box">
-            <div class="status-row">
-              <span class="status-dot-pulse"></span>
-              <strong>Meta Conversions API (CAPI):</strong>
-              <span class="badge-status-green">Healthy (12ms latency, 99.8% match quality)</span>
-            </div>
-            <div class="status-row">
-              <span class="status-dot-pulse"></span>
-              <strong>Google Enhanced Conversions:</strong>
-              <span class="badge-status-green">Active (18ms latency, 99.4% match quality)</span>
+            <div class="canvas-hud-pill">
+              <span class="hud-dot"></span>
+              <span>Northwind Arabica Dark Roast • Real-time Shaders & Reflections</span>
             </div>
           </div>
         </section>
 
       </div>
+
     </main>
 
   </div>
 
-  <!-- Interactive Floating 3D AI Core Orb -->
-  <div id="ai-neural-core" title="LivingADs Autonomous Core - Click to open Assistant">
-    <canvas id="neural-core-canvas" width="120" height="120"></canvas>
-    <div class="core-label"><span class="core-indicator"></span> AI CORE 2.0</div>
-  </div>
-
-  <!-- App Core Logic Scripts -->
+  <!-- App Core JS -->
   <script src="app.js"></script>
 </body>
 </html>

@@ -1,19 +1,17 @@
 /**
- * LivingADs Next-Gen Autonomous AI Growth Platform
- * Logic, 3D WebGL Engines, Router & Chat Controller
+ * LivingADs — Bento Grid & Editorial AI Platform Controller
  */
 
 (function () {
   'use strict';
 
-  // State
   const state = {
     currentTab: 'assistant',
     campaigns: [
       {
         id: 'cmp_1',
-        name: 'Meta Dynamic Retargeting (Reels & Feed)',
-        sub: '14-Day Cart Abandoners • Auto-Catalog',
+        name: 'Meta Dynamic Catalog Retargeting',
+        sub: '14-Day Cart Abandoners • Auto-Catalog Carousels',
         provider: 'Meta Ads',
         status: 'active',
         budget: '₹25,000 / day',
@@ -23,7 +21,7 @@
       },
       {
         id: 'cmp_2',
-        name: 'Google High-Intent Whole Bean Search',
+        name: 'Google High-Intent Search (Whole Bean)',
         sub: 'Exact Match "Cold Brew Beans" • 92% Top Share',
         provider: 'Google Ads',
         status: 'active',
@@ -34,8 +32,8 @@
       },
       {
         id: 'cmp_3',
-        name: 'TikTok Arabica Tasting Kit Scale',
-        sub: 'Spark Ads with Creator Content • Gen Z Cohort',
+        name: 'TikTok Arabica Tasting Kit Spark Flow',
+        sub: 'Creator UGC Video Placements • Gen Z Scale',
         provider: 'TikTok Ads',
         status: 'active',
         budget: '₹8,000 / day',
@@ -46,220 +44,203 @@
     ]
   };
 
-  // DOM Elements
-  const navItems = document.querySelectorAll('.nav-item');
-  const viewPanels = document.querySelectorAll('.view-panel');
-  const viewTitle = document.getElementById('current-view-title');
-  const chatForm = document.getElementById('agent-chat-form');
-  const chatInput = document.getElementById('chat-input');
-  const chatMessages = document.getElementById('chat-messages');
-
-  // Initialize
-  function initApp() {
-    setupNavigation();
-    setupChatEngine();
-    setupCampaignsTable();
+  function init() {
+    setupRouter();
+    setupChat();
+    setupCampaigns();
     initChart();
     initAmbientCanvas();
-    initNeuralCoreOrb();
+    initBentoOrb();
     initTopology3D();
     initAttributionGlobe();
     initCreativeStudio();
     initMagneticCursor();
   }
 
-  // 1. Navigation & Tab Routing
-  function setupNavigation() {
+  // 1. Tab Router
+  function setupRouter() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const viewPanels = document.querySelectorAll('.view-panel');
+    const heading = document.getElementById('page-heading');
+
     navItems.forEach((btn) => {
       btn.addEventListener('click', () => {
         const tab = btn.getAttribute('data-tab');
-        switchTab(tab);
+        state.currentTab = tab;
+
+        navItems.forEach((n) => n.classList.toggle('active', n === btn));
+        viewPanels.forEach((p) => p.classList.toggle('active', p.id === `view-${tab}`));
+
+        const span = btn.querySelector('span');
+        if (span && heading) heading.textContent = span.textContent;
+
+        window.dispatchEvent(new Event('resize'));
       });
     });
 
-    document.getElementById('ai-neural-core')?.addEventListener('click', () => {
-      switchTab('assistant');
-      chatInput?.focus();
+    document.getElementById('btn-run-audit')?.addEventListener('click', () => {
+      document.querySelector('.nav-item[data-tab="assistant"]')?.click();
+      handleUserMessage('Synthesize a full strategic audit across our 30-day Meta and Google ad spend');
     });
 
-    document.getElementById('btn-inspect-graph')?.addEventListener('click', () => {
-      switchTab('topology');
-    });
-
-    document.getElementById('btn-quick-audit')?.addEventListener('click', () => {
-      switchTab('assistant');
-      handleUserMessage('Perform an instant comprehensive audit across all active Meta & Google ad blueprints');
+    document.getElementById('bento-orb-cell')?.addEventListener('click', () => {
+      document.querySelector('.nav-item[data-tab="assistant"]')?.click();
+      document.getElementById('chat-input')?.focus();
     });
   }
 
-  function switchTab(tabId) {
-    state.currentTab = tabId;
-    navItems.forEach((item) => {
-      item.classList.toggle('active', item.getAttribute('data-tab') === tabId);
-    });
+  // 2. Editorial Conversational AI Engine
+  function setupChat() {
+    const form = document.getElementById('agent-chat-form');
+    const input = document.getElementById('chat-input');
 
-    viewPanels.forEach((panel) => {
-      panel.classList.toggle('active', panel.id === `view-${tabId}`);
-    });
-
-    const activeItem = document.querySelector(`.nav-item[data-tab="${tabId}"] span`);
-    if (activeItem && viewTitle) {
-      viewTitle.textContent = activeItem.textContent;
-    }
-
-    // Trigger 3D resizes if needed
-    window.dispatchEvent(new Event('resize'));
-  }
-
-  // 2. Autonomous AI Chat Engine
-  function setupChatEngine() {
-    // Quick prompt chips
-    document.querySelectorAll('.quick-prompt-chip').forEach((chip) => {
-      chip.addEventListener('click', () => {
-        const prompt = chip.getAttribute('data-prompt');
+    // Editorial Prompt Cards
+    document.querySelectorAll('.editorial-prompt-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        const prompt = card.getAttribute('data-prompt');
         if (prompt) handleUserMessage(prompt);
       });
     });
 
-    // Form submission
-    chatForm?.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', (e) => {
       e.preventDefault();
-      const text = chatInput.value.trim();
+      const text = input.value.trim();
       if (!text) return;
-      chatInput.value = '';
+      input.value = '';
       handleUserMessage(text);
     });
   }
 
   function handleUserMessage(text) {
-    // Append User message
+    const chat = document.getElementById('chat-messages');
+    if (!chat) return;
+
+    // User Turn
     const userTurn = document.createElement('div');
     userTurn.className = 'chat-turn user-turn';
-    userTurn.innerHTML = `<div class="turn-bubble user-bubble">${escapeHtml(text)}</div>`;
-    chatMessages.appendChild(userTurn);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    userTurn.innerHTML = `
+      <div class="turn-meta">Asha Syed • Northwind Growth Lead</div>
+      <div class="turn-bubble user-bubble">${escapeHtml(text)}</div>
+    `;
+    chat.appendChild(userTurn);
+    chat.scrollTop = chat.scrollHeight;
 
-    // AI Thinking State
+    // Assistant Turn with Thought Accordion
     const assistantTurn = document.createElement('div');
     assistantTurn.className = 'chat-turn assistant-turn';
-    
-    const thoughtAccordion = document.createElement('div');
-    thoughtAccordion.className = 'thought-process-accordion open';
-    thoughtAccordion.innerHTML = `
-      <div class="thought-header">
-        <div class="thought-pulse"></div>
-        <span class="thought-label">Thinking • Inspecting Meta & Google API Schemas…</span>
-        <span class="thought-toggle">▼</span>
+    assistantTurn.innerHTML = `
+      <div class="turn-meta">LivingADs Autonomous Agent • reasoning…</div>
+      <div class="thought-process-accordion open">
+        <div class="thought-header">
+          <div class="thought-indicator"></div>
+          <span class="thought-label">Synthesizing marketing telemetry & querying channel schemas…</span>
+          <span class="thought-toggle">▼</span>
+        </div>
+        <div class="thought-body">
+          <div class="thought-step">
+            <span class="step-icon">✓</span>
+            <span>Queried <strong>Meta Marketing API</strong> for recent conversion velocity</span>
+          </div>
+          <div class="thought-step">
+            <span class="step-icon">✓</span>
+            <span>Evaluated ROAS efficiency and CAC threshold benchmarks</span>
+          </div>
+        </div>
       </div>
-      <div class="thought-body">
-        <div class="thought-step ok">
-          <span class="step-check">✓</span>
-          <span class="step-text">Connecting to <strong>Northwind Coffee Workspace</strong></span>
-          <span class="step-badge">auth_ok</span>
-        </div>
-        <div class="thought-step ok">
-          <span class="step-check">✓</span>
-          <span class="step-text">Evaluating keyword bids & cross-channel attribution matrix</span>
-          <span class="step-badge">growth_heuristics</span>
-        </div>
+      <div class="turn-bubble assistant-bubble">
+        <p style="color: #94a3b8;">Synthesizing strategic growth insights and actionable recommendations…</p>
       </div>
     `;
-    assistantTurn.appendChild(thoughtAccordion);
+    chat.appendChild(assistantTurn);
+    chat.scrollTop = chat.scrollHeight;
 
-    const answerBubble = document.createElement('div');
-    answerBubble.className = 'turn-bubble assistant-bubble';
-    answerBubble.innerHTML = `<p style="color: #94a3b8;">Synthesizing marketing recommendations and live action blueprints…</p>`;
-    assistantTurn.appendChild(answerBubble);
-
-    chatMessages.appendChild(assistantTurn);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    // Simulate AI synthesis
     setTimeout(() => {
-      thoughtAccordion.querySelector('.thought-label').textContent = 'Thought for 2.8s • Analyzed 3 Channels';
-      
-      let replyContent = generateAIReply(text);
-      answerBubble.innerHTML = replyContent;
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 1400);
+      const bubble = assistantTurn.querySelector('.assistant-bubble');
+      const thoughtLabel = assistantTurn.querySelector('.thought-label');
+      if (thoughtLabel) thoughtLabel.textContent = 'Reasoned across 12,480 conversion touchpoints';
+      if (bubble) bubble.innerHTML = generateEditorialReply(text);
+      chat.scrollTop = chat.scrollHeight;
+    }, 1300);
   }
 
-  function generateAIReply(query) {
+  function generateEditorialReply(query) {
     const q = query.toLowerCase();
-    
+
     if (q.includes('creative') || q.includes('copy') || q.includes('angle')) {
       return `
-        <p>Here are 3 high-converting creative angles generated for <strong>Northwind Arabica Dark Roast</strong> based on top-performing hooks in the coffee niche:</p>
-        <div class="proposal-card">
-          <div class="proposal-header">
-            <span class="proposal-badge">ANGLE 1 • SENSORY & CRAFT</span>
-            <span class="proposal-impact">Est. CTR 4.8%</span>
+        <p class="editorial-lead">Here are 3 high-converting creative angles generated for <strong>Northwind Arabica Dark Roast</strong> based on top-performing hooks in the specialty coffee niche:</p>
+        
+        <div class="editorial-action-card">
+          <div class="action-card-header">
+            <span class="action-tag">ANGLE 01 • SENSORY & CRAFT</span>
+            <span class="action-meta">Est. CTR 4.8%</span>
           </div>
-          <div class="proposal-title">"The 6:00 AM Pour-Over Ritual" (Reels / TikTok)</div>
-          <p class="proposal-desc"><strong>Visual:</strong> Slow-motion golden crema blooming over Chemex filter.<br><strong>Hook:</strong> "Stop drinking burnt grocery store beans. This micro-batch roast changes your mornings forever."</p>
+          <h3 class="action-title">"The 6:00 AM Pour-Over Ritual" (Reels / TikTok)</h3>
+          <p class="action-desc"><strong>Visual:</strong> Slow-motion golden crema blooming over Chemex filter.<br><strong>Hook:</strong> "Stop drinking stale grocery store beans. This micro-batch roast changes your mornings forever."</p>
         </div>
-        <div class="proposal-card" style="margin-top: 10px;">
-          <div class="proposal-header">
-            <span class="proposal-badge" style="background:#00f2fe;color:#000;">ANGLE 2 • COMPARISON HOOK</span>
-            <span class="proposal-impact">Est. CTR 3.9%</span>
+
+        <div class="editorial-action-card" style="margin-top: 10px;">
+          <div class="action-card-header">
+            <span class="action-tag">ANGLE 02 • VALUE COMPARISON</span>
+            <span class="action-meta">Est. CTR 3.9%</span>
           </div>
-          <div class="proposal-title">"₹35 vs ₹350 Café Espresso" (Meta Carousel)</div>
-          <p class="proposal-desc"><strong>Hook:</strong> "How I brew cafe-quality specialty espresso at home for 1/10th the price."</p>
+          <h3 class="action-title">"₹35 vs ₹350 Café Espresso" (Meta Carousel)</h3>
+          <p class="action-desc"><strong>Hook:</strong> "How I brew cafe-quality specialty espresso at home for 1/10th the price with fresh roasted whole bean delivery."</p>
         </div>
       `;
     }
 
-    if (q.includes('retarget') || q.includes('campaign') || q.includes('node') || q.includes('graph')) {
+    if (q.includes('retarget') || q.includes('campaign') || q.includes('graph') || q.includes('node')) {
       return `
-        <p>I have drafted a <strong>5-Node Dynamic Retargeting Blueprint</strong> for Northwind Coffee Co.:</p>
-        <ul class="styled-list">
-          <li><strong>Node 1:</strong> Audience Trigger: Viewed 'Dark Roast' or Added to Cart within 14 days without purchasing.</li>
-          <li><strong>Node 2:</strong> Dynamic Product Catalog Carousel on Instagram & Facebook Feed.</li>
-          <li><strong>Node 3:</strong> If unpurchased after 48h → Deliver 15% First-Bag Subscriber Discount code.</li>
-          <li><strong>Node 4:</strong> Sync event stream with Meta Conversions API (CAPI) for real-time bid optimization.</li>
+        <p class="editorial-lead">I have drafted an autonomous <strong>5-Node Dynamic Retargeting Blueprint</strong> for Northwind Coffee Co.:</p>
+        <ul class="editorial-list">
+          <li><strong>Node 1: Audience Trigger:</strong> 14-day cart abandoners of Whole Bean & Cold Brew SKUs.</li>
+          <li><strong>Node 2: Dynamic Ad Set:</strong> Instagram & Facebook Carousel showcasing viewed products with social proof reviews.</li>
+          <li><strong>Node 3: Incentive Trigger:</strong> If unpurchased after 48h → Deliver personalized 15% First-Bag code.</li>
+          <li><strong>Node 4: CAPI Verification:</strong> Server-side event verification with zero attribution drop.</li>
         </ul>
-        <div class="proposal-card">
-          <div class="proposal-header">
-            <span class="proposal-badge">⚡ READY TO DEPLOY</span>
-            <span class="proposal-impact">+18% Conversion Lift</span>
+        <div class="editorial-action-card">
+          <div class="action-card-header">
+            <span class="action-tag">READY TO EXECUTE</span>
+            <span class="action-meta">+18% Conversion Lift</span>
           </div>
-          <div class="proposal-title">Deploy Dynamic Retargeting Node Graph to Meta Ads Manager</div>
-          <p class="proposal-desc">Allocates ₹8,000 daily budget from the lowest-performing prospecting set directly into this flow.</p>
-          <div class="proposal-actions">
-            <button class="btn-primary" onclick="alert('✅ Campaign Graph successfully synced with Meta Marketing API!')">Execute Deployment</button>
-            <button class="btn-secondary" onclick="document.querySelector('.nav-item[data-tab=topology]').click()">View 3D Topology</button>
+          <h3 class="action-title">Deploy Retargeting Node Graph to Meta Marketing API</h3>
+          <p class="action-desc">Reallocates ₹8,000 daily budget from the lowest-performing prospecting set into this dynamic flow.</p>
+          <div class="action-btns">
+            <button class="btn-editorial primary" onclick="alert('✅ Blueprint executed via Meta API!')">Execute Deployment</button>
+            <button class="btn-editorial secondary" onclick="document.querySelector('.nav-item[data-tab=topology]').click()">Inspect 3D Node Topology</button>
           </div>
         </div>
       `;
     }
 
     return `
-      <p>I analyzed your growth data across Meta, Google, and your server-side conversion pipeline for: <em>"${escapeHtml(query)}"</em></p>
+      <p class="editorial-lead">Strategic synthesis across Meta, Google Ads, and server-side Conversion API for: <em>"${escapeHtml(query)}"</em></p>
       
-      <div class="response-stat-grid">
-        <div class="response-stat-box">
-          <span class="r-label">Efficiency Score</span>
-          <span class="r-val" style="color: #10b981;">94 / 100</span>
-          <span class="r-change positive">Top 5% in Category</span>
+      <div class="chat-bento-metrics">
+        <div class="c-bento-cell">
+          <span class="cb-label">Efficiency Index</span>
+          <span class="cb-val highlight">94/100</span>
+          <span class="cb-sub positive">Top 5% Cohort</span>
         </div>
-        <div class="response-stat-box">
-          <span class="r-label">Blended ROAS</span>
-          <span class="r-val">3.87x</span>
-          <span class="r-change positive">+0.45x Gain</span>
+        <div class="c-bento-cell">
+          <span class="cb-label">Blended ROAS</span>
+          <span class="cb-val">3.87x</span>
+          <span class="cb-sub positive">+0.45x MoM</span>
         </div>
-        <div class="response-stat-box">
-          <span class="r-label">Active Scale SKU</span>
-          <span class="r-val" style="color: #00f2fe;">Whole Bean</span>
-          <span class="r-change positive">₹45.40 CAC</span>
+        <div class="c-bento-cell">
+          <span class="cb-label">Scale SKU</span>
+          <span class="cb-val">Arabica Dark</span>
+          <span class="cb-sub positive">₹45.40 CAC</span>
         </div>
-        <div class="response-stat-box">
-          <span class="r-label">Pixel Health</span>
-          <span class="r-val">99.8%</span>
-          <span class="r-change positive">Zero Deduplication Drop</span>
+        <div class="c-bento-cell">
+          <span class="cb-label">Pixel Health</span>
+          <span class="cb-val">99.8%</span>
+          <span class="cb-sub positive">Optimal Match</span>
         </div>
       </div>
 
-      <p><strong>Recommendation:</strong> Your unit economics are exceptionally strong. You can safely increase daily spend on Meta Dynamic Retargeting by +25% without diminishing returns on blended ROAS.</p>
+      <p style="color: #94a3b8; font-size: 13px;"><strong>Executive Takeaway:</strong> Unit economics remain highly scalable. Daily ad spend on the Meta Retargeting flow can be increased by +25% without diminishing returns on blended ROAS.</p>
     `;
   }
 
@@ -268,7 +249,7 @@
   }
 
   // 3. Campaigns Table
-  function setupCampaignsTable() {
+  function setupCampaigns() {
     const tbody = document.getElementById('campaigns-table-body');
     if (!tbody) return;
 
@@ -280,41 +261,41 @@
         </td>
         <td><strong style="color: #fff;">${c.provider}</strong></td>
         <td>
-          <span class="tbl-status-badge ${c.status}">
-            <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
+          <span style="color: #10b981; font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;">
+            <span style="width: 5px; height: 5px; border-radius: 50%; background: #10b981;"></span>
             ${c.status.toUpperCase()}
           </span>
         </td>
         <td><span style="color: #fff; font-family: var(--font-mono);">${c.budget}</span></td>
         <td><span style="color: #fff; font-family: var(--font-mono);">${c.spend}</span></td>
         <td><strong style="color: #10b981; font-family: var(--font-mono);">${c.roas}</strong></td>
-        <td><strong style="color: #00f2fe; font-family: var(--font-mono);">${c.conversions}</strong></td>
+        <td><strong style="color: #06b6d4; font-family: var(--font-mono);">${c.conversions}</strong></td>
         <td>
-          <button class="switch-btn" onclick="alert('⚡ Live adjustment applied to ${c.name}!')">Edit / Scale</button>
+          <button class="btn-editorial" style="padding: 4px 10px; font-size: 11px;" onclick="alert('⚡ Scaling applied to ${c.name}!')">Scale +20%</button>
         </td>
       </tr>
     `).join('');
 
     document.getElementById('btn-create-campaign')?.addEventListener('click', () => {
-      switchTab('assistant');
+      document.querySelector('.nav-item[data-tab="assistant"]')?.click();
       handleUserMessage('Help me create and launch a new high-converting Meta & Google ad campaign for Cold Brew Concentrate');
     });
   }
 
-  // 4. Chart.js Daily Revenue & ROAS Trajectory
+  // 4. Chart.js Bento Revenue Trajectory
   function initChart() {
     const canvas = document.getElementById('revenue-chart');
     if (!canvas || typeof Chart === 'undefined') return;
 
     const ctx = canvas.getContext('2d');
     
-    const gradientMeta = ctx.createLinearGradient(0, 0, 0, 260);
-    gradientMeta.addColorStop(0, 'rgba(116, 100, 242, 0.45)');
-    gradientMeta.addColorStop(1, 'rgba(116, 100, 242, 0.0)');
+    const grad1 = ctx.createLinearGradient(0, 0, 0, 220);
+    grad1.addColorStop(0, 'rgba(99, 102, 241, 0.35)');
+    grad1.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
 
-    const gradientGoogle = ctx.createLinearGradient(0, 0, 0, 260);
-    gradientGoogle.addColorStop(0, 'rgba(0, 242, 254, 0.35)');
-    gradientGoogle.addColorStop(1, 'rgba(0, 242, 254, 0.0)');
+    const grad2 = ctx.createLinearGradient(0, 0, 0, 220);
+    grad2.addColorStop(0, 'rgba(6, 182, 212, 0.25)');
+    grad2.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
 
     new Chart(ctx, {
       type: 'line',
@@ -324,24 +305,22 @@
           {
             label: 'Meta Ad Revenue',
             data: [4200, 5800, 7100, 6800, 8900, 11200, 14800],
-            borderColor: '#7464f2',
-            backgroundColor: gradientMeta,
-            borderWidth: 2.5,
+            borderColor: '#6366f1',
+            backgroundColor: grad1,
+            borderWidth: 2,
             fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#7464f2',
-            pointRadius: 3
+            tension: 0.35,
+            pointRadius: 0
           },
           {
             label: 'Google Ads Revenue',
             data: [2100, 3100, 3900, 4200, 4800, 5600, 6900],
-            borderColor: '#00f2fe',
-            backgroundColor: gradientGoogle,
-            borderWidth: 2.5,
+            borderColor: '#06b6d4',
+            backgroundColor: grad2,
+            borderWidth: 2,
             fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#00f2fe',
-            pointRadius: 3
+            tension: 0.35,
+            pointRadius: 0
           }
         ]
       },
@@ -349,26 +328,19 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(18, 20, 32, 0.9)',
-            titleColor: '#fff',
-            bodyColor: '#94a3b8',
-            borderColor: 'rgba(255,255,255,0.1)',
-            borderWidth: 1
-          }
+          legend: { display: false }
         },
         scales: {
           x: {
-            grid: { color: 'rgba(255, 255, 255, 0.04)' },
-            ticks: { color: '#64748b', font: { family: 'Plus Jakarta Sans', size: 11 } }
+            grid: { color: 'rgba(255, 255, 255, 0.03)' },
+            ticks: { color: '#64748b', font: { family: 'Plus Jakarta Sans', size: 10 } }
           },
           y: {
-            grid: { color: 'rgba(255, 255, 255, 0.04)' },
+            grid: { color: 'rgba(255, 255, 255, 0.03)' },
             ticks: {
               color: '#64748b',
-              font: { family: 'JetBrains Mono', size: 11 },
-              callback: (val) => '₹' + val
+              font: { family: 'JetBrains Mono', size: 10 },
+              callback: (v) => '₹' + v
             }
           }
         }
@@ -376,7 +348,7 @@
     });
   }
 
-  // 5. Three.js Ambient Background Particle Grid
+  // 5. Ambient WebGL Particles
   function initAmbientCanvas() {
     const canvas = document.getElementById('ambient-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
@@ -389,13 +361,13 @@
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 500);
     camera.position.z = 30;
 
-    const count = 300;
+    const count = 250;
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
 
-    const c1 = new THREE.Color('#7464f2');
-    const c2 = new THREE.Color('#00f2fe');
+    const c1 = new THREE.Color('#6366f1');
+    const c2 = new THREE.Color('#06b6d4');
 
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 80;
@@ -411,84 +383,67 @@
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
 
-    const mat = new THREE.PointsMaterial({ size: 1.6, vertexColors: true, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+    const mat = new THREE.PointsMaterial({ size: 1.4, vertexColors: true, transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending });
     const points = new THREE.Points(geo, mat);
     scene.add(points);
 
-    let mouseX = 0, mouseY = 0;
-    window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }, { passive: true });
-
     function animate() {
       requestAnimationFrame(animate);
-      points.rotation.y += 0.0008;
-      points.rotation.x += 0.0004;
-
-      camera.position.x += (mouseX * 4 - camera.position.x) * 0.03;
-      camera.position.y += (-mouseY * 4 - camera.position.y) * 0.03;
-      camera.lookAt(scene.position);
-
+      points.rotation.y += 0.0006;
       renderer.render(scene, camera);
     }
     animate();
   }
 
-  // 6. Floating 3D AI Neural Core Orb
-  function initNeuralCoreOrb() {
-    const canvas = document.getElementById('neural-core-canvas');
+  // 6. Bento 3D AI Neural Orb
+  function initBentoOrb() {
+    const canvas = document.getElementById('bento-orb-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setSize(120, 120);
+    renderer.setSize(130, 130);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 50);
     camera.position.z = 4.2;
 
-    const sphereGeo = new THREE.IcosahedronGeometry(1.1, 3);
-    const sphereMat = new THREE.MeshPhongMaterial({
-      color: 0x7464f2,
-      emissive: 0x3b2d99,
-      shininess: 90,
-      transparent: true,
-      opacity: 0.85
-    });
-    const orb = new THREE.Mesh(sphereGeo, sphereMat);
+    const orb = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.1, 3),
+      new THREE.MeshPhongMaterial({ color: 0x6366f1, emissive: 0x312e81, shininess: 90, transparent: true, opacity: 0.85 })
+    );
     scene.add(orb);
 
-    const wire = new THREE.Mesh(new THREE.IcosahedronGeometry(1.35, 1), new THREE.MeshBasicMaterial({ color: 0x00f2fe, wireframe: true, transparent: true, opacity: 0.55 }));
+    const wire = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.35, 1),
+      new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.55 })
+    );
     scene.add(wire);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.03, 12, 48), new THREE.MeshBasicMaterial({ color: 0x7464f2, transparent: true, opacity: 0.7 }));
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.65, 0.03, 12, 48),
+      new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.7 })
+    );
     ring.rotation.x = Math.PI / 3;
     scene.add(ring);
 
-    const light = new THREE.PointLight(0x00f2fe, 2, 15);
+    const light = new THREE.PointLight(0x06b6d4, 2, 15);
     light.position.set(3, 3, 3);
     scene.add(light);
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
     function animate() {
       requestAnimationFrame(animate);
-      orb.rotation.y += 0.015;
-      orb.rotation.x += 0.01;
-      wire.rotation.y -= 0.01;
-      ring.rotation.z += 0.018;
+      orb.rotation.y += 0.012;
+      orb.rotation.x += 0.008;
+      wire.rotation.y -= 0.008;
+      ring.rotation.z += 0.015;
       renderer.render(scene, camera);
     }
     animate();
   }
 
-  // 7. 3D Neural Campaign Topology Graph (Three.js)
+  // 7. 3D Neural Campaign Topology Graph
   function initTopology3D() {
     const canvas = document.getElementById('topology-3d-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
@@ -506,13 +461,12 @@
     const group = new THREE.Group();
     scene.add(group);
 
-    // Nodes
     const NODES = [
-      { name: '14D Cart Abandoners', pos: [-5, 2, 0], color: 0x7464f2, size: 0.8, desc: 'High-intent pixel cohort trigger' },
-      { name: 'Meta Dynamic Catalog Carousel', pos: [-1, 2.5, 1], color: 0x00f2fe, size: 1.1, desc: 'Auto-generates personal product carousel' },
-      { name: 'Cold Brew Video Ad Set', pos: [-1, -2, -1], color: 0xec4899, size: 0.9, desc: 'Sensory pour-over video creative' },
-      { name: '15% Subscriber Incentive Code', pos: [3.5, 1.5, 0], color: 0x10b981, size: 0.85, desc: 'Conversion booster on 48h hesitation' },
-      { name: 'Shopify Checkout Conversion', pos: [6.5, 0, 0], color: 0xf59e0b, size: 1.3, desc: 'Attributed purchase event (CAPI Verified)' }
+      { name: '14D Cart Abandoners', pos: [-5, 2, 0], color: 0x6366f1, size: 0.8 },
+      { name: 'Meta Dynamic Catalog', pos: [-1, 2.5, 1], color: 0x06b6d4, size: 1.1 },
+      { name: 'Cold Brew Video Ads', pos: [-1, -2, -1], color: 0xec4899, size: 0.9 },
+      { name: '15% Incentive Code', pos: [3.5, 1.5, 0], color: 0x10b981, size: 0.85 },
+      { name: 'Shopify Purchase Event', pos: [6.5, 0, 0], color: 0xf59e0b, size: 1.3 }
     ];
 
     const nodeMeshes = [];
@@ -521,21 +475,11 @@
       const mat = new THREE.MeshPhongMaterial({ color: n.color, emissive: n.color, emissiveIntensity: 0.4, shininess: 80 });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.position.set(...n.pos);
-      mesh.userData = n;
       group.add(mesh);
       nodeMeshes.push(mesh);
-
-      // Node Halo
-      const halo = new THREE.Mesh(new THREE.RingGeometry(n.size * 1.3, n.size * 1.5, 24), new THREE.MeshBasicMaterial({ color: n.color, side: THREE.DoubleSide, transparent: true, opacity: 0.6 }));
-      halo.position.set(...n.pos);
-      group.add(halo);
     });
 
-    // Connecting Bezier Curves
-    const connections = [
-      [0, 1], [0, 2], [1, 3], [2, 3], [3, 4]
-    ];
-
+    const connections = [[0, 1], [0, 2], [1, 3], [2, 3], [3, 4]];
     connections.forEach(([fromIdx, toIdx]) => {
       const p1 = new THREE.Vector3(...NODES[fromIdx].pos);
       const p2 = new THREE.Vector3(...NODES[toIdx].pos);
@@ -544,12 +488,12 @@
 
       const curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
       const curveGeo = new THREE.BufferGeometry().setFromPoints(curve.getPoints(30));
-      const curveMat = new THREE.LineBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.7, linewidth: 2 });
+      const curveMat = new THREE.LineBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.7 });
       group.add(new THREE.Line(curveGeo, curveMat));
     });
 
     scene.add(new THREE.PointLight(0xffffff, 1.5, 40));
-    scene.add(new THREE.AmbientLight(0x7464f2, 0.4));
+    scene.add(new THREE.AmbientLight(0x6366f1, 0.4));
 
     let isDragging = false, prev = { x: 0, y: 0 };
     canvas.addEventListener('mousedown', (e) => { isDragging = true; prev = { x: e.clientX, y: e.clientY }; });
@@ -561,7 +505,6 @@
       prev = { x: e.clientX, y: e.clientY };
     });
 
-    // Pulse Wave Button
     document.getElementById('btn-pulse-topology-data')?.addEventListener('click', () => {
       nodeMeshes.forEach((mesh, i) => {
         gsap.to(mesh.scale, { x: 1.5, y: 1.5, z: 1.5, duration: 0.25, delay: i * 0.15, yoyo: true, repeat: 1 });
@@ -580,7 +523,7 @@
     animate();
   }
 
-  // 8. 3D Geo Attribution Globe (Three.js & Deck.gl style)
+  // 8. 3D Geo Attribution Globe
   function initAttributionGlobe() {
     const canvas = document.getElementById('attribution-3d-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
@@ -597,46 +540,17 @@
 
     const globe = new THREE.Mesh(
       new THREE.SphereGeometry(6, 40, 40),
-      new THREE.MeshPhongMaterial({ color: 0x0f172a, emissive: 0x060b17, specular: 0x38bdf8, shininess: 30 })
+      new THREE.MeshPhongMaterial({ color: 0x0f111c, emissive: 0x070913, specular: 0x38bdf8, shininess: 30 })
     );
     scene.add(globe);
 
     const wire = new THREE.Mesh(
       new THREE.SphereGeometry(6.05, 24, 12),
-      new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.18 })
+      new THREE.MeshBasicMaterial({ color: 0x6366f1, wireframe: true, transparent: true, opacity: 0.2 })
     );
     globe.add(wire);
 
-    // City Pins
-    const CITIES = [
-      { lat: 28.6139, lon: 77.2090 }, // Delhi
-      { lat: 19.0760, lon: 72.8777 }, // Mumbai
-      { lat: 12.9716, lon: 77.5946 }, // Bengaluru
-      { lat: 37.7749, lon: -122.4194 }, // SF
-      { lat: 51.5074, lon: -0.1278 } // London
-    ];
-
-    function latLonToVector3(lat, lon, radius) {
-      const phi = (90 - lat) * (Math.PI / 180);
-      const theta = (lon + 180) * (Math.PI / 180);
-      return new THREE.Vector3(
-        -radius * Math.sin(phi) * Math.cos(theta),
-        radius * Math.cos(phi),
-        radius * Math.sin(phi) * Math.sin(theta)
-      );
-    }
-
-    CITIES.forEach((c) => {
-      const p = latLonToVector3(c.lat, c.lon, 6.06);
-      const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.02, 0.7, 8), new THREE.MeshBasicMaterial({ color: 0x00f2fe }));
-      pin.position.copy(p);
-      pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), p.clone().normalize());
-      globe.add(pin);
-    });
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    dirLight.position.set(10, 10, 15);
-    scene.add(dirLight);
+    scene.add(new THREE.DirectionalLight(0xffffff, 1.2));
     scene.add(new THREE.AmbientLight(0x38bdf8, 0.5));
 
     let isDragging = false, prev = { x: 0, y: 0 };
@@ -657,7 +571,7 @@
     animate();
   }
 
-  // 9. 3D Creative Studio (Northwind Coffee Showcase)
+  // 9. 3D Creative Studio
   function initCreativeStudio() {
     const canvas = document.getElementById('creative-3d-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
@@ -688,12 +602,12 @@
 
     const halo = new THREE.Mesh(
       new THREE.TorusGeometry(3.2, 0.04, 16, 64),
-      new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.7 })
+      new THREE.MeshBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.7 })
     );
     halo.rotation.x = Math.PI / 2.3;
     scene.add(halo);
 
-    const spot = new THREE.SpotLight(0x00f2fe, 3);
+    const spot = new THREE.SpotLight(0x06b6d4, 3);
     spot.position.set(5, 7, 6);
     scene.add(spot);
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
@@ -708,7 +622,7 @@
           labelMat.color.setHex(0xd97706);
           labelMat.metalness = 0.85;
         } else if (mat === 'cyber') {
-          labelMat.color.setHex(0x00f2fe);
+          labelMat.color.setHex(0x06b6d4);
           labelMat.metalness = 0.95;
         } else if (mat === 'emerald') {
           labelMat.color.setHex(0x10b981);
@@ -736,7 +650,7 @@
     animate();
   }
 
-  // 10. GSAP Magnetic Follower Cursor
+  // 10. GSAP Follower Cursor
   function initMagneticCursor() {
     const cursor = document.getElementById('magnetic-cursor');
     const dot = document.getElementById('magnetic-cursor-dot');
@@ -748,17 +662,17 @@
     window.addEventListener('mousemove', (e) => {
       targetX = e.clientX;
       targetY = e.clientY;
-      dot.style.transform = `translate3d(${targetX - 3}px, ${targetY - 3}px, 0)`;
+      dot.style.transform = `translate3d(${targetX - 2}px, ${targetY - 2}px, 0)`;
     }, { passive: true });
 
     gsap.ticker.add(() => {
       posX += (targetX - posX) * 0.22;
       posY += (targetY - posY) * 0.22;
-      cursor.style.transform = `translate3d(${posX - 16}px, ${posY - 16}px, 0)`;
+      cursor.style.transform = `translate3d(${posX - 15}px, ${posY - 15}px, 0)`;
     });
 
     document.addEventListener('mouseover', (e) => {
-      if (e.target.closest('button, a, input, textarea, .nav-item, .quick-prompt-chip, .proposal-card')) {
+      if (e.target.closest('button, a, input, textarea, .nav-item, .editorial-prompt-card, .bento-cell')) {
         cursor.classList.add('hovering');
       } else {
         cursor.classList.remove('hovering');
@@ -766,10 +680,9 @@
     }, { passive: true });
   }
 
-  // Run
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    initApp();
+    init();
   }
 })();
