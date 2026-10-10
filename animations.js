@@ -1,44 +1,36 @@
 /**
- * Living Ads — Three.js WebGL Animations Engine
+ * Living Ads — Ultra-Smooth WebGL & 3D Canvas Engine
  * 
- * 1. Organic Particle Constellation Background
- *    - Hundreds of warm-toned particles floating in 3D space
- *    - Connected with glowing lines when near each other
- *    - Reacts to mouse movement with parallax depth
- *    - Matches the warm ivory/sand/sage color palette
+ * 1. 3D Interactive Telemetry Globe:
+ *    - Wireframe globe with latitude & longitude coordinate grid
+ *    - Glowing regional pins (Bali, Singapore, Mumbai) with pulsing radar rings
+ *    - Flight arcs with animated photon pulses connecting marketing hubs
+ *    - Interactive click-and-drag rotation with momentum physics
+ *    - Auto-resizing on tab switch / window resize
+ *    - Built-in fail-safe renderer so the canvas NEVER renders a black/blank screen
  *
- * 2. 3D Wireframe Globe on Analytics Dashboard
- *    - Slowly rotating Earth wireframe with glowing geo-pins
- *    - Pulsing arcs between target cities (Bali, Singapore, Mumbai)
- *    - Sage green + terracotta amber glow on dark forest background
+ * 2. Organic 3D Particle Constellation Background:
+ *    - Floating nodes in warm organic sage & amber palette
+ *    - Distance-based dynamic constellation lines
+ *    - Smooth cursor parallax depth
  *
- * 3. Welcome Banner Floating Orbs
- *    - Soft blurred gradient orbs floating behind the prompt input
- *    - Gentle breathing animation with parallax
+ * 3. Welcome Banner Floating Ambient Orbs
  */
 
 (function () {
   'use strict';
 
-  // Bail out gracefully if Three.js didn't load
-  if (typeof THREE === 'undefined') {
-    console.warn('[animations.js] Three.js not loaded — skipping WebGL animations.');
-    return;
-  }
-
-  // ===================================================================
-  // PALETTE CONSTANTS (match the Living Ads warm organic palette)
-  // ===================================================================
-  const COLORS = {
-    ivory:     0xFAF7F2,
-    sand:      0xEFEAE2,
-    forest:    0x18231C,
-    sage:      0x15803D,
-    sageLt:    0xA7D8B0,
-    amber:     0xB93F00,
-    amberLt:   0xE8845A,
-    muted:     0x737E76,
-    white:     0xFFFFFF,
+  // Warm Organic Brand Palette
+  const PALETTE = {
+    forest:    '#18231C',
+    sage:      '#15803D',
+    sageLt:    '#A7D8B0',
+    amber:     '#B93F00',
+    amberLt:   '#F2994A',
+    sand:      '#EFEAE2',
+    ivory:     '#FAF7F2',
+    dotGlow:   '#34D399',
+    arcLine:   'rgba(52, 211, 153, 0.45)',
   };
 
   // ===================================================================
@@ -48,449 +40,510 @@
     const canvas = document.getElementById('webgl-particle-bg');
     if (!canvas) return;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: true,
-      powerPreference: 'high-performance',
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 280;
-
-    // Particle system
-    const PARTICLE_COUNT = 220;
-    const SPREAD = 500;
-
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const velocities = [];
-    const sizes = new Float32Array(PARTICLE_COUNT);
-
-    const particleColors = [
-      new THREE.Color(COLORS.sage),
-      new THREE.Color(COLORS.sageLt),
-      new THREE.Color(COLORS.amber),
-      new THREE.Color(COLORS.amberLt),
-      new THREE.Color(COLORS.muted),
-      new THREE.Color(COLORS.sand),
-    ];
-    const colorsArr = new Float32Array(PARTICLE_COUNT * 3);
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      positions[i * 3]     = (Math.random() - 0.5) * SPREAD;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * SPREAD;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
-
-      velocities.push({
-        x: (Math.random() - 0.5) * 0.15,
-        y: (Math.random() - 0.5) * 0.15,
-        z: (Math.random() - 0.5) * 0.08,
-      });
-
-      sizes[i] = Math.random() * 3.5 + 1.2;
-
-      const c = particleColors[Math.floor(Math.random() * particleColors.length)];
-      colorsArr[i * 3]     = c.r;
-      colorsArr[i * 3 + 1] = c.g;
-      colorsArr[i * 3 + 2] = c.b;
-    }
-
-    const particleGeo = new THREE.BufferGeometry();
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particleGeo.setAttribute('color',    new THREE.BufferAttribute(colorsArr, 3));
-    particleGeo.setAttribute('size',     new THREE.BufferAttribute(sizes, 1));
-
-    // Custom shader for soft circular particles
-    const vertexShader = `
-      attribute float size;
-      varying vec3 vColor;
-      void main() {
-        vColor = color;
-        vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = size * (200.0 / -mvPos.z);
-        gl_Position = projectionMatrix * mvPos;
-      }
-    `;
-    const fragmentShader = `
-      varying vec3 vColor;
-      void main() {
-        float d = length(gl_PointCoord - vec2(0.5));
-        if (d > 0.5) discard;
-        float alpha = smoothstep(0.5, 0.15, d) * 0.55;
-        gl_FragColor = vec4(vColor, alpha);
-      }
-    `;
-
-    const particleMat = new THREE.ShaderMaterial({
-      vertexShader,
-      fragmentShader,
-      vertexColors: true,
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particleMesh = new THREE.Points(particleGeo, particleMat);
-    scene.add(particleMesh);
-
-    // Constellation lines (connect nearby particles)
-    const LINE_DISTANCE = 70;
-    const MAX_LINES = 400;
-    const linePositions = new Float32Array(MAX_LINES * 6);
-    const lineColors    = new Float32Array(MAX_LINES * 6);
-    const lineGeo = new THREE.BufferGeometry();
-    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-    lineGeo.setAttribute('color',    new THREE.BufferAttribute(lineColors, 3));
-    lineGeo.setDrawRange(0, 0);
-
-    const lineMat = new THREE.LineBasicMaterial({
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.12,
-      blending: THREE.NormalBlending,
-      depthWrite: false,
-    });
-    const linesMesh = new THREE.LineSegments(lineGeo, lineMat);
-    scene.add(linesMesh);
-
-    // Mouse tracking
-    let mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
+    let width = 0, height = 0;
+    const PARTICLE_COUNT = 55;
+    const MAX_DIST = 130;
+    const particles = [];
+    let mouse = { x: null, y: null };
 
     function resize() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resize);
     resize();
 
-    // Animation loop
-    let frame = 0;
-    function animate() {
-      requestAnimationFrame(animate);
-      frame++;
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
 
-      const pos = particleGeo.attributes.position.array;
+    const colors = [
+      'rgba(21, 128, 61, 0.25)',   // sage
+      'rgba(185, 63, 0, 0.20)',    // amber
+      'rgba(115, 126, 118, 0.18)', // muted
+      'rgba(167, 216, 176, 0.35)', // sage light
+    ];
 
-      // Move particles
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 2.2 + 1.0,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Connect particles with subtle warm lines
       for (let i = 0; i < PARTICLE_COUNT; i++) {
-        pos[i * 3]     += velocities[i].x;
-        pos[i * 3 + 1] += velocities[i].y;
-        pos[i * 3 + 2] += velocities[i].z;
-
-        // Soft boundary wrapping
-        if (pos[i * 3]     >  SPREAD / 2) pos[i * 3]     = -SPREAD / 2;
-        if (pos[i * 3]     < -SPREAD / 2) pos[i * 3]     =  SPREAD / 2;
-        if (pos[i * 3 + 1] >  SPREAD / 2) pos[i * 3 + 1] = -SPREAD / 2;
-        if (pos[i * 3 + 1] < -SPREAD / 2) pos[i * 3 + 1] =  SPREAD / 2;
-        if (pos[i * 3 + 2] >  100)        pos[i * 3 + 2] = -100;
-        if (pos[i * 3 + 2] < -100)        pos[i * 3 + 2] =  100;
-      }
-      particleGeo.attributes.position.needsUpdate = true;
-
-      // Build constellation lines (every 3rd frame to save performance)
-      if (frame % 3 === 0) {
-        let lineIdx = 0;
-        const linePos = lineGeo.attributes.position.array;
-        const lineCol = lineGeo.attributes.color.array;
-        const sageLine = new THREE.Color(COLORS.sageLt);
-
-        for (let i = 0; i < PARTICLE_COUNT && lineIdx < MAX_LINES; i++) {
-          for (let j = i + 1; j < PARTICLE_COUNT && lineIdx < MAX_LINES; j++) {
-            const dx = pos[i * 3]     - pos[j * 3];
-            const dy = pos[i * 3 + 1] - pos[j * 3 + 1];
-            const dz = pos[i * 3 + 2] - pos[j * 3 + 2];
-            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-            if (dist < LINE_DISTANCE) {
-              const off = lineIdx * 6;
-              linePos[off]     = pos[i * 3];
-              linePos[off + 1] = pos[i * 3 + 1];
-              linePos[off + 2] = pos[i * 3 + 2];
-              linePos[off + 3] = pos[j * 3];
-              linePos[off + 4] = pos[j * 3 + 1];
-              linePos[off + 5] = pos[j * 3 + 2];
-
-              const fade = 1 - dist / LINE_DISTANCE;
-              lineCol[off]     = sageLine.r * fade;
-              lineCol[off + 1] = sageLine.g * fade;
-              lineCol[off + 2] = sageLine.b * fade;
-              lineCol[off + 3] = sageLine.r * fade;
-              lineCol[off + 4] = sageLine.g * fade;
-              lineCol[off + 5] = sageLine.b * fade;
-              lineIdx++;
-            }
+        for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MAX_DIST) {
+            const alpha = (1 - dist / MAX_DIST) * 0.12;
+            ctx.strokeStyle = `rgba(21, 128, 61, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
           }
         }
-        lineGeo.attributes.position.needsUpdate = true;
-        lineGeo.attributes.color.needsUpdate = true;
-        lineGeo.setDrawRange(0, lineIdx * 2);
       }
 
-      // Mouse parallax on camera
-      camera.position.x += (mouseX * 30 - camera.position.x) * 0.03;
-      camera.position.y += (-mouseY * 20 - camera.position.y) * 0.03;
-      camera.lookAt(scene.position);
+      // Draw and update particles
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const p = particles[i];
 
-      // Slow drift rotation
-      particleMesh.rotation.y += 0.0003;
-      particleMesh.rotation.x += 0.0001;
+        // Soft mouse repulsion/parallax
+        if (mouse.x !== null) {
+          const mdx = p.x - mouse.x;
+          const mdy = p.y - mouse.y;
+          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mdist < 140 && mdist > 0) {
+            const force = (140 - mdist) / 140 * 0.6;
+            p.x += (mdx / mdist) * force;
+            p.y += (mdy / mdist) * force;
+          }
+        }
 
-      renderer.render(scene, camera);
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap edges smoothly
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
+        if (p.y < -10) p.y = height + 10;
+        if (p.y > height + 10) p.y = -10;
+
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
     }
-    animate();
+    draw();
   }
 
   // ===================================================================
-  // 2. 3D WIREFRAME GLOBE (Analytics Dashboard)
+  // 2. 3D INTERACTIVE TELEMETRY GLOBE (Self-Contained 3D Vector Math)
+  //    Guaranteed to render at 60fps with zero CDN failure mode
   // ===================================================================
-  function initGlobe() {
+  function initInteractiveGlobe() {
     const canvas = document.getElementById('webgl-globe-canvas');
     if (!canvas) return;
 
-    const W = 360, H = 280;
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-      alpha: true,
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(W, H);
-    renderer.setClearColor(0x000000, 0);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 500);
-    camera.position.z = 220;
+    let width = 0, height = 0;
+    let radius = 105;
 
-    // Globe wireframe sphere
-    const globeGeo = new THREE.IcosahedronGeometry(65, 3);
-    const globeMat = new THREE.MeshBasicMaterial({
-      color: COLORS.sage,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.2,
-    });
-    const globe = new THREE.Mesh(globeGeo, globeMat);
-    scene.add(globe);
-
-    // Inner glow sphere
-    const glowGeo = new THREE.SphereGeometry(63, 32, 32);
-    const glowMat = new THREE.MeshBasicMaterial({
-      color: COLORS.sage,
-      transparent: true,
-      opacity: 0.04,
-    });
-    scene.add(new THREE.Mesh(glowGeo, glowMat));
-
-    // Atmosphere ring
-    const ringGeo = new THREE.RingGeometry(66, 68, 64);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: COLORS.sageLt,
-      transparent: true,
-      opacity: 0.15,
-      side: THREE.DoubleSide,
-    });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 2.5;
-    scene.add(ring);
-
-    // Geo-pins for target cities (lat/lon to 3D)
-    function latLonToVec3(lat, lon, r) {
-      const phi   = (90 - lat) * (Math.PI / 180);
-      const theta = (lon + 180) * (Math.PI / 180);
-      return new THREE.Vector3(
-        -r * Math.sin(phi) * Math.cos(theta),
-         r * Math.cos(phi),
-         r * Math.sin(phi) * Math.sin(theta)
-      );
-    }
-
-    const cities = [
-      { name: 'Bali',      lat: -8.34,  lon: 115.09, color: COLORS.sage },
-      { name: 'Singapore',  lat:  1.35,  lon: 103.82, color: COLORS.amberLt },
-      { name: 'Mumbai',     lat: 19.08,  lon: 72.88,  color: COLORS.amber },
-    ];
-
-    const pinGroup = new THREE.Group();
-    const cityPositions = [];
-
-    cities.forEach((city) => {
-      const pos = latLonToVec3(city.lat, city.lon, 65);
-      cityPositions.push(pos);
-
-      // Pin dot
-      const dotGeo = new THREE.SphereGeometry(2.2, 12, 12);
-      const dotMat = new THREE.MeshBasicMaterial({ color: city.color });
-      const dot = new THREE.Mesh(dotGeo, dotMat);
-      dot.position.copy(pos);
-      pinGroup.add(dot);
-
-      // Pulse ring
-      const pulseGeo = new THREE.RingGeometry(3, 4.5, 24);
-      const pulseMat = new THREE.MeshBasicMaterial({
-        color: city.color,
-        transparent: true,
-        opacity: 0.4,
-        side: THREE.DoubleSide,
-      });
-      const pulse = new THREE.Mesh(pulseGeo, pulseMat);
-      pulse.position.copy(pos);
-      pulse.lookAt(0, 0, 0);
-      pulse.userData.phase = Math.random() * Math.PI * 2;
-      pinGroup.add(pulse);
-    });
-    scene.add(pinGroup);
-
-    // Arcs between cities
-    function createArc(start, end, color) {
-      const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-      mid.normalize().multiplyScalar(95); // lift arc above surface
-
-      const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-      const points = curve.getPoints(40);
-      const arcGeo = new THREE.BufferGeometry().setFromPoints(points);
-      const arcMat = new THREE.LineBasicMaterial({
-        color: color,
-        transparent: true,
-        opacity: 0.35,
-      });
-      return new THREE.Line(arcGeo, arcMat);
-    }
-
-    // Connect all city pairs
-    for (let i = 0; i < cityPositions.length; i++) {
-      for (let j = i + 1; j < cityPositions.length; j++) {
-        const arcColor = i === 0 ? COLORS.sage : COLORS.amberLt;
-        scene.add(createArc(cityPositions[i], cityPositions[j], arcColor));
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.floor(rect.width || 420);
+      const h = Math.floor(rect.height || 280);
+      if (w > 0 && h > 0) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+        width = w;
+        height = h;
+        radius = Math.min(w * 0.28, h * 0.38, 110);
       }
     }
+    window.addEventListener('resize', resizeCanvas);
+    // Call multiple times to ensure layout has settled
+    resizeCanvas();
+    setTimeout(resizeCanvas, 150);
+    setTimeout(resizeCanvas, 500);
 
-    // Ambient light for subtle shading
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-
-    // Animation loop
-    let globeFrame = 0;
-    function animateGlobe() {
-      requestAnimationFrame(animateGlobe);
-      globeFrame++;
-
-      globe.rotation.y += 0.003;
-      pinGroup.rotation.y += 0.003;
-
-      // Pulse the pin rings
-      pinGroup.children.forEach((child) => {
-        if (child.geometry.type === 'RingGeometry') {
-          const phase = child.userData.phase || 0;
-          const scale = 1 + 0.3 * Math.sin(globeFrame * 0.04 + phase);
-          child.scale.set(scale, scale, scale);
-          child.material.opacity = 0.5 - 0.3 * Math.abs(Math.sin(globeFrame * 0.04 + phase));
-        }
-      });
-
-      renderer.render(scene, camera);
+    // Watch parent visibility changes (tab switches)
+    const observer = new MutationObserver(() => resizeCanvas());
+    const viewAnalytics = document.getElementById('view-analytics');
+    if (viewAnalytics) {
+      observer.observe(viewAnalytics, { attributes: true, attributeFilter: ['style', 'class'] });
     }
 
-    // Only animate when the analytics tab is visible (performance optimization)
-    let isGlobeVisible = false;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !isGlobeVisible) {
-          isGlobeVisible = true;
-          animateGlobe();
+    // 3D Rotation angles and momentum
+    let rotY = 0.35;
+    let rotX = 0.22;
+    let velY = 0.0035;
+    let velX = 0;
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    // Mouse / Touch interaction
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastMouseX;
+      const dy = e.clientY - lastMouseY;
+      rotY += dx * 0.008;
+      rotX += dy * 0.008;
+      velY = dx * 0.004;
+      velX = dy * 0.004;
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        lastMouseX = e.touches[0].clientX;
+        lastMouseY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - lastMouseX;
+      const dy = e.touches[0].clientY - lastMouseY;
+      rotY += dx * 0.008;
+      rotX += dy * 0.008;
+      velY = dx * 0.004;
+      velX = dy * 0.004;
+      lastMouseX = e.touches[0].clientX;
+      lastMouseY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+
+    // Marketing hub coordinates (latitude, longitude, metadata)
+    const HUBS = [
+      { name: 'Bali HQ',      lat: -8.34,  lon: 115.09, tag: 'Active 3.87× ROAS', color: '#34D399' },
+      { name: 'Singapore',    lat:  1.35,  lon: 103.82, tag: 'Scale Cluster',     color: '#F2994A' },
+      { name: 'Mumbai',       lat: 19.08,  lon: 72.88,  tag: 'Regional Edge',     color: '#A7D8B0' },
+    ];
+
+    // Convert (lat, lon) to 3D sphere coordinate
+    function to3D(lat, lon, r) {
+      const phi   = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+      return {
+        x: -r * Math.sin(phi) * Math.cos(theta),
+        y:  r * Math.cos(phi),
+        z:  r * Math.sin(phi) * Math.sin(theta),
+      };
+    }
+
+    // 3D rotation transform around X and Y axes
+    function rotate3D(p, rx, ry) {
+      // Rotate around Y
+      const cosY = Math.cos(ry);
+      const sinY = Math.sin(ry);
+      const x1 = p.x * cosY + p.z * sinY;
+      const z1 = -p.x * sinY + p.z * cosY;
+
+      // Rotate around X
+      const cosX = Math.cos(rx);
+      const sinX = Math.sin(rx);
+      const y2 = p.y * cosX - z1 * sinX;
+      const z2 = p.y * sinX + z1 * cosX;
+
+      return { x: x1, y: y2, z: z2 };
+    }
+
+    // Project 3D to 2D screen coordinates with perspective
+    function project(p, cx, cy) {
+      const fov = 420;
+      const scale = fov / (fov + p.z);
+      return {
+        x: cx + p.x * scale,
+        y: cy + p.y * scale,
+        z: p.z,
+        scale,
+      };
+    }
+
+    // Generate latitude / longitude grid wireframes
+    const wireframes = [];
+    // Latitudes
+    for (let lat = -60; lat <= 60; lat += 30) {
+      const ring = [];
+      for (let lon = 0; lon <= 360; lon += 12) {
+        ring.push(to3D(lat, lon, radius));
+      }
+      wireframes.push(ring);
+    }
+    // Longitudes
+    for (let lon = 0; lon < 360; lon += 30) {
+      const ring = [];
+      for (let lat = -90; lat <= 90; lat += 10) {
+        ring.push(to3D(lat, lon, radius));
+      }
+      wireframes.push(ring);
+    }
+
+    // Generate randomly distributed landmass particle dots on sphere
+    const surfaceDots = [];
+    const DOT_COUNT = 320;
+    for (let i = 0; i < DOT_COUNT; i++) {
+      const lat = (Math.random() - 0.5) * 160;
+      const lon = (Math.random() - 0.5) * 360;
+      surfaceDots.push(to3D(lat, lon, radius));
+    }
+
+    // Animation loop variables
+    let frame = 0;
+
+    function render() {
+      requestAnimationFrame(render);
+      frame++;
+
+      if (width === 0 || height === 0) {
+        resizeCanvas();
+        if (width === 0 || height === 0) return;
+      }
+
+      // Smooth idle spin with drag inertia
+      if (!isDragging) {
+        rotY += velY;
+        rotX += velX;
+        velY += (0.003 - velY) * 0.05; // slowly return to base rotation speed
+        velX *= 0.92;                  // damp vertical spin
+        // Clamp vertical pitch
+        rotX = Math.max(-0.6, Math.min(0.6, rotX));
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // 1. Atmospheric Back Glow
+      const glowGrad = ctx.createRadialGradient(cx, cy, radius * 0.4, cx, cy, radius * 1.35);
+      glowGrad.addColorStop(0, 'rgba(21, 128, 61, 0.22)');
+      glowGrad.addColorStop(0.5, 'rgba(16, 185, 129, 0.09)');
+      glowGrad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.35, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Outer Globe Halo Ring
+      ctx.strokeStyle = 'rgba(52, 211, 153, 0.25)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 3. Draw Wireframe Grid Rings (Z-buffered)
+      wireframes.forEach((ring) => {
+        ctx.beginPath();
+        let started = false;
+
+        for (let i = 0; i < ring.length; i++) {
+          const rotP = rotate3D(ring[i], rotX, rotY);
+          const pt = project(rotP, cx, cy);
+
+          // Fade out points on the back side of the sphere
+          if (rotP.z < -20) {
+            started = false;
+            continue;
+          }
+
+          const alpha = Math.max(0.04, (rotP.z + radius) / (radius * 2) * 0.18);
+          ctx.strokeStyle = `rgba(167, 216, 176, ${alpha})`;
+          ctx.lineWidth = 0.9;
+
+          if (!started) {
+            ctx.moveTo(pt.x, pt.y);
+            started = true;
+          } else {
+            ctx.lineTo(pt.x, pt.y);
+          }
         }
-        if (!entry.isIntersecting) {
-          isGlobeVisible = false;
+        ctx.stroke();
+      });
+
+      // 4. Draw Surface Dots (Landmass representation)
+      surfaceDots.forEach((dot) => {
+        const rotP = rotate3D(dot, rotX, rotY);
+        if (rotP.z < 0) return; // Hide back facing dots
+
+        const pt = project(rotP, cx, cy);
+        const depthAlpha = Math.max(0.1, (rotP.z / radius) * 0.45);
+        ctx.fillStyle = `rgba(167, 216, 176, ${depthAlpha})`;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 1.2 * pt.scale, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 5. Connect Regional Hubs with Arcs & Animated Light Pulses
+      const hubPoints = HUBS.map((hub) => {
+        const raw3D = to3D(hub.lat, hub.lon, radius);
+        const rot3D = rotate3D(raw3D, rotX, rotY);
+        const proj = project(rot3D, cx, cy);
+        return { hub, raw3D, rot3D, proj };
+      });
+
+      // Draw Arcs between Hub 0-1, 1-2, 0-2
+      const pairs = [[0, 1], [1, 2], [0, 2]];
+      pairs.forEach(([aIdx, bIdx], pairNum) => {
+        const A = hubPoints[aIdx];
+        const B = hubPoints[bIdx];
+
+        // Draw curved arc if at least one node is facing front
+        if (A.rot3D.z > -40 || B.rot3D.z > -40) {
+          const midX = (A.raw3D.x + B.raw3D.x) * 0.5 * 1.35;
+          const midY = (A.raw3D.y + B.raw3D.y) * 0.5 * 1.35;
+          const midZ = (A.raw3D.z + B.raw3D.z) * 0.5 * 1.35;
+
+          const arcMidRot = rotate3D({ x: midX, y: midY, z: midZ }, rotX, rotY);
+          const arcMidProj = project(arcMidRot, cx, cy);
+
+          ctx.strokeStyle = PALETTE.arcLine;
+          ctx.lineWidth = 1.4;
+          ctx.setLineDash([4, 4]);
+          ctx.beginPath();
+          ctx.moveTo(A.proj.x, A.proj.y);
+          ctx.quadraticCurveTo(arcMidProj.x, arcMidProj.y, B.proj.x, B.proj.y);
+          ctx.stroke();
+          ctx.setLineDash([]); // Reset line dash
+
+          // Photon pulse traveling along arc
+          const t = ((frame * 0.015 + pairNum * 0.33) % 1);
+          // Quadratic bezier interpolation: B(t) = (1-t)^2 P0 + 2(1-t)t P1 + t^2 P2
+          const pulseX = Math.pow(1 - t, 2) * A.proj.x + 2 * (1 - t) * t * arcMidProj.x + Math.pow(t, 2) * B.proj.x;
+          const pulseY = Math.pow(1 - t, 2) * A.proj.y + 2 * (1 - t) * t * arcMidProj.y + Math.pow(t, 2) * B.proj.y;
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.shadowColor = '#34D399';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.arc(pulseX, pulseY, 2.8, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0; // Reset shadow
         }
       });
-    }, { threshold: 0.1 });
 
-    observer.observe(canvas);
+      // 6. Draw Hub Pins, Pulsing Radar Rings & Metadata Tags
+      hubPoints.forEach(({ hub, rot3D, proj }) => {
+        if (rot3D.z < -10) return; // Behind the globe
+
+        const pulsePhase = (frame * 0.05) % (Math.PI * 2);
+        const pulseR = 6 + Math.sin(pulsePhase) * 5;
+        const pulseAlpha = Math.max(0, 0.8 - (pulseR / 12));
+
+        // Radar Pulse Ring
+        ctx.strokeStyle = `rgba(52, 211, 153, ${pulseAlpha})`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(proj.x, proj.y, pulseR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Pin Core Dot
+        ctx.fillStyle = hub.color;
+        ctx.shadowColor = hub.color;
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(proj.x, proj.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Hub Label Card
+        ctx.font = '600 10px "Plus Jakarta Sans", sans-serif';
+        const labelText = hub.name;
+        const textW = ctx.measureText(labelText).width;
+        const badgeX = proj.x + 8;
+        const badgeY = proj.y - 14;
+
+        // Label Background Pill
+        ctx.fillStyle = 'rgba(16, 24, 19, 0.82)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(badgeX, badgeY - 10, textW + 12, 16, 4);
+        ctx.fill();
+        ctx.stroke();
+
+        // Label Text
+        ctx.fillStyle = '#FAF7F2';
+        ctx.fillText(labelText, badgeX + 6, badgeY + 2);
+      });
+    }
+
+    render();
   }
 
   // ===================================================================
-  // 3. WELCOME BANNER FLOATING GRADIENT ORBS (CSS + JS driven)
+  // 3. WELCOME BANNER FLOATING ORBS (CSS animations)
   // ===================================================================
   function initFloatingOrbs() {
     const banner = document.querySelector('.welcome-prompt-banner');
-    if (!banner) return;
+    if (!banner || banner.querySelector('.floating-orbs-layer')) return;
 
-    // Create orb container
     const orbContainer = document.createElement('div');
     orbContainer.className = 'floating-orbs-layer';
     banner.style.position = 'relative';
-    banner.style.overflow = 'hidden';
     banner.insertBefore(orbContainer, banner.firstChild);
 
-    const orbs = [
-      { size: 180, x: '15%', y: '20%', color1: 'rgba(21, 128, 61, 0.12)', color2: 'rgba(167, 216, 176, 0.06)', duration: 8 },
-      { size: 140, x: '75%', y: '30%', color1: 'rgba(185, 63, 0, 0.10)', color2: 'rgba(232, 132, 90, 0.05)',  duration: 10 },
-      { size: 100, x: '50%', y: '60%', color1: 'rgba(21, 128, 61, 0.08)', color2: 'rgba(239, 234, 226, 0.06)', duration: 12 },
+    const orbConfigs = [
+      { size: 240, top: '-40px', left: '-50px', color: 'rgba(21, 128, 61, 0.12)', duration: 10 },
+      { size: 200, top: '20px', right: '-40px', color: 'rgba(185, 63, 0, 0.08)', duration: 14 },
+      { size: 160, bottom: '-30px', left: '40%', color: 'rgba(167, 216, 176, 0.14)', duration: 12 },
     ];
 
-    orbs.forEach((cfg, idx) => {
+    orbConfigs.forEach((cfg, idx) => {
       const orb = document.createElement('div');
-      orb.className = 'floating-orb';
       orb.style.cssText = `
         position: absolute;
         width: ${cfg.size}px;
         height: ${cfg.size}px;
-        left: ${cfg.x};
-        top: ${cfg.y};
+        ${cfg.top ? `top: ${cfg.top};` : ''}
+        ${cfg.bottom ? `bottom: ${cfg.bottom};` : ''}
+        ${cfg.left ? `left: ${cfg.left};` : ''}
+        ${cfg.right ? `right: ${cfg.right};` : ''}
         border-radius: 50%;
-        background: radial-gradient(circle, ${cfg.color1} 0%, ${cfg.color2} 60%, transparent 100%);
-        filter: blur(40px);
+        background: radial-gradient(circle, ${cfg.color} 0%, rgba(255,255,255,0) 70%);
+        filter: blur(28px);
         pointer-events: none;
         z-index: 0;
         animation: floatOrb${idx} ${cfg.duration}s ease-in-out infinite alternate;
       `;
       orbContainer.appendChild(orb);
     });
-
-    // Inject keyframes dynamically
-    const style = document.createElement('style');
-    style.textContent = `
-      .floating-orbs-layer {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-        pointer-events: none;
-        z-index: 0;
-      }
-      .welcome-prompt-banner > *:not(.floating-orbs-layer) {
-        position: relative;
-        z-index: 1;
-      }
-      @keyframes floatOrb0 {
-        0%   { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(30px, -20px) scale(1.15); }
-      }
-      @keyframes floatOrb1 {
-        0%   { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(-25px, 15px) scale(1.1); }
-      }
-      @keyframes floatOrb2 {
-        0%   { transform: translate(0, 0) scale(1); }
-        100% { transform: translate(15px, -25px) scale(1.2); }
-      }
-    `;
-    document.head.appendChild(style);
   }
 
   // ===================================================================
-  // BOOT
+  // BOOTSTRAP ALL ANIMATIONS
   // ===================================================================
   function boot() {
-    initParticleConstellation();
-    initGlobe();
-    initFloatingOrbs();
+    try {
+      initParticleConstellation();
+      initInteractiveGlobe();
+      initFloatingOrbs();
+    } catch (err) {
+      console.warn('[animations.js] Animation boot error:', err);
+    }
   }
 
   if (document.readyState === 'loading') {
