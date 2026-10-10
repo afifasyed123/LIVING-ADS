@@ -3,37 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LivingADs — Autonomous AI Growth Platform (UX Redesign)</title>
+  <title>Living Ads — Autonomous Marketing & Growth Suite</title>
   
-  <!-- Modern Cybercore, Display & Precision Typography Pairing -->
+  <!-- Modern Clean Typography Pairing (Plus Jakarta Sans & Instrument Serif) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- CDN Libraries: GSAP, Canvas Confetti & Chart.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- CDN Libraries: Chart.js & Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
   <link rel="stylesheet" href="redesign.css">
 </head>
-<body class="ux-redesign-app theme-cyberpunk">
+<body class="ux-redesign-app">
 
-  <!-- Interactive Cyber Background Canvas & HUD Scanlines -->
-  <canvas id="cyber-bg-canvas"></canvas>
-  <div class="cyber-scanline-overlay"></div>
+  <!-- Subtle Warm Organic Grid Background (Inspired by Neosophical Labs) -->
+  <div class="warm-grid-background"></div>
 
-  <!-- GSAP Magnetic Follower Cursor & Reticle -->
-  <div id="magnetic-cursor">
-    <div class="cursor-reticle-ring"></div>
-    <div class="cursor-reticle-corner c-tl"></div>
-    <div class="cursor-reticle-corner c-tr"></div>
-    <div class="cursor-reticle-corner c-bl"></div>
-    <div class="cursor-reticle-corner c-br"></div>
-  </div>
-  <div id="magnetic-cursor-dot"></div>
-
-  <!-- Main Redesigned Layout -->
+  <!-- Main Application Shell -->
   <div id="app-shell">
 
     <!-- Left Navigation Sidebar -->
@@ -41,18 +29,19 @@
       <div class="sidebar-header">
         <div class="brand-logo">
           <div class="logo-mark">
-            <span class="logo-inner-dot"></span>
+            <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.44 4 16.08 4 12C4 11.38 4.08 10.79 4.21 10.21L9 15V16C9 17.1 9.9 18 11 18V19.93ZM17.9 17.39C17.64 16.58 16.9 16 16 16H15V13C15 12.45 14.55 12 14 12H8V10H10C10.55 10 11 9.55 11 9V7H13C14.1 7 15 6.1 15 5V4.59C17.93 5.78 20 8.65 20 12C20 14.08 19.2 15.97 17.9 17.39Z" fill="currentColor"/>
+            </svg>
           </div>
           <div class="brand-meta">
-            <span class="brand-name">LivingADs</span>
-            <span class="brand-badge-ux">UX 2.0</span>
+            <span class="brand-name">Living Ads</span>
           </div>
         </div>
 
         <div class="workspace-card">
           <div class="ws-avatar">☕</div>
           <div class="ws-info">
-            <span class="ws-title">Northwind Coffee Co.</span>
+            <span class="ws-title">Northwind & Bali Retreats</span>
             <span class="ws-tag"><span class="status-dot"></span> Meta & Google Connected</span>
           </div>
         </div>
@@ -60,7 +49,7 @@
 
       <!-- Navigation Links -->
       <nav class="sidebar-nav">
-        <div class="nav-section-label">GUIDED JOURNEY</div>
+        <div class="nav-section-label">CAMPAIGNS</div>
         
         <button class="nav-item active" data-tab="journey">
           <div class="nav-icon">🎯</div>
@@ -71,50 +60,50 @@
           <span class="pill-live">Wizard</span>
         </button>
 
-        <button class="nav-item" data-tab="assistant">
-          <div class="nav-icon">✨</div>
+        <button class="nav-item" data-tab="campaigns-table">
+          <div class="nav-icon">📋</div>
           <div class="nav-label-wrap">
-            <span class="nav-title">AI Growth Strategist</span>
-            <span class="nav-desc">Proactive Audits & Q&A</span>
+            <span class="nav-title">All Campaigns</span>
+            <span class="nav-desc">Active & Paused Ads</span>
           </div>
+          <span class="pill-num">6 Total</span>
         </button>
 
         <div class="nav-section-label">INTELLIGENCE & ASSETS</div>
 
-        <button class="nav-item" data-tab="bento-overview">
-          <div class="nav-icon">🍱</div>
+        <button class="nav-item" data-tab="assistant">
+          <div class="nav-icon">✨</div>
           <div class="nav-label-wrap">
-            <span class="nav-title">Bento Telemetry</span>
-            <span class="nav-desc">ROAS & Channel Split</span>
+            <span class="nav-title">AI Growth Strategist</span>
+            <span class="nav-desc">Audits, Copy & Advice</span>
           </div>
         </button>
 
-        <button class="nav-item" data-tab="campaigns-table">
+        <button class="nav-item" data-tab="bento-overview">
           <div class="nav-icon">📊</div>
           <div class="nav-label-wrap">
-            <span class="nav-title">Live Blueprints</span>
-            <span class="nav-desc">Active Multi-Channel Ads</span>
+            <span class="nav-title">Analytics & ROAS</span>
+            <span class="nav-desc">Telemetry & Funnel</span>
           </div>
-          <span class="pill-num">3 Active</span>
         </button>
 
         <button class="nav-item" data-tab="creative-studio">
           <div class="nav-icon">🎨</div>
           <div class="nav-label-wrap">
-            <span class="nav-title">Creative Sandbox</span>
-            <span class="nav-desc">Sensory Hooks & Copy</span>
+            <span class="nav-title">Creative Library</span>
+            <span class="nav-desc">Angles, Hooks & Copy</span>
           </div>
         </button>
       </nav>
 
       <!-- Sidebar Footer -->
       <div class="sidebar-footer">
-        <!-- Progressive Disclosure Toggle -->
+        <!-- Progressive Disclosure Mode -->
         <div class="persona-toggle-container">
-          <span class="toggle-label">EXPERIENCE MODE</span>
+          <span class="toggle-label">EXPERIENCE LEVEL</span>
           <div class="persona-toggle-pill" id="persona-toggle">
-            <button class="p-toggle-btn active" data-mode="beginner">Simple (Beginner)</button>
-            <button class="p-toggle-btn" data-mode="power">Power User (Pro)</button>
+            <button class="p-toggle-btn active" data-mode="beginner">Simple</button>
+            <button class="p-toggle-btn" data-mode="power">Pro / Advanced</button>
           </div>
         </div>
 
@@ -134,27 +123,11 @@
       <!-- Top Header -->
       <header id="topbar">
         <div class="topbar-left">
-          <span class="editorial-kicker">Autonomous Growth Suite</span>
+          <span class="editorial-kicker">Autonomous Marketing Platform</span>
           <h1 class="header-heading" id="current-view-name">Campaign Creation Journey</h1>
         </div>
 
         <div class="topbar-right">
-          <!-- Aesthetic Matrix Selector -->
-          <div class="aesthetic-control-group">
-            <span class="m-lbl">STYLE MATRIX</span>
-            <select id="aesthetic-switcher" class="cyber-select" aria-label="Aesthetic Style Matrix">
-              <option value="cyberpunk" selected>⚡ Cyberpunk / Cybercore</option>
-              <option value="glassmorphism">💎 Dark Glassmorphism</option>
-              <option value="synthwave">🌆 Synthwave '84</option>
-              <option value="neobrutalism">⚡ Neo-Brutalism</option>
-            </select>
-          </div>
-
-          <!-- Tactical Audio SFX Toggle -->
-          <button class="cyber-sfx-btn" id="sfx-toggle" title="Toggle Tactical Cyber SFX">
-            <span id="sfx-icon">🔊</span> <span id="sfx-label">SFX ON</span>
-          </button>
-
           <!-- Real-Time Metrics -->
           <div class="topbar-metric-chip">
             <span class="m-lbl">BLENDED ROAS</span>
@@ -165,31 +138,53 @@
             <span class="m-val">₹59,470</span>
           </div>
           <div class="topbar-metric-chip">
-            <span class="m-lbl">CAPI MATCH</span>
+            <span class="m-lbl">CAPI SYNC</span>
             <span class="m-val highlight">99.8%</span>
           </div>
 
-          <button class="btn-cta" id="btn-quick-audit-top">
-            <span class="btn-cta-glitch">⚡</span> Run Deep Cyber Audit
+          <button class="btn-top-cta" id="btn-quick-audit-top">
+            <span>✨</span> Proactive Audit
           </button>
         </div>
       </header>
 
-      <!-- View Containers -->
+      <!-- Views Container -->
       <div id="views-container">
 
         <!-- ============================================================ -->
-        <!-- VIEW 1: THE REDESIGNED GUIDED JOURNEY (THE STAR OF UX REDESIGN) -->
+        <!-- VIEW 1: THE GUIDED JOURNEY + STICKY CAMPAIGN PREVIEW         -->
         <!-- ============================================================ -->
         <section class="view-panel active" id="view-journey">
-          
-          <!-- Guided Stepper Navigation Ribbon -->
+
+          <!-- Natural Language Goal Prompt Banner (from screenshot) -->
+          <div class="welcome-prompt-banner">
+            <div class="welcome-header-text">
+              <h2 class="welcome-heading">Welcome to Living Ads</h2>
+              <p class="welcome-subheading">Tell us what you want to achieve, and our AI will turn it into a complete ad campaign in minutes.</p>
+            </div>
+
+            <div class="prompt-input-wrapper">
+              <span class="prompt-sparkle-icon">✨</span>
+              <input type="text" id="campaign-goal-prompt" class="prompt-input-field" placeholder="I want to promote... (e.g. a children's retreat in Bali / organic coffee subscription)" value="I want to promote a children's retreat in Bali" />
+              <button type="button" id="btn-submit-prompt" class="prompt-submit-btn" title="Generate with AI">➔</button>
+            </div>
+
+            <div class="prompt-quick-chips">
+              <span class="chips-label">Try an example:</span>
+              <button type="button" class="example-pill-btn" data-goal-text="Children's retreat in Bali">Children's retreat in Bali</button>
+              <button type="button" class="example-pill-btn" data-goal-text="Acquire recurring coffee subscribers">Coffee subscription</button>
+              <button type="button" class="example-pill-btn" data-goal-text="Promote a meditation workshop">Promote a workshop</button>
+              <button type="button" class="example-pill-btn" data-goal-text="Recover 14-day cart abandoners">Cart recovery</button>
+            </div>
+          </div>
+
+          <!-- Stepper Ribbon -->
           <div class="stepper-ribbon">
             <div class="step-item active" data-step="1">
               <div class="step-circle">1</div>
               <div class="step-meta">
                 <span class="step-num">STEP 01</span>
-                <span class="step-title">Select Goal</span>
+                <span class="step-title">Goal</span>
               </div>
             </div>
             <div class="step-line"></div>
@@ -198,7 +193,7 @@
               <div class="step-circle">2</div>
               <div class="step-meta">
                 <span class="step-num">STEP 02</span>
-                <span class="step-title">AI Questions</span>
+                <span class="step-title">Details</span>
               </div>
             </div>
             <div class="step-line"></div>
@@ -207,7 +202,7 @@
               <div class="step-circle">3</div>
               <div class="step-meta">
                 <span class="step-num">STEP 03</span>
-                <span class="step-title">Campaign Plan</span>
+                <span class="step-title">Plan</span>
               </div>
             </div>
             <div class="step-line"></div>
@@ -216,7 +211,7 @@
               <div class="step-circle">4</div>
               <div class="step-meta">
                 <span class="step-num">STEP 04</span>
-                <span class="step-title">Inline Edit</span>
+                <span class="step-title">Customize</span>
               </div>
             </div>
             <div class="step-line"></div>
@@ -225,7 +220,7 @@
               <div class="step-circle">5</div>
               <div class="step-meta">
                 <span class="step-num">STEP 05</span>
-                <span class="step-title">Approve & Risk</span>
+                <span class="step-title">Review</span>
               </div>
             </div>
             <div class="step-line"></div>
@@ -234,347 +229,408 @@
               <div class="step-circle">6</div>
               <div class="step-meta">
                 <span class="step-num">STEP 06</span>
-                <span class="step-title">Live Launch</span>
+                <span class="step-title">Live</span>
               </div>
             </div>
           </div>
 
-          <!-- Step Content Area -->
-          <div class="journey-stage-container">
+          <!-- Split Layout: Wizard on Left + Sticky Preview on Right (EXACTLY AS IN IMAGE) -->
+          <div class="journey-split-layout">
 
-            <!-- STAGE 1: GOAL FORMULATION -->
-            <div class="stage-card active" id="stage-1">
-              <div class="stage-header">
-                <span class="stage-eyebrow">STEP 1 OF 6 • OUTCOME SELECTION</span>
-                <h2 class="editorial-stage-title">What is your primary growth goal for <em>Northwind Coffee</em>?</h2>
-                <p class="stage-desc">Select an outcome-driven goal. The AI Growth Strategist will formulate a channel-specific blueprint tailored to your historical conversion data.</p>
-              </div>
+            <!-- Left Column: Wizard Stages -->
+            <div class="journey-stage-container">
 
-              <div class="goals-grid">
-                <div class="goal-card selected" data-goal="subscribers">
-                  <div class="goal-badge">RECOMMENDED</div>
-                  <div class="goal-icon">☕</div>
-                  <h3 class="goal-title">Acquire High-LTV Coffee Subscribers</h3>
-                  <p class="goal-desc">Target recurring whole bean & cold brew subscriptions across Instagram Reels & Google Search.</p>
-                  <div class="goal-meta">Target ROAS: <strong>3.8x+</strong> • Est. CAC: <strong>₹45</strong></div>
+              <!-- STAGE 1: GOAL FORMULATION -->
+              <div class="stage-card active" id="stage-1">
+                <div class="stage-header">
+                  <span class="stage-eyebrow">STEP 1 • OUTCOME SELECTION</span>
+                  <h2 class="editorial-stage-title">What is your primary growth goal?</h2>
+                  <p class="stage-desc">Select an outcome. The AI marketing assistant will calibrate your targeting, channels, and creative angles based on historical conversion benchmarks.</p>
                 </div>
 
-                <div class="goal-card" data-goal="retargeting">
-                  <div class="goal-badge">HIGH INTENT</div>
-                  <div class="goal-icon">🎯</div>
-                  <h3 class="goal-title">Recover 14-Day Cart Abandoners</h3>
-                  <p class="goal-desc">Dynamic Meta product carousel + 15% subscriber incentive code on hesitation.</p>
-                  <div class="goal-meta">Target ROAS: <strong>4.8x+</strong> • Est. Recovery: <strong>24%</strong></div>
-                </div>
+                <div class="goals-grid">
+                  <div class="goal-card selected" data-goal="subscribers">
+                    <div class="goal-badge">RECOMMENDED</div>
+                    <div class="goal-icon">🌴</div>
+                    <h3 class="goal-title">Children's Learning Retreat in Bali</h3>
+                    <p class="goal-desc">Target parents & holistic educators across Instagram Reels & Google Search to drive enrollments.</p>
+                    <div class="goal-meta">Target ROAS: <strong>3.8x+</strong> • Est. CAC: <strong>₹45</strong></div>
+                  </div>
 
-                <div class="goal-card" data-goal="scale-winners">
-                  <div class="goal-badge">SCALE VELOCITY</div>
-                  <div class="goal-icon">⚡</div>
-                  <h3 class="goal-title">Scale Top 2 Winning Instagram Reels</h3>
-                  <p class="goal-desc">Automatically scale daily budget on "Pour-Over Morning Routine" by +25% with safety caps.</p>
-                  <div class="goal-meta">Target ROAS: <strong>4.2x+</strong> • +₹48,000 Mo. Lift</div>
-                </div>
+                  <div class="goal-card" data-goal="retargeting">
+                    <div class="goal-badge">HIGH CONVERSION</div>
+                    <div class="goal-icon">☕</div>
+                    <h3 class="goal-title">Northwind Whole Bean Subscribers</h3>
+                    <p class="goal-desc">Acquire recurring monthly coffee subscriptions via sensory Chemex brewing video hooks.</p>
+                    <div class="goal-meta">Target ROAS: <strong>4.6x+</strong> • Est. CAC: <strong>₹42</strong></div>
+                  </div>
 
-                <div class="goal-card" data-goal="brand-search">
-                  <div class="goal-badge">CAPTURE</div>
-                  <div class="goal-icon">🔍</div>
-                  <h3 class="goal-title">Capture Exact Brand Search Intent</h3>
-                  <p class="goal-desc">Dominate 95%+ absolute top-of-page share on Google for "Northwind Whole Bean".</p>
-                  <div class="goal-meta">Target ROAS: <strong>5.2x+</strong> • Zero Waste Bidding</div>
-                </div>
-              </div>
+                  <div class="goal-card" data-goal="scale-winners">
+                    <div class="goal-badge">RECOVERY</div>
+                    <div class="goal-icon">🎯</div>
+                    <h3 class="goal-title">Recover 14-Day Cart Abandoners</h3>
+                    <p class="goal-desc">Dynamic Meta product carousel + 15% subscriber incentive code on high-intent drop-offs.</p>
+                    <div class="goal-meta">Target ROAS: <strong>4.8x+</strong> • Est. Recovery: <strong>28%</strong></div>
+                  </div>
 
-              <div class="stage-footer">
-                <button class="btn-editorial primary" id="btn-to-stage-2">Continue to AI Diagnostics →</button>
-              </div>
-            </div>
-
-            <!-- STAGE 2: AI CLARIFYING QUESTIONS -->
-            <div class="stage-card" id="stage-2">
-              <div class="stage-header">
-                <span class="stage-eyebrow">STEP 2 OF 6 • STRATEGIC DIAGNOSTICS</span>
-                <h2 class="editorial-stage-title">AI Strategist: 3 Quick Clarifying Questions</h2>
-                <p class="stage-desc">Answer these questions so the AI can calibrate your budget allocation and bidding strategy with zero guesswork.</p>
-              </div>
-
-              <div class="questions-flow">
-                <div class="question-block">
-                  <span class="q-num">Q1</span>
-                  <div class="q-content">
-                    <h4 class="q-title">What is your maximum target Customer Acquisition Cost (CAC)?</h4>
-                    <div class="chip-group" data-q="cac">
-                      <button class="chip-btn" data-val="35">₹35 (Aggressive Profit)</button>
-                      <button class="chip-btn active" data-val="45">₹45 (Optimal Scale / Current)</button>
-                      <button class="chip-btn" data-val="60">₹60 (Maximum Volume)</button>
-                    </div>
+                  <div class="goal-card" data-goal="brand-search">
+                    <div class="goal-badge">CAPTURE</div>
+                    <div class="goal-icon">🔍</div>
+                    <h3 class="goal-title">Capture Exact Brand Search Intent</h3>
+                    <p class="goal-desc">Dominate 95%+ absolute top-of-page share on Google Ads for exact brand search terms.</p>
+                    <div class="goal-meta">Target ROAS: <strong>5.2x+</strong> • Zero Waste Bidding</div>
                   </div>
                 </div>
 
-                <div class="question-block">
-                  <span class="q-num">Q2</span>
-                  <div class="q-content">
-                    <h4 class="q-title">What is your proposed 30-day budget allocation?</h4>
-                    <div class="chip-group" data-q="budget">
-                      <button class="chip-btn" data-val="25000">₹25,000 / month</button>
-                      <button class="chip-btn active" data-val="50000">₹50,000 / month (Recommended)</button>
-                      <button class="chip-btn" data-val="100000">₹1,00,000 / month</button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="question-block">
-                  <span class="q-num">Q3</span>
-                  <div class="q-content">
-                    <h4 class="q-title">Which hero SKU should lead your creative angles?</h4>
-                    <div class="chip-group" data-q="sku">
-                      <button class="chip-btn active" data-val="arabica">Arabica Dark Roast Whole Bean</button>
-                      <button class="chip-btn" data-val="coldbrew">Cold Brew Concentrate Bottle</button>
-                      <button class="chip-btn" data-val="tasting">Tasting Kit Bundle</button>
-                    </div>
-                  </div>
+                <div class="stage-footer">
+                  <button class="btn-clean primary" id="btn-to-stage-2">Continue to Details →</button>
                 </div>
               </div>
 
-              <div class="stage-footer">
-                <button class="btn-editorial secondary" id="btn-back-to-1">← Back</button>
-                <button class="btn-editorial primary" id="btn-to-stage-3">Generate Modular Campaign Plan →</button>
-              </div>
-            </div>
-
-            <!-- STAGE 3: MODULAR CAMPAIGN PLAN -->
-            <div class="stage-card" id="stage-3">
-              <div class="stage-header">
-                <span class="stage-eyebrow">STEP 3 OF 6 • SYNTHESIZED BLUEPRINT</span>
-                <h2 class="editorial-stage-title">Your 3-Channel Modular Growth Plan</h2>
-                <p class="stage-desc">Calculated across 12,480 conversion touchpoints for ₹50,000 monthly spend.</p>
-              </div>
-
-              <div class="plan-funnel-grid">
-                <!-- Top of Funnel Card -->
-                <div class="funnel-card">
-                  <div class="funnel-card-header">
-                    <span class="f-tag tof">TOP OF FUNNEL (PROSPECTING)</span>
-                    <span class="f-budget">₹1,000 / day (60%)</span>
-                  </div>
-                  <h4 class="f-title">Instagram Reels & TikTok UGC</h4>
-                  <p class="f-desc">Sensory pour-over & Chemex brewing videos targeted to specialty coffee affinity cohorts.</p>
-                  <div class="f-metrics">
-                    <div><span>Est. ROAS</span><strong>3.42x</strong></div>
-                    <div><span>Target CPA</span><strong>₹38</strong></div>
-                  </div>
+              <!-- STAGE 2: AI QUESTIONS / DETAILS -->
+              <div class="stage-card" id="stage-2">
+                <div class="stage-header">
+                  <span class="stage-eyebrow">STEP 2 • CAMPAIGN DETAILS</span>
+                  <h2 class="editorial-stage-title">AI Marketing Assistant: Calibration Details</h2>
+                  <p class="stage-desc">Answer these key parameters so the AI can allocate budget and bidding strategy with zero guesswork.</p>
                 </div>
 
-                <!-- Middle of Funnel Card -->
-                <div class="funnel-card">
-                  <div class="funnel-card-header">
-                    <span class="f-tag mof">MIDDLE OF FUNNEL (RETARGETING)</span>
-                    <span class="f-budget">₹450 / day (25%)</span>
-                  </div>
-                  <h4 class="f-title">Meta Dynamic Catalog Carousel</h4>
-                  <p class="f-desc">Delivers personalized product carousels to 14-day cart & product view abandoners.</p>
-                  <div class="f-metrics">
-                    <div><span>Est. ROAS</span><strong>4.85x</strong></div>
-                    <div><span>Recovery Rate</span><strong>28%</strong></div>
-                  </div>
-                </div>
-
-                <!-- Bottom of Funnel Card -->
-                <div class="funnel-card">
-                  <div class="funnel-card-header">
-                    <span class="f-tag bof">BOTTOM OF FUNNEL (INTENT)</span>
-                    <span class="f-budget">₹250 / day (15%)</span>
-                  </div>
-                  <h4 class="f-title">Google Exact Match Brand Search</h4>
-                  <p class="f-desc">Captures high-intent search queries: "Northwind coffee subscription" & "buy whole bean".</p>
-                  <div class="f-metrics">
-                    <div><span>Est. ROAS</span><strong>5.10x</strong></div>
-                    <div><span>Top-of-Page</span><strong>96%</strong></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="stage-footer">
-                <button class="btn-editorial secondary" id="btn-back-to-2">← Back</button>
-                <button class="btn-editorial primary" id="btn-to-stage-4">Customize & Inline Edit →</button>
-              </div>
-            </div>
-
-            <!-- STAGE 4: INLINE INTERACTIVE EDITING -->
-            <div class="stage-card" id="stage-4">
-              <div class="stage-header">
-                <span class="stage-eyebrow">STEP 4 OF 6 • PARAMETER CUSTOMIZATION</span>
-                <h2 class="editorial-stage-title">Fine-Tune Campaign Parameters</h2>
-                <p class="stage-desc">Adjust daily budget sliders, toggle creative variants, and preview projected revenue impacts in real-time.</p>
-              </div>
-
-              <div class="editing-grid">
-                <!-- Slider 1 -->
-                <div class="edit-card">
-                  <div class="edit-card-head">
-                    <label>Meta Reels Prospecting Budget</label>
-                    <span class="slider-val" id="val-meta-budget">₹1,000 / day</span>
-                  </div>
-                  <input type="range" class="modern-slider" id="slider-meta" min="500" max="3000" step="100" value="1000">
-                  <span class="slider-hint">Recommended: ₹800 – ₹1,500 based on audience size (1.2M).</span>
-                </div>
-
-                <!-- Slider 2 -->
-                <div class="edit-card">
-                  <div class="edit-card-head">
-                    <label>Meta Dynamic Retargeting Budget</label>
-                    <span class="slider-val" id="val-retarget-budget">₹450 / day</span>
-                  </div>
-                  <input type="range" class="modern-slider" id="slider-retarget" min="200" max="1500" step="50" value="450">
-                  <span class="slider-hint">Recommended: ₹350 – ₹600 for 14-day cart volume.</span>
-                </div>
-
-                <!-- Creative Angle Picker -->
-                <div class="edit-card full-span">
-                  <label class="edit-label">Active Creative Angles (Select to Deploy):</label>
-                  <div class="creative-selector-row">
-                    <div class="creative-toggle active" data-angle="1">
-                      <div class="c-check">✓</div>
-                      <div>
-                        <strong>"The 6:00 AM Pour-Over Ritual" (Reels UGC)</strong>
-                        <p>Sensory Chemex bloom visual • Est. CTR: 4.8%</p>
+                <div class="questions-flow">
+                  <!-- Target Audience Question (from screenshot) -->
+                  <div class="question-block">
+                    <span class="q-icon-wrap">👥</span>
+                    <div class="q-content">
+                      <h4 class="q-title">Who is your target audience?</h4>
+                      <div class="chip-group" data-q="audience">
+                        <button class="chip-btn" data-val="parents">Parents</button>
+                        <button class="chip-btn" data-val="educators">Educators</button>
+                        <button class="chip-btn active" data-val="both">Both (Parents + Educators)</button>
                       </div>
                     </div>
+                  </div>
 
-                    <div class="creative-toggle active" data-angle="2">
-                      <div class="c-check">✓</div>
-                      <div>
-                        <strong>"₹35 vs ₹350 Café Espresso" (Comparison Hook)</strong>
-                        <p>Specialty quality at 1/10th the price • Est. CTR: 3.9%</p>
+                  <!-- Date Range -->
+                  <div class="question-block">
+                    <span class="q-icon-wrap">📅</span>
+                    <div class="q-content">
+                      <h4 class="q-title">What dates do you want to run the ads?</h4>
+                      <div class="date-range-display">
+                        <span class="date-chip">Nov 10, 2025</span>
+                        <span class="date-arrow">➔</span>
+                        <span class="date-chip">Nov 30, 2025</span>
+                        <span class="date-duration">(20 Days Duration)</span>
                       </div>
                     </div>
+                  </div>
 
-                    <div class="creative-toggle" data-angle="3">
-                      <div class="c-check"></div>
-                      <div>
-                        <strong>"Micro-Batch Roasting Explained" (Educational)</strong>
-                        <p>Tasting notes & freshness guarantee • Est. CTR: 3.2%</p>
+                  <!-- Total Budget -->
+                  <div class="question-block">
+                    <span class="q-icon-wrap">💰</span>
+                    <div class="q-content">
+                      <h4 class="q-title">What is your proposed 30-day budget?</h4>
+                      <div class="chip-group" data-q="budget">
+                        <button class="chip-btn" data-val="25000">₹25,000</button>
+                        <button class="chip-btn active" data-val="30000">₹30,000 (Recommended)</button>
+                        <button class="chip-btn" data-val="50000">₹50,000</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Target CAC -->
+                  <div class="question-block">
+                    <span class="q-icon-wrap">🎯</span>
+                    <div class="q-content">
+                      <h4 class="q-title">What is your maximum target Acquisition Cost (CAC)?</h4>
+                      <div class="chip-group" data-q="cac">
+                        <button class="chip-btn" data-val="35">₹35 (Aggressive Profit)</button>
+                        <button class="chip-btn active" data-val="45">₹45 (Optimal Scale / Current)</button>
+                        <button class="chip-btn" data-val="60">₹60 (Maximum Volume)</button>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- Power User Advanced Options Drawer (Progressive Disclosure) -->
-                <div class="power-user-drawer" id="power-user-section">
-                  <div class="drawer-header">
-                    <span class="drawer-tag">ADVANCED MODE • BIDDING & CAPI RULES</span>
-                    <span class="drawer-status">Active for Power Users</span>
+                <div class="stage-footer">
+                  <button class="btn-clean secondary" id="btn-back-to-1">← Back</button>
+                  <button class="btn-clean primary" id="btn-to-stage-3">Generate Campaign Plan →</button>
+                </div>
+              </div>
+
+              <!-- STAGE 3: MODULAR CAMPAIGN PLAN -->
+              <div class="stage-card" id="stage-3">
+                <div class="stage-header">
+                  <span class="stage-eyebrow">STEP 3 • PERSONALISED PLAN</span>
+                  <h2 class="editorial-stage-title">Your 3-Channel Campaign Plan</h2>
+                  <p class="stage-desc">Personalised campaign blueprint optimized across Meta (Reels & Feed) and Google Ads.</p>
+                </div>
+
+                <div class="plan-accordions-list">
+                  <div class="plan-acc-item">
+                    <div class="acc-head">
+                      <span class="acc-tag tof">TOP OF FUNNEL</span>
+                      <span class="acc-budget">₹1,000 / day (60%)</span>
+                    </div>
+                    <h4 class="acc-title">Instagram Reels & UGC Video Prospecting</h4>
+                    <p class="acc-desc">Sensory Bali retreat experiences & morning pour-over ritual clips targeted to parents and coffee lovers.</p>
+                    <div class="acc-meta">Est. ROAS: <strong>3.42x</strong> • Target CPA: <strong>₹38</strong></div>
                   </div>
-                  <div class="drawer-grid">
+
+                  <div class="plan-acc-item">
+                    <div class="acc-head">
+                      <span class="acc-tag mof">MIDDLE OF FUNNEL</span>
+                      <span class="acc-budget">₹450 / day (25%)</span>
+                    </div>
+                    <h4 class="acc-title">Meta Dynamic Product & Course Carousel</h4>
+                    <p class="acc-desc">Delivers personalized carousel ads to 14-day cart abandoners and retreat page visitors.</p>
+                    <div class="acc-meta">Est. ROAS: <strong>4.85x</strong> • Recovery Rate: <strong>28%</strong></div>
+                  </div>
+
+                  <div class="plan-acc-item">
+                    <div class="acc-head">
+                      <span class="acc-tag bof">BOTTOM OF FUNNEL</span>
+                      <span class="acc-budget">₹250 / day (15%)</span>
+                    </div>
+                    <h4 class="acc-title">Google Exact Match Brand & Intent Search</h4>
+                    <p class="acc-desc">Captures high-intent search queries: "Children retreat Bali signup" & "Northwind whole bean coffee".</p>
+                    <div class="acc-meta">Est. ROAS: <strong>5.10x</strong> • Top-of-Page Share: <strong>96%</strong></div>
+                  </div>
+                </div>
+
+                <div class="stage-footer">
+                  <button class="btn-clean secondary" id="btn-back-to-2">← Back</button>
+                  <button class="btn-clean primary" id="btn-to-stage-4">Customize Parameters →</button>
+                </div>
+              </div>
+
+              <!-- STAGE 4: INLINE EDITING & CUSTOMIZATION -->
+              <div class="stage-card" id="stage-4">
+                <div class="stage-header">
+                  <span class="stage-eyebrow">STEP 4 • FINE-TUNE PARAMETERS</span>
+                  <h2 class="editorial-stage-title">Fine-Tune Campaign Parameters</h2>
+                  <p class="stage-desc">Adjust daily budget sliders, toggle creative angles, and preview impacts in real-time on your Campaign Preview card.</p>
+                </div>
+
+                <div class="editing-grid">
+                  <!-- Slider 1 -->
+                  <div class="edit-card">
+                    <div class="edit-card-head">
+                      <label>Meta Reels Prospecting Budget</label>
+                      <span class="slider-val" id="val-meta-budget">₹1,000 / day</span>
+                    </div>
+                    <input type="range" class="warm-slider" id="slider-meta" min="500" max="3000" step="100" value="1000">
+                    <span class="slider-hint">Recommended: ₹800 – ₹1,500 based on audience reach (140K).</span>
+                  </div>
+
+                  <!-- Slider 2 -->
+                  <div class="edit-card">
+                    <div class="edit-card-head">
+                      <label>Dynamic Retargeting Budget</label>
+                      <span class="slider-val" id="val-retarget-budget">₹450 / day</span>
+                    </div>
+                    <input type="range" class="warm-slider" id="slider-retarget" min="200" max="1500" step="50" value="450">
+                    <span class="slider-hint">Recommended: ₹350 – ₹600 for optimal remarketing frequency.</span>
+                  </div>
+
+                  <!-- Creative Angle Picker -->
+                  <div class="edit-card full-span">
+                    <label class="edit-label">Active Creative Variations (Select to Deploy):</label>
+                    <div class="creative-selector-row">
+                      <div class="creative-toggle active" data-angle="1">
+                        <div class="c-check">✓</div>
+                        <div>
+                          <strong>"A Global Learning Experience for Curious Minds"</strong>
+                          <p>Bali retreat nature immersion • Est. CTR: 4.8%</p>
+                        </div>
+                      </div>
+
+                      <div class="creative-toggle active" data-angle="2">
+                        <div class="c-check">✓</div>
+                        <div>
+                          <strong>"The 6:00 AM Pour-Over Ritual" (Reels UGC)</strong>
+                          <p>Sensory Chemex bloom visual • Est. CTR: 4.4%</p>
+                        </div>
+                      </div>
+
+                      <div class="creative-toggle" data-angle="3">
+                        <div class="c-check"></div>
+                        <div>
+                          <strong>"₹35 vs ₹350 Café Espresso" (Comparison Hook)</strong>
+                          <p>Specialty quality at 1/10th the price • Est. CTR: 3.8%</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Power User Advanced Options Drawer -->
+                  <div class="power-user-drawer" id="power-user-section">
+                    <div class="drawer-header">
+                      <span class="drawer-tag">PRO MODE • BID STRATEGY & CAPI</span>
+                      <span class="drawer-status">Active for Power Users</span>
+                    </div>
+                    <div class="drawer-grid">
+                      <div>
+                        <label>Bid Strategy</label>
+                        <select class="clean-select">
+                          <option>Lowest Cost with ROAS Floor (3.2x)</option>
+                          <option>Cost Cap (₹45 Max CAC)</option>
+                          <option>Target ROAS Automated</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label>Attribution Window</label>
+                        <select class="clean-select">
+                          <option>7-Day Click or 1-Day View (Recommended)</option>
+                          <option>1-Day Click Only (Strict CAPI)</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="stage-footer">
+                  <button class="btn-clean secondary" id="btn-back-to-3">← Back</button>
+                  <button class="btn-clean primary" id="btn-to-stage-5">Proceed to Review →</button>
+                </div>
+              </div>
+
+              <!-- STAGE 5: APPROVE & SAFETY CHECKPOINT -->
+              <div class="stage-card" id="stage-5">
+                <div class="stage-header">
+                  <span class="stage-eyebrow">STEP 5 • FINAL REVIEW & SAFETY</span>
+                  <h2 class="editorial-stage-title">Approval Checkpoint & Impact Guarantee</h2>
+                  <p class="stage-desc">Please check everything before launching. Your campaign will initially start in paused mode for safety.</p>
+                </div>
+
+                <div class="safety-checkpoint-card">
+                  <div class="safety-grid">
+                    <div class="safety-stat-box">
+                      <span class="s-label">MAX MONTHLY SPEND CAP</span>
+                      <span class="s-val" id="review-spend-cap">₹51,000</span>
+                      <span class="s-hint">Strict limit. Will never exceed.</span>
+                    </div>
+
+                    <div class="safety-stat-box">
+                      <span class="s-label">PROJECTED MONTHLY REVENUE</span>
+                      <span class="s-val highlight" id="review-projected-rev">₹1,98,400</span>
+                      <span class="s-hint">+₹48,000 net lift over baseline</span>
+                    </div>
+
+                    <div class="safety-stat-box">
+                      <span class="s-label">ESTIMATED BLENDED ROAS</span>
+                      <span class="s-val highlight">3.89x</span>
+                      <span class="s-hint">Confidence Score: 94%</span>
+                    </div>
+
+                    <div class="safety-stat-box">
+                      <span class="s-label">SAFETY GUARDRAIL</span>
+                      <span class="s-val green">Active</span>
+                      <span class="s-hint">Auto-pauses if CPA > ₹58 for 48h</span>
+                    </div>
+                  </div>
+
+                  <div class="rollback-guarantee">
+                    <span class="shield-icon">🛡️</span>
                     <div>
-                      <label>Bid Strategy</label>
-                      <select class="modern-select">
-                        <option>Lowest Cost with ROAS Floor (3.2x)</option>
-                        <option>Cost Cap (₹45 Max CAC)</option>
-                        <option>Target ROAS Automated</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label>Attribution Window</label>
-                      <select class="modern-select">
-                        <option>7-Day Click or 1-Day View (Recommended)</option>
-                        <option>1-Day Click Only (Strict CAPI)</option>
-                      </select>
+                      <strong>1-Click Instant Rollback Always Guaranteed</strong>
+                      <p>You can pause, edit, or revert this campaign at any time with a single click from the dashboard.</p>
                     </div>
                   </div>
                 </div>
+
+                <div class="stage-footer">
+                  <button class="btn-clean secondary" id="btn-back-to-4">← Back to Edit</button>
+                  <button class="btn-clean launch" id="btn-execute-launch">
+                    <span>🚀</span> Approve & Launch (Paused)
+                  </button>
+                </div>
               </div>
 
-              <div class="stage-footer">
-                <button class="btn-editorial secondary" id="btn-back-to-3">← Back</button>
-                <button class="btn-editorial primary" id="btn-to-stage-5">Proceed to Safety & Approval →</button>
+              <!-- STAGE 6: LIVE LAUNCH TELEMETRY -->
+              <div class="stage-card" id="stage-6">
+                <div class="stage-header">
+                  <div class="launch-success-badge">✓ CAMPAIGN READY ON ALL CHANNELS</div>
+                  <h2 class="editorial-stage-title">Deployment Successful & Telemetry Streaming</h2>
+                  <p class="stage-desc">Your multi-channel campaign has been compiled and synchronized with Meta Marketing API & Google Ads Manager.</p>
+                </div>
+
+                <div class="telemetry-stream-box">
+                  <div class="telemetry-row">
+                    <span class="t-dot live"></span>
+                    <span class="t-channel">Meta Ads Manager (Reels & Feed):</span>
+                    <span class="t-status">Synchronized • 2 Ad Sets Ready • Budget: ₹1,450/day</span>
+                  </div>
+
+                  <div class="telemetry-row">
+                    <span class="t-dot live"></span>
+                    <span class="t-channel">Google Ads (Search High-Intent):</span>
+                    <span class="t-status">Synchronized • 14 Exact Keywords Active • Budget: ₹250/day</span>
+                  </div>
+
+                  <div class="telemetry-row">
+                    <span class="t-dot live"></span>
+                    <span class="t-channel">Meta Conversions API (CAPI):</span>
+                    <span class="t-status">Event stream verified • 12ms latency • 99.8% match quality</span>
+                  </div>
+                </div>
+
+                <div class="stage-footer">
+                  <button class="btn-clean primary" onclick="document.querySelector('.nav-item[data-tab=bento-overview]').click()">View Analytics Dashboard →</button>
+                  <button class="btn-clean secondary" onclick="document.querySelector('.nav-item[data-tab=campaigns-table]').click()">Manage in All Campaigns</button>
+                </div>
               </div>
+
             </div>
 
-            <!-- STAGE 5: APPROVE & RISK SIMULATION -->
-            <div class="stage-card" id="stage-5">
-              <div class="stage-header">
-                <span class="stage-eyebrow">STEP 5 OF 6 • RISK SIMULATION & SAFETY GUARDRAIL</span>
-                <h2 class="editorial-stage-title">Approval Checkpoint & Impact Guarantee</h2>
-                <p class="stage-desc">Review hard spend caps, projected revenue gains, and automated safety rules before executing via Meta & Google APIs.</p>
-              </div>
+            <!-- Right Column: Sticky Live Campaign Preview (EXACTLY AS IN SCREENSHOT!) -->
+            <aside class="campaign-preview-sidebar">
+              <div class="preview-card-sticky">
+                <div class="preview-card-header">
+                  <span class="preview-card-title">Campaign Preview</span>
+                  <span class="preview-card-badge" id="preview-status-badge">Draft</span>
+                </div>
 
-              <div class="safety-checkpoint-card">
-                <div class="safety-grid">
-                  <div class="safety-stat-box">
-                    <span class="s-label">MAX MONTHLY SPEND CAP</span>
-                    <span class="s-val">₹51,000</span>
-                    <span class="s-hint">Strict limit. Will never exceed.</span>
-                  </div>
-
-                  <div class="safety-stat-box">
-                    <span class="s-label">PROJECTED MONTHLY REVENUE</span>
-                    <span class="s-val highlight">₹1,98,400</span>
-                    <span class="s-hint">+₹48,000 net lift over baseline</span>
-                  </div>
-
-                  <div class="safety-stat-box">
-                    <span class="s-label">ESTIMATED BLENDED ROAS</span>
-                    <span class="s-val highlight">3.89x</span>
-                    <span class="s-hint">Confidence Score: 94%</span>
-                  </div>
-
-                  <div class="safety-stat-box">
-                    <span class="s-label">SAFETY GUARDRAIL</span>
-                    <span class="s-val" style="color: #10b981;">Active</span>
-                    <span class="s-hint">Auto-pauses if CPA > ₹58 for 48h</span>
+                <div class="preview-media-frame">
+                  <img src="retreat_bali_ad.jpg" id="preview-ad-img" alt="Ad Creative Preview" class="preview-img" />
+                  <div class="preview-media-overlay">
+                    <span class="preview-overlay-tag">Sponsored</span>
                   </div>
                 </div>
 
-                <div class="rollback-guarantee">
-                  <span class="shield-icon">🛡️</span>
-                  <div>
-                    <strong>1-Click Instant Rollback Always Guaranteed</strong>
-                    <p>You can pause, edit, or revert this campaign at any time with a single click from the dashboard.</p>
+                <div class="preview-content-body">
+                  <h4 class="preview-ad-title" id="preview-title">Children's Retreat in Bali</h4>
+                  <p class="preview-ad-desc" id="preview-caption">A magical learning retreat for children in the heart of Bali. Nature immersion and creative education.</p>
+                  
+                  <div class="preview-channels-row">
+                    <span class="channel-icon-pill">📘 Facebook</span>
+                    <span class="channel-icon-pill">📷 Instagram</span>
+                  </div>
+
+                  <div class="preview-meta-list">
+                    <div class="preview-meta-row">
+                      <span class="pm-label">👥 Audience</span>
+                      <span class="pm-value" id="preview-audience">Parents + Educators (Ages 28–50)</span>
+                    </div>
+                    <div class="preview-meta-row">
+                      <span class="pm-label">💰 Budget</span>
+                      <span class="pm-value highlight" id="preview-budget">₹30,000</span>
+                    </div>
+                    <div class="preview-meta-row">
+                      <span class="pm-label">📅 Dates</span>
+                      <span class="pm-value" id="preview-dates">Nov 10 – Nov 30, 2025</span>
+                    </div>
+                    <div class="preview-meta-row">
+                      <span class="pm-label">🎯 Goal</span>
+                      <span class="pm-value" id="preview-goal">More signups</span>
+                    </div>
+                  </div>
+
+                  <div class="preview-safety-footer">
+                    <span class="safety-icon-leaf">🌿</span>
+                    <span>No money will be spent until you approve.</span>
                   </div>
                 </div>
               </div>
-
-              <div class="stage-footer">
-                <button class="btn-editorial secondary" id="btn-back-to-4">← Back to Edit</button>
-                <button class="btn-editorial launch" id="btn-execute-launch">
-                  <span>🚀</span> Approve & Deploy to Meta and Google
-                </button>
-              </div>
-            </div>
-
-            <!-- STAGE 6: LIVE LAUNCH & TELEMETRY -->
-            <div class="stage-card" id="stage-6">
-              <div class="stage-header">
-                <div class="launch-success-badge">🎉 CAMPAIGN LIVE ON ALL CHANNELS</div>
-                <h2 class="editorial-stage-title">Deployment Successful & Telemetry Streaming</h2>
-                <p class="stage-desc">Your 3-channel campaign graph has been compiled and synchronized with Meta Marketing API & Google Ads Manager.</p>
-              </div>
-
-              <div class="telemetry-stream-box">
-                <div class="telemetry-row">
-                  <span class="t-dot live"></span>
-                  <span class="t-channel">Meta Ads Manager (Reels & Feed):</span>
-                  <span class="t-status">Synchronized • 2 Ad Sets Active • Budget: ₹1,450/day</span>
-                </div>
-
-                <div class="telemetry-row">
-                  <span class="t-dot live"></span>
-                  <span class="t-channel">Google Ads (Search High-Intent):</span>
-                  <span class="t-status">Synchronized • 14 Exact Keywords Active • Budget: ₹250/day</span>
-                </div>
-
-                <div class="telemetry-row">
-                  <span class="t-dot live"></span>
-                  <span class="t-channel">Meta Conversions API (CAPI):</span>
-                  <span class="t-status">Event stream verified • 12ms latency • 99.8% match quality</span>
-                </div>
-              </div>
-
-              <div class="stage-footer">
-                <button class="btn-editorial primary" onclick="document.querySelector('.nav-item[data-tab=bento-overview]').click()">View Bento Telemetry Dashboard →</button>
-                <button class="btn-editorial secondary" onclick="document.querySelector('.nav-item[data-tab=campaigns-table]').click()">Manage in Blueprints</button>
-              </div>
-            </div>
+            </aside>
 
           </div>
 
@@ -582,15 +638,15 @@
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 2: AI GROWTH STRATEGIST (EXPERT, NOT JUST CHAT)         -->
+        <!-- VIEW 2: AI GROWTH STRATEGIST (EXPERT CHAT & RECOMMENDATIONS) -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-assistant">
           <div class="expert-chat-layout">
             
-            <!-- Proactive Diagnostic Feed Sidebar -->
+            <!-- Proactive Recommendations Feed -->
             <div class="proactive-diagnostics-feed">
               <div class="feed-header">
-                <span class="feed-tag">✦ PROACTIVE OPPORTUNITIES</span>
+                <span class="feed-tag">PROACTIVE OPPORTUNITIES</span>
                 <h3>Real-Time Recommendations</h3>
               </div>
 
@@ -614,9 +670,9 @@
               <div class="chat-flow-box" id="chat-messages">
                 
                 <div class="chat-turn assistant-turn">
-                  <div class="turn-meta">LivingADs Autonomous Strategist • Active</div>
+                  <div class="turn-meta">AI Marketing Assistant • Active</div>
                   <div class="turn-bubble assistant-bubble">
-                    <p class="editorial-lead">Hello Asha. I’ve performed a continuous audit on <strong>Northwind Coffee Co.</strong> over the last 30 days across Meta, Google Ads, and your server-side Conversions API.</p>
+                    <p class="editorial-lead">Hello Asha. I’ve performed a continuous audit across your Meta, Google Ads, and server-side Conversions API accounts.</p>
 
                     <div class="chat-bento-metrics">
                       <div class="c-bento-cell">
@@ -625,7 +681,7 @@
                         <span class="cb-sub positive">+0.45x MoM</span>
                       </div>
                       <div class="c-bento-cell">
-                        <span class="cb-label">New Subscribers</span>
+                        <span class="cb-label">New Signups</span>
                         <span class="cb-val">1,310</span>
                         <span class="cb-sub positive">₹45.40 CAC</span>
                       </div>
@@ -636,7 +692,7 @@
                       </div>
                     </div>
 
-                    <p>Would you like to initiate a new <strong>Campaign Journey</strong>, audit specific ad sets, or generate fresh creative angles?</p>
+                    <p>Would you like to formulate a new campaign for <strong>Children's Retreat in Bali</strong>, audit ad set fatigue, or generate fresh copy angles?</p>
                   </div>
                 </div>
 
@@ -645,8 +701,8 @@
               <!-- Composer -->
               <form class="expert-composer-form" id="agent-chat-form">
                 <div class="composer-row">
-                  <textarea id="chat-input" placeholder="Ask your AI Strategist to audit ad sets, write creative hooks, or optimize budgets…" rows="1"></textarea>
-                  <button type="submit" class="btn-editorial primary">Send</button>
+                  <textarea id="chat-input" placeholder="Ask your AI Assistant to audit ad sets, write creative hooks, or scale budgets…" rows="1"></textarea>
+                  <button type="submit" class="btn-clean primary">Send</button>
                 </div>
               </form>
             </div>
@@ -656,104 +712,133 @@
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 3: BENTO TELEMETRY DASHBOARD                            -->
+        <!-- VIEW 3: ANALYTICS & TELEMETRY DASHBOARD                      -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-bento-overview">
-          <div class="bento-grid-redesign">
-            
-            <!-- Bento 1: Trajectory Chart -->
-            <div class="bento-card col-span-2 row-span-2">
-              <div class="bento-card-header">
-                <div>
-                  <span class="b-kicker">TELEMETRY</span>
-                  <h3 class="b-title">Attributed Revenue & ROAS (30 Days)</h3>
-                </div>
-                <span class="b-badge highlight">Target Exceeded (+21%)</span>
+          
+          <div class="analytics-campaign-header">
+            <div>
+              <span class="editorial-kicker">Campaign Performance</span>
+              <div class="title-with-badge">
+                <h2 class="header-heading">Children's Retreat in Bali</h2>
+                <span class="pill-status-live">● Live</span>
               </div>
-              <div class="bento-chart-wrap">
+              <p class="campaign-date-sub">Running since Nov 10, 2025 • ₹30,000 budget over 20 days</p>
+            </div>
+            <div class="campaign-action-btns">
+              <button class="btn-clean secondary" onclick="alert('Campaign Paused!')">Pause</button>
+              <button class="btn-clean primary" onclick="document.querySelector('.nav-item[data-tab=journey]').click()">Edit Campaign</button>
+            </div>
+          </div>
+
+          <!-- 4 Stat Summary Cards (from screenshot) -->
+          <div class="analytics-metrics-row">
+            <div class="stat-card">
+              <span class="sc-label">TOTAL SPENT</span>
+              <strong class="sc-val">₹12,480</strong>
+              <div class="sc-progress-track">
+                <div class="sc-progress-fill" style="width: 42%;"></div>
+              </div>
+              <span class="sc-sub">Spent out of ₹30,000 (42%)</span>
+            </div>
+
+            <div class="stat-card">
+              <span class="sc-label">TOTAL REACH</span>
+              <strong class="sc-val">18,320</strong>
+              <span class="sc-badge-gain">+28%</span>
+              <span class="sc-sub">Unique audience reached</span>
+            </div>
+
+            <div class="stat-card">
+              <span class="sc-label">LINK CLICKS</span>
+              <strong class="sc-val">2,140</strong>
+              <span class="sc-badge-gain">+36%</span>
+              <span class="sc-sub">CTR: 4.8% (Above avg)</span>
+            </div>
+
+            <div class="stat-card">
+              <span class="sc-label">SIGNUPS / CONVERSIONS</span>
+              <strong class="sc-val highlight">186</strong>
+              <span class="sc-badge-gain">+52%</span>
+              <span class="sc-sub">Avg CPA: ₹67.10</span>
+            </div>
+          </div>
+
+          <!-- Chart & AI Insights Grid -->
+          <div class="analytics-chart-insights-grid">
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h3 class="card-title">Spend & Results Over Time</h3>
+                <span class="chart-legend-wrap">
+                  <span class="legend-dot green"></span> Spend
+                  <span class="legend-dot amber"></span> Signups
+                </span>
+              </div>
+              <div class="chart-canvas-wrap">
                 <canvas id="revenue-chart"></canvas>
               </div>
-              <div class="bento-stat-trio">
-                <div><span>Total Revenue</span><strong>₹2,30,149</strong></div>
-                <div><span>Blended ROAS</span><strong class="highlight">3.87x</strong></div>
-                <div><span>Blended CAC</span><strong>₹45.40</strong></div>
-              </div>
             </div>
 
-            <!-- Bento 2: Channel Split -->
-            <div class="bento-card col-span-1 row-span-1">
-              <div class="bento-card-header">
-                <span class="b-kicker">CHANNELS</span>
-                <h4 class="b-sub">Spend Breakdown</h4>
+            <div class="insights-card">
+              <h3 class="card-title">AI Performance Insights</h3>
+              <div class="insight-item-box">
+                <span class="insight-icon">💡</span>
+                <div>
+                  <strong>Great performance!</strong>
+                  <p>Your ad on Instagram is getting 40% more clicks than average.</p>
+                </div>
               </div>
-              <div class="channel-bars">
-                <div class="c-bar-item">
-                  <div class="c-bar-info"><span>Meta Ads (Reels & Feed)</span><strong>73.8% (₹43.9K)</strong></div>
-                  <div class="c-bar-track"><div class="c-bar-fill" style="width: 73.8%; background: #0467df;"></div></div>
+
+              <div class="insight-item-box">
+                <span class="insight-icon">⚡</span>
+                <div>
+                  <strong>Try this:</strong>
+                  <p>Consider increasing budget by 20% to reach more prospective parents.</p>
                 </div>
-                <div class="c-bar-item">
-                  <div class="c-bar-info"><span>Google Search & Shop</span><strong>20.4% (₹12.1K)</strong></div>
-                  <div class="c-bar-track"><div class="c-bar-fill" style="width: 20.4%; background: #ea4335;"></div></div>
-                </div>
-                <div class="c-bar-item">
-                  <div class="c-bar-info"><span>TikTok Spark Ads</span><strong>5.8% (₹3.4K)</strong></div>
-                  <div class="c-bar-track"><div class="c-bar-fill" style="width: 5.8%; background: #06b6d4;"></div></div>
+              </div>
+
+              <div class="insight-item-box">
+                <span class="insight-icon">👥</span>
+                <div>
+                  <strong>New audience opportunity:</strong>
+                  <p>Parents interested in "International schools" are converting with ₹38 CAC.</p>
                 </div>
               </div>
             </div>
-
-            <!-- Bento 3: Unit Economics -->
-            <div class="bento-card col-span-1 row-span-1">
-              <div class="bento-card-header">
-                <span class="b-kicker">UNIT ECONOMICS</span>
-                <span class="b-badge">LTV : CAC = 107.7x</span>
-              </div>
-              <div class="ue-duo">
-                <div><span>Customer LTV (6M)</span><strong>₹4,890</strong></div>
-                <div><span>Payback Period</span><strong class="highlight">18 Days</strong></div>
-              </div>
-            </div>
-
           </div>
+
         </section>
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 4: LIVE BLUEPRINTS TABLE                                -->
+        <!-- VIEW 4: ALL CAMPAIGNS (FROM BOTTOM-RIGHT OF SCREENSHOT)      -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-campaigns-table">
           <div class="table-view-header">
             <div>
-              <span class="editorial-kicker">Active Campaigns</span>
-              <h2 class="header-heading">Multi-Channel Blueprints</h2>
+              <span class="editorial-kicker">Campaign Management</span>
+              <h2 class="header-heading">All Campaigns</h2>
             </div>
-            <button class="btn-editorial primary" onclick="document.querySelector('.nav-item[data-tab=journey]').click()">+ New Campaign Journey</button>
+            <button class="btn-clean primary" onclick="document.querySelector('.nav-item[data-tab=journey]').click()">+ Create Campaign</button>
           </div>
 
-          <div class="modern-table-wrap">
-            <table class="redesign-table">
-              <thead>
-                <tr>
-                  <th>BLUEPRINT & SKU</th>
-                  <th>PLATFORM</th>
-                  <th>STATUS</th>
-                  <th>DAILY BUDGET</th>
-                  <th>30D SPEND</th>
-                  <th>ROAS</th>
-                  <th>CONVERSIONS</th>
-                  <th>ACTION</th>
-                </tr>
-              </thead>
-              <tbody id="campaigns-table-body">
-                <!-- Dynamically populated -->
-              </tbody>
-            </table>
+          <!-- Filter Pills (from screenshot) -->
+          <div class="campaign-filter-tabs">
+            <button class="c-tab active" data-filter="all">All (6)</button>
+            <button class="c-tab" data-filter="live">Live (3)</button>
+            <button class="c-tab" data-filter="paused">Paused (2)</button>
+            <button class="c-tab" data-filter="attention">Needs Attention (1)</button>
+          </div>
+
+          <!-- Campaign List Cards (as in screenshot) -->
+          <div class="campaigns-cards-list" id="campaigns-list-container">
+            <!-- Dynamically populated in redesign.js -->
           </div>
         </section>
 
 
         <!-- ============================================================ -->
-        <!-- VIEW 5: CREATIVE SANDBOX                                     -->
+        <!-- VIEW 5: CREATIVE LIBRARY                                     -->
         <!-- ============================================================ -->
         <section class="view-panel" id="view-creative-studio">
           <div class="table-view-header">
@@ -766,8 +851,8 @@
           <div class="creative-grid-redesign">
             <div class="creative-card-item">
               <div class="c-item-tag">REELS UGC • 4.62x ROAS</div>
-              <h3>The 6:00 AM Pour-Over Ritual</h3>
-              <p>Slow-motion Chemex bloom with morning acoustic soundtrack. Captures specialty coffee craft.</p>
+              <h3>A Global Learning Experience for Curious Minds</h3>
+              <p>Slow-motion morning light on Bali rice terraces with acoustic background music.</p>
               <div class="c-item-footer">
                 <span>CTR: <strong>4.8%</strong></span>
                 <span>Spend: <strong>₹18,400</strong></span>
@@ -775,17 +860,17 @@
             </div>
 
             <div class="creative-card-item">
-              <div class="c-item-tag">COMPARISON • 3.90x ROAS</div>
-              <h3>₹35 vs ₹350 Café Espresso</h3>
-              <p>Side-by-side cost breakdown showing specialty beans at 1/10th the cafe retail price.</p>
+              <div class="c-item-tag">COFFEE UGC • 3.90x ROAS</div>
+              <h3>The 6:00 AM Pour-Over Ritual</h3>
+              <p>Specialty Chemex bloom with barista pouring technique. Captures specialty craft.</p>
               <div class="c-item-footer">
-                <span>CTR: <strong>3.9%</strong></span>
+                <span>CTR: <strong>4.4%</strong></span>
                 <span>Spend: <strong>₹12,200</strong></span>
               </div>
             </div>
 
             <div class="creative-card-item">
-              <div class="c-item-tag">RETARGETING CAROUSEL • 4.85x ROAS</div>
+              <div class="c-item-tag">CAROUSEL • 4.85x ROAS</div>
               <h3>Dynamic Whole Bean Tasting Selector</h3>
               <p>Personalized carousel showcasing 3 roasted single-origins based on cart abandonment history.</p>
               <div class="c-item-footer">
