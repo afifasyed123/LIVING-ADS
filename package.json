@@ -1,0 +1,20 @@
+{
+  "name": "livingads-clone",
+  "version": "1.0.0",
+  "description": "LivingADs - Full-featured AI Growth & Marketing Automation Web Application Clone",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "livingads",
+    "growth-marketing",
+    "ai-assistant",
+    "meta-ads",
+    "google-ads",
+    "campaign-graph"
+  ],
+  "author": "",
+  "license": "MIT"
+}
