@@ -10,13 +10,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
-  <!-- CDN Libraries: Chart.js & Confetti -->
+  <!-- CDN Libraries: Chart.js, Confetti & Three.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.min.js"></script>
 
   <link rel="stylesheet" href="redesign.css">
 </head>
 <body class="ux-redesign-app">
+
+  <!-- Three.js Organic Particle Constellation Background (WebGL) -->
+  <canvas id="webgl-particle-bg" class="webgl-particle-canvas"></canvas>
 
   <!-- Subtle Warm Organic Grid Background (Inspired by Neosophical Labs) -->
   <div class="warm-grid-background"></div>
@@ -989,6 +993,18 @@
             </div>
           </div>
 
+          <!-- 3D Globe: Global Ad Reach Visualization -->
+          <div class="globe-reach-section">
+            <div class="globe-container">
+              <canvas id="webgl-globe-canvas" class="webgl-globe-canvas"></canvas>
+              <div class="globe-overlay-info">
+                <div class="globe-stat-pill"><span class="globe-stat-icon">🌏</span> <strong>3 Regions</strong> <span class="globe-stat-sub">Active Geo-Targeting</span></div>
+                <div class="globe-stat-pill"><span class="globe-stat-icon">📡</span> <strong>198K Reach</strong> <span class="globe-stat-sub">Projected Audience</span></div>
+                <div class="globe-stat-pill"><span class="globe-stat-icon">⚡</span> <strong>12ms Latency</strong> <span class="globe-stat-sub">CAPI Event Sync</span></div>
+              </div>
+            </div>
+          </div>
+
           <!-- Chart & AI Insights Grid -->
           <div class="analytics-chart-insights-grid">
             <div class="chart-card">
@@ -1355,5 +1371,7 @@
 
   <!-- Redesign Logic Script -->
   <script src="redesign.js"></script>
+  <!-- Three.js WebGL Animations -->
+  <script src="animations.js"></script>
 </body>
 </html>
