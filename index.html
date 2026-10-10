@@ -459,6 +459,50 @@
                         </div>
                       </div>
                     </div>
+                  <!-- Audience Breakdown & Age Demographics (from screenshot) -->
+                  <div class="edit-card full-span audience-demographics-card">
+                    <div class="edit-card-head">
+                      <label>Audience Targeting & Reach Estimation</label>
+                      <span class="reach-est-pill">Reach: <strong>140K – 280K people</strong></span>
+                    </div>
+
+                    <div class="audience-demographics-grid">
+                      <div class="demo-left-controls">
+                        <div class="control-row">
+                          <label class="sub-lbl">Target Age Range: <span id="age-range-label" style="font-weight: 700; color: #18231C;">26 – 52 years</span></label>
+                          <input type="range" class="warm-slider" id="slider-age" min="18" max="65" value="52" />
+                        </div>
+                        <div class="control-row">
+                          <label class="sub-lbl">Geographic Locations:</label>
+                          <div class="location-chips-row">
+                            <span class="loc-chip active">📍 Bali, Indonesia</span>
+                            <span class="loc-chip active">📍 Singapore</span>
+                            <span class="loc-chip active">📍 Mumbai, India</span>
+                            <span class="loc-chip">+ Add City</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="demo-right-bars">
+                        <span class="bars-title">Audience Segment Split</span>
+                        <div class="demo-bar-item">
+                          <div class="demo-bar-info"><span>Parents (Families with Kids 4–14)</span><strong>48%</strong></div>
+                          <div class="demo-track"><div class="demo-fill" style="width: 48%; background: #15803D;"></div></div>
+                        </div>
+                        <div class="demo-bar-item">
+                          <div class="demo-bar-info"><span>Holistic Educators & Tutors</span><strong>32%</strong></div>
+                          <div class="demo-track"><div class="demo-fill" style="width: 32%; background: #18231C;"></div></div>
+                        </div>
+                        <div class="demo-bar-item">
+                          <div class="demo-bar-info"><span>Travel & Wellness Enthusiasts</span><strong>14%</strong></div>
+                          <div class="demo-track"><div class="demo-fill" style="width: 14%; background: #B93F00;"></div></div>
+                        </div>
+                        <div class="demo-bar-item">
+                          <div class="demo-bar-info"><span>Intent Search Abandoners</span><strong>6%</strong></div>
+                          <div class="demo-track"><div class="demo-fill" style="width: 6%; background: #737E76;"></div></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Power User Advanced Options Drawer -->
@@ -585,24 +629,60 @@
             <aside class="campaign-preview-sidebar">
               <div class="preview-card-sticky">
                 <div class="preview-card-header">
-                  <span class="preview-card-title">Campaign Preview</span>
-                  <span class="preview-card-badge" id="preview-status-badge">Draft</span>
+                  <div class="header-left-title">
+                    <span class="preview-card-title">Live Ad Preview</span>
+                    <span class="preview-card-badge" id="preview-status-badge">Draft</span>
+                  </div>
+                  <button type="button" class="btn-device-modal-trigger" id="btn-open-mobile-sim" title="Open Interactive Mobile Simulator">📱 Mobile Simulator</button>
                 </div>
 
-                <div class="preview-media-frame">
+                <!-- Ad Format Tabs -->
+                <div class="ad-format-tabs-bar">
+                  <button type="button" class="af-tab active" data-format="feed">📱 Feed Post</button>
+                  <button type="button" class="af-tab" data-format="reels">🎬 Reels UGC</button>
+                  <button type="button" class="af-tab" data-format="search">🔍 Google Ad</button>
+                </div>
+
+                <div class="preview-media-frame" id="preview-media-container">
                   <img src="retreat_bali_ad.jpg" id="preview-ad-img" alt="Ad Creative Preview" class="preview-img" />
                   <div class="preview-media-overlay">
-                    <span class="preview-overlay-tag">Sponsored</span>
+                    <span class="preview-overlay-tag" id="preview-sponsor-tag">Sponsored • Meta Ads</span>
+                  </div>
+                  <!-- Reels overlay indicator -->
+                  <div class="reels-overlay-badge" id="reels-overlay-ui" style="display: none;">
+                    <span class="reels-music-tag">🎵 Morning Acoustic • Original Audio</span>
+                    <div class="reels-actions-col">
+                      <span>❤️ 14.8k</span>
+                      <span>💬 384</span>
+                      <span>↗️ Share</span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="preview-content-body">
-                  <h4 class="preview-ad-title" id="preview-title">Children's Retreat in Bali</h4>
-                  <p class="preview-ad-desc" id="preview-caption">A magical learning retreat for children in the heart of Bali. Nature immersion and creative education.</p>
-                  
-                  <div class="preview-channels-row">
-                    <span class="channel-icon-pill">📘 Facebook</span>
-                    <span class="channel-icon-pill">📷 Instagram</span>
+                  <!-- Dynamic Search Format Preview (hidden by default) -->
+                  <div id="google-search-preview-box" class="google-ad-box" style="display: none;">
+                    <div class="g-ad-badge">Sponsored</div>
+                    <div class="g-ad-url">https://livingads.com › bali-retreat</div>
+                    <h4 class="g-ad-headline" id="g-search-headline">Children's Retreat in Bali | Early Enrollments Open 2025</h4>
+                    <p class="g-ad-desc" id="g-search-desc">A holistic learning experience for curious minds in Bali. Small cohorts, accredited facilitators, and daily nature immersion.</p>
+                    <div class="g-sitelinks-row">
+                      <span>📅 Dates & Pricing</span>
+                      <span>🏡 Campus Tour</span>
+                      <span>⭐ Reviews</span>
+                    </div>
+                  </div>
+
+                  <!-- Standard Feed & Reels Content -->
+                  <div id="social-ad-content-box">
+                    <h4 class="preview-ad-title" id="preview-title">Children's Retreat in Bali</h4>
+                    <p class="preview-ad-desc" id="preview-caption">A magical learning retreat for children in the heart of Bali. Nature immersion and creative education.</p>
+                    
+                    <div class="preview-channels-row">
+                      <span class="channel-icon-pill">📘 Facebook</span>
+                      <span class="channel-icon-pill">📷 Instagram</span>
+                      <span class="channel-icon-pill" id="cta-action-pill">👉 Learn More</span>
+                    </div>
                   </div>
 
                   <div class="preview-meta-list">
@@ -884,7 +964,86 @@
       </div>
     </main>
 
+  <!-- Interactive Mobile Device Simulator Modal (The Hackathon Showstopper) -->
+  <div id="device-preview-modal" class="device-modal-backdrop" style="display: none;">
+    <div class="device-modal-dialog">
+      <div class="device-modal-header">
+        <div class="dm-meta">
+          <span class="dm-title">Live Device Simulator</span>
+          <span class="dm-sub">Apple iPhone 16 Pro • Meta Advertising Network</span>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-sim-modal">✕</button>
+      </div>
+
+      <div class="iphone-frame-wrapper">
+        <div class="iphone-bezel">
+          <!-- Dynamic Island Notch -->
+          <div class="iphone-notch">
+            <span class="notch-camera"></span>
+          </div>
+
+          <!-- Status Bar -->
+          <div class="iphone-status-bar">
+            <span>9:41</span>
+            <div class="status-bar-icons">
+              <span>5G</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <!-- Phone Screen Content (Instagram Feed Mockup) -->
+          <div class="iphone-screen-scroll">
+            <div class="ig-post-card">
+              <!-- Post Header -->
+              <div class="ig-post-header">
+                <div class="ig-avatar">☕</div>
+                <div class="ig-user-meta">
+                  <span class="ig-username">livingads.official</span>
+                  <span class="ig-sponsored">Sponsored • Paid Partnership</span>
+                </div>
+                <span class="ig-more-dots">•••</span>
+              </div>
+
+              <!-- Post Media -->
+              <div class="ig-post-media">
+                <img src="retreat_bali_ad.jpg" id="sim-post-img" alt="Ad Creative in Simulator" class="sim-img" />
+              </div>
+
+              <!-- CTA Bar -->
+              <div class="ig-cta-bar">
+                <span>Learn More & Enroll</span>
+                <span>➔</span>
+              </div>
+
+              <!-- Action Icons -->
+              <div class="ig-actions-row">
+                <div class="ig-actions-left">
+                  <span>❤️</span>
+                  <span>💬</span>
+                  <span>↗️</span>
+                </div>
+                <span>🔖</span>
+              </div>
+
+              <!-- Likes & Caption -->
+              <div class="ig-caption-block">
+                <strong>1,842 likes</strong>
+                <p><strong>livingads.official</strong> <span id="sim-caption-text">A magical learning retreat for children in the heart of Bali. Nature immersion, creative workshops, and memory-making.</span></p>
+                <span class="ig-view-comments">View all 148 comments</span>
+                <span class="ig-time-stamp">2 HOURS AGO</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Home Indicator -->
+          <div class="iphone-home-bar"></div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Floating Organic Pill Toast Engine -->
+  <div id="toast-container" class="toast-floating-container"></div>
 
   <!-- Redesign Logic Script -->
   <script src="redesign.js"></script>

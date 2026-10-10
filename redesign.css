@@ -1606,3 +1606,516 @@ body.ux-redesign-app {
   font-size: 12px;
   color: var(--text-heading);
 }
+
+/* -------------------------------------------------------------------
+   AUDIENCE DEMOGRAPHICS CARD (STEP 4)
+   ------------------------------------------------------------------- */
+.audience-demographics-card {
+  margin-top: 4px;
+}
+
+.reach-est-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-emerald);
+  background: var(--brand-emerald-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.audience-demographics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 14px;
+  align-items: center;
+}
+
+.demo-left-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sub-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.location-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.loc-chip {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  color: var(--text-body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.loc-chip.active {
+  background: var(--brand-sand);
+  border-color: #D6CEC2;
+  color: var(--text-heading);
+  font-weight: 700;
+}
+
+.demo-right-bars {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bars-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.demo-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.demo-bar-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-body);
+}
+
+.demo-track {
+  height: 6px;
+  background: var(--bg-canvas);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.demo-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* -------------------------------------------------------------------
+   AD FORMAT SWITCHER & PREVIEWS
+   ------------------------------------------------------------------- */
+.header-left-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-device-modal-trigger {
+  background: var(--brand-sand);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brand-forest);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-device-modal-trigger:hover {
+  background: #E4DCD0;
+  transform: scale(1.02);
+}
+
+.ad-format-tabs-bar {
+  display: flex;
+  padding: 8px 14px;
+  gap: 6px;
+  background: var(--bg-canvas);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.af-tab {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.af-tab:hover {
+  color: var(--text-heading);
+}
+
+.af-tab.active {
+  background: var(--bg-surface);
+  border-color: var(--border-subtle);
+  color: var(--text-heading);
+  box-shadow: 0 1px 4px rgba(40, 30, 20, 0.05);
+}
+
+/* Reels overlay indicator */
+.reels-overlay-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.reels-music-tag {
+  background: rgba(24, 35, 28, 0.75);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.reels-actions-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 11px;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  font-weight: 700;
+}
+
+/* Google Search Ad Box */
+.google-ad-box {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.g-ad-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  color: #1A1A1A;
+  background: #F3F4F6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.g-ad-url {
+  font-size: 11px;
+  color: #4B5563;
+  margin-bottom: 4px;
+}
+
+.g-ad-headline {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1D4ED8;
+  line-height: 1.3;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+.g-ad-headline:hover { text-decoration: underline; }
+
+.g-ad-desc {
+  font-size: 12px;
+  color: #4B5563;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.g-sitelinks-row {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #1D4ED8;
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------
+   MOBILE DEVICE SIMULATOR MODAL (HACKATHON SHOWSTOPPER)
+   ------------------------------------------------------------------- */
+.device-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(24, 35, 28, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInModal 0.25s ease forwards;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.device-modal-dialog {
+  background: var(--bg-surface);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+  max-width: 440px;
+  width: 90%;
+  animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpModal {
+  from { transform: translateY(20px) scale(0.97); }
+  to { transform: translateY(0) scale(1); }
+}
+
+.device-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dm-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-heading);
+  display: block;
+}
+
+.dm-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.btn-close-modal {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-body);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.btn-close-modal:hover { background: var(--bg-hover); }
+
+/* iPhone 16 Pro Mockup Frame */
+.iphone-frame-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.iphone-bezel {
+  width: 320px;
+  height: 600px;
+  background: #000000;
+  border-radius: 44px;
+  padding: 10px;
+  box-shadow: 0 0 0 4px #262626, 0 16px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.iphone-notch {
+  width: 80px;
+  height: 22px;
+  background: #000000;
+  border-radius: 12px;
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.notch-camera {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #111;
+  border: 1px solid #222;
+}
+
+.iphone-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 18px 4px 18px;
+  z-index: 20;
+}
+
+.status-bar-icons {
+  display: flex;
+  gap: 6px;
+}
+
+.iphone-screen-scroll {
+  flex: 1;
+  background: #FFFFFF;
+  border-radius: 34px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.iphone-screen-scroll::-webkit-scrollbar { display: none; }
+
+.ig-post-card {
+  padding-bottom: 24px;
+}
+
+.ig-post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+}
+
+.ig-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--brand-sand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.ig-user-meta { display: flex; flex-direction: column; }
+.ig-username { font-size: 12px; font-weight: 700; color: #000; }
+.ig-sponsored { font-size: 9px; color: #737373; }
+.ig-more-dots { margin-left: auto; color: #737373; font-size: 12px; }
+
+.ig-post-media {
+  width: 100%;
+  height: 280px;
+  background: #f0f0f0;
+}
+
+.sim-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ig-cta-bar {
+  background: #18231C;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ig-actions-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  font-size: 16px;
+}
+
+.ig-actions-left {
+  display: flex;
+  gap: 12px;
+}
+
+.ig-caption-block {
+  padding: 0 14px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #111;
+}
+.ig-caption-block strong { font-weight: 700; }
+.ig-view-comments { display: block; color: #737373; font-size: 10px; margin-top: 4px; }
+.ig-time-stamp { display: block; color: #a8a8a8; font-size: 9px; margin-top: 2px; }
+
+.iphone-home-bar {
+  width: 110px;
+  height: 4px;
+  border-radius: 2px;
+  background: #000;
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+}
+
+/* -------------------------------------------------------------------
+   FLOATING ORGANIC TOAST ENGINE
+   ------------------------------------------------------------------- */
+.toast-floating-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.organic-toast-pill {
+  background: #18231C;
+  color: #FFFFFF;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: toastPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: auto;
+}
+
+@keyframes toastPop {
+  from { opacity: 0; transform: translateY(14px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+

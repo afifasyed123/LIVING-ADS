@@ -1,6 +1,7 @@
 /**
  * Living Ads — Autonomous Marketing & Growth Platform Engine
- * Warm, Organic, Editorial SaaS UX (inspired by Living Ads reference & Neosophical Labs)
+ * Award-Winning Hackathon UX: Real Ad Previews, Interactive Device Simulator,
+ * Dynamic Audience Breakdown & Organic Floating Toasts
  */
 
 (function () {
@@ -12,11 +13,14 @@
     currentStep: 1,
     personaMode: 'beginner',
     selectedGoal: 'subscribers',
+    selectedFormat: 'feed',
     qAudience: 'both',
     qCac: 45,
     qBudget: 30000,
     metaBudget: 1000,
     retargetBudget: 450,
+    targetAgeMin: 26,
+    targetAgeMax: 52,
     campaignFilter: 'all',
     campaigns: [
       {
@@ -95,20 +99,45 @@
   };
 
   // -----------------------------------------------------------------
-  // INITIALIZATION
+  // 1. FLOATING TOAST NOTIFICATION ENGINE
+  // -----------------------------------------------------------------
+  function showToast(message) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'organic-toast-pill';
+    toast.innerHTML = `<span>🌿</span><span>${message}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.transition = 'all 0.3s ease';
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(12px) scale(0.95)';
+      setTimeout(() => toast.remove(), 300);
+    }, 2800);
+  }
+
+  // -----------------------------------------------------------------
+  // 2. INITIALIZATION
   // -----------------------------------------------------------------
   function init() {
     setupTabRouter();
     setupPromptBanner();
     setupJourneyStepper();
+    setupAdFormatSwitcher();
+    setupMobileSimulatorModal();
+    setupAudienceDemographicsModule();
     setupProgressiveDisclosure();
     setupAIStrategistChat();
     setupCampaignsList();
     initRevenueChart();
+
+    showToast('Autonomous AI Marketing Engine Active (12ms latency)');
   }
 
   // -----------------------------------------------------------------
-  // 1. TAB ROUTER
+  // 3. TAB ROUTER
   // -----------------------------------------------------------------
   function setupTabRouter() {
     const navItems = document.querySelectorAll('.nav-item');
@@ -139,7 +168,7 @@
   }
 
   // -----------------------------------------------------------------
-  // 2. PROMPT SEARCH BANNER (FROM SCREENSHOT)
+  // 4. NATURAL LANGUAGE PROMPT BANNER
   // -----------------------------------------------------------------
   function setupPromptBanner() {
     const promptInput = document.getElementById('campaign-goal-prompt');
@@ -150,22 +179,32 @@
       if (!text) return;
       promptInput.value = text;
 
-      // Update sticky preview card
       const previewTitle = document.getElementById('preview-title');
       const previewDesc = document.getElementById('preview-caption');
       const previewImg = document.getElementById('preview-ad-img');
+      const simImg = document.getElementById('sim-post-img');
+      const simCaption = document.getElementById('sim-caption-text');
 
       if (text.toLowerCase().includes('coffee') || text.toLowerCase().includes('pour-over')) {
-        if (previewTitle) previewTitle.textContent = 'Northwind Pour-Over Ritual';
-        if (previewDesc) previewDesc.textContent = 'Artisan micro-batch whole bean subscription delivered fresh to your door.';
+        const cTitle = 'Northwind Pour-Over Ritual';
+        const cDesc = 'Artisan micro-batch whole bean subscription delivered fresh to your door.';
+        if (previewTitle) previewTitle.textContent = cTitle;
+        if (previewDesc) previewDesc.textContent = cDesc;
         if (previewImg) previewImg.src = 'specialty_coffee_ad.jpg';
+        if (simImg) simImg.src = 'specialty_coffee_ad.jpg';
+        if (simCaption) simCaption.textContent = cDesc;
+        showToast(`AI formulated campaign: "${cTitle}" (₹45,000 budget split)`);
       } else {
-        if (previewTitle) previewTitle.textContent = "Children's Retreat in Bali";
-        if (previewDesc) previewDesc.textContent = 'A magical learning retreat for children in the heart of Bali. Nature immersion & creative learning.';
+        const rTitle = "Children's Retreat in Bali";
+        const rDesc = 'A magical learning retreat for children in the heart of Bali. Nature immersion & creative learning.';
+        if (previewTitle) previewTitle.textContent = rTitle;
+        if (previewDesc) previewDesc.textContent = rDesc;
         if (previewImg) previewImg.src = 'retreat_bali_ad.jpg';
+        if (simImg) simImg.src = 'retreat_bali_ad.jpg';
+        if (simCaption) simCaption.textContent = rDesc;
+        showToast(`AI formulated campaign: "${rTitle}" (Target ROAS 3.89x)`);
       }
 
-      // Smooth jump to step 1
       const stage1 = document.getElementById('stage-1');
       if (stage1) {
         stage1.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -191,7 +230,7 @@
   }
 
   // -----------------------------------------------------------------
-  // 3. STEPPER & GUIDED JOURNEY
+  // 5. STEPPER & GUIDED JOURNEY
   // -----------------------------------------------------------------
   function setupJourneyStepper() {
     const stepItems = document.querySelectorAll('.step-item');
@@ -210,12 +249,13 @@
         card.classList.toggle('active', card.id === `stage-${stepNum}`);
       });
 
-      // Update Preview status badge
       const badge = document.getElementById('preview-status-badge');
       if (badge) {
         badge.textContent = stepNum === 6 ? 'Live' : 'Draft';
         badge.style.color = stepNum === 6 ? '#15803D' : '#737E76';
       }
+
+      showToast(`Advanced to Step 0${stepNum} • ${stepNum === 6 ? 'Deployment Active' : 'Calibrated'}`);
     }
 
     stepItems.forEach((item) => {
@@ -235,11 +275,14 @@
         const title = card.querySelector('.goal-title')?.textContent;
         const previewTitle = document.getElementById('preview-title');
         const previewImg = document.getElementById('preview-ad-img');
+        const simImg = document.getElementById('sim-post-img');
 
         if (previewTitle && title) previewTitle.textContent = title;
-        if (previewImg) {
-          previewImg.src = state.selectedGoal.includes('coffee') ? 'specialty_coffee_ad.jpg' : 'retreat_bali_ad.jpg';
-        }
+        const targetImg = state.selectedGoal.includes('coffee') ? 'specialty_coffee_ad.jpg' : 'retreat_bali_ad.jpg';
+        if (previewImg) previewImg.src = targetImg;
+        if (simImg) simImg.src = targetImg;
+
+        showToast(`Target goal updated: ${title}`);
       });
     });
 
@@ -264,13 +307,18 @@
                                 val === 'educators' ? 'Educators & Teachers' :
                                 'Parents + Educators (Ages 28–50)';
           }
+          showToast(`Target audience: ${val.toUpperCase()}`);
         }
         if (qType === 'budget') {
           state.qBudget = parseInt(val, 10);
           const bEl = document.getElementById('preview-budget');
           if (bEl) bEl.textContent = `₹${parseInt(val, 10).toLocaleString()}`;
+          showToast(`Total budget set: ₹${parseInt(val, 10).toLocaleString()}`);
         }
-        if (qType === 'cac') state.qCac = parseInt(val, 10);
+        if (qType === 'cac') {
+          state.qCac = parseInt(val, 10);
+          showToast(`Target CAC cap set: ₹${val}`);
+        }
 
         recalculateProjections();
       });
@@ -302,7 +350,11 @@
 
     // Creative Angle Toggles
     document.querySelectorAll('.creative-toggle').forEach((t) => {
-      t.addEventListener('click', () => t.classList.toggle('active'));
+      t.addEventListener('click', () => {
+        t.classList.toggle('active');
+        const activeCount = document.querySelectorAll('.creative-toggle.active').length;
+        showToast(`Active creative angles: ${activeCount} variations`);
+      });
     });
 
     document.getElementById('btn-to-stage-5')?.addEventListener('click', () => goToStep(5));
@@ -312,13 +364,14 @@
     document.getElementById('btn-execute-launch')?.addEventListener('click', () => {
       if (typeof confetti === 'function') {
         confetti({
-          particleCount: 120,
-          spread: 75,
+          particleCount: 150,
+          spread: 80,
           origin: { y: 0.6 },
           colors: ['#15803D', '#B93F00', '#18231C', '#FAF7F2']
         });
       }
       goToStep(6);
+      showToast('🚀 Campaign deployed to Meta Marketing API and Google Ads Manager!');
     });
   }
 
@@ -337,7 +390,115 @@
   }
 
   // -----------------------------------------------------------------
-  // 4. PROGRESSIVE DISCLOSURE
+  // 6. AD FORMAT SWITCHER (FEED / REELS / GOOGLE AD)
+  // -----------------------------------------------------------------
+  function setupAdFormatSwitcher() {
+    const tabs = document.querySelectorAll('.af-tab');
+    const mediaContainer = document.getElementById('preview-media-container');
+    const reelsUI = document.getElementById('reels-overlay-ui');
+    const googleAdBox = document.getElementById('google-search-preview-box');
+    const socialBox = document.getElementById('social-ad-content-box');
+    const sponsorTag = document.getElementById('preview-sponsor-tag');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const format = tab.getAttribute('data-format');
+        state.selectedFormat = format;
+
+        if (format === 'feed') {
+          if (mediaContainer) mediaContainer.style.display = 'block';
+          if (reelsUI) reelsUI.style.display = 'none';
+          if (googleAdBox) googleAdBox.style.display = 'none';
+          if (socialBox) socialBox.style.display = 'block';
+          if (sponsorTag) sponsorTag.textContent = 'Sponsored • Meta Ads';
+          showToast('Switched preview to Meta Instagram Feed Post');
+        } else if (format === 'reels') {
+          if (mediaContainer) mediaContainer.style.display = 'block';
+          if (reelsUI) reelsUI.style.display = 'flex';
+          if (googleAdBox) googleAdBox.style.display = 'none';
+          if (socialBox) socialBox.style.display = 'block';
+          if (sponsorTag) sponsorTag.textContent = 'Sponsored Reel • Instagram';
+          showToast('Switched preview to Instagram Reels / Stories');
+        } else if (format === 'search') {
+          if (mediaContainer) mediaContainer.style.display = 'none';
+          if (googleAdBox) googleAdBox.style.display = 'block';
+          if (socialBox) socialBox.style.display = 'none';
+          showToast('Switched preview to Google Exact Search Ad');
+        }
+      });
+    });
+  }
+
+  // -----------------------------------------------------------------
+  // 7. MOBILE DEVICE SIMULATOR MODAL
+  // -----------------------------------------------------------------
+  function setupMobileSimulatorModal() {
+    const triggerBtn = document.getElementById('btn-open-mobile-sim');
+    const modal = document.getElementById('device-preview-modal');
+    const closeBtn = document.getElementById('btn-close-sim-modal');
+
+    triggerBtn?.addEventListener('click', () => {
+      if (modal) modal.style.display = 'flex';
+      showToast('iPhone 16 Pro Live Ad Simulator Opened');
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      if (modal) modal.style.display = 'none';
+    });
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  }
+
+  // -----------------------------------------------------------------
+  // 8. AUDIENCE DEMOGRAPHICS BREAKDOWN MODULE (STEP 4)
+  // -----------------------------------------------------------------
+  function setupAudienceDemographicsModule() {
+    const ageSlider = document.getElementById('slider-age');
+    const ageLabel = document.getElementById('age-range-label');
+    const locChips = document.querySelectorAll('.loc-chip');
+
+    ageSlider?.addEventListener('input', (e) => {
+      const maxAge = parseInt(e.target.value, 10);
+      const minAge = Math.max(18, maxAge - 26);
+      state.targetAgeMin = minAge;
+      state.targetAgeMax = maxAge;
+
+      if (ageLabel) {
+        ageLabel.textContent = `${minAge} – ${maxAge} years`;
+      }
+
+      // Animate demographic bars dynamically
+      const fills = document.querySelectorAll('.demo-fill');
+      if (fills.length >= 4) {
+        const shift = (maxAge - 40) * 0.4;
+        fills[0].style.width = `${Math.min(65, Math.max(30, 48 + shift))}%`;
+        fills[1].style.width = `${Math.min(45, Math.max(20, 32 - shift * 0.5))}%`;
+      }
+    });
+
+    locChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('active');
+        const activeLocs = document.querySelectorAll('.loc-chip.active').length;
+        const reachPill = document.querySelector('.reach-est-pill strong');
+        if (reachPill) {
+          const est = activeLocs * 75;
+          reachPill.textContent = `${est}K – ${est * 2}K people`;
+        }
+        showToast('Audience reach updated based on geo-selection');
+      });
+    });
+  }
+
+  // -----------------------------------------------------------------
+  // 9. PROGRESSIVE DISCLOSURE
   // -----------------------------------------------------------------
   function setupProgressiveDisclosure() {
     const toggleBtns = document.querySelectorAll('.p-toggle-btn');
@@ -353,6 +514,8 @@
         if (powerSection) {
           powerSection.style.display = mode === 'power' ? 'block' : 'none';
         }
+
+        showToast(`Experience mode: ${mode === 'power' ? 'Pro / Advanced' : 'Simple'}`);
       });
     });
 
@@ -360,7 +523,7 @@
   }
 
   // -----------------------------------------------------------------
-  // 5. ALL CAMPAIGNS LIST & FILTERS (FROM SCREENSHOT)
+  // 10. ALL CAMPAIGNS LIST & FILTERS
   // -----------------------------------------------------------------
   function setupCampaignsList() {
     const container = document.getElementById('campaigns-list-container');
@@ -408,6 +571,7 @@
         tab.classList.add('active');
         state.campaignFilter = tab.getAttribute('data-filter');
         renderList();
+        showToast(`Filtered campaigns: ${state.campaignFilter.toUpperCase()}`);
       });
     });
 
@@ -416,6 +580,7 @@
       if (c) {
         c.status = c.status === 'live' ? 'paused' : 'live';
         renderList();
+        showToast(`Campaign [${c.name}] status updated to ${c.status.toUpperCase()}`);
       }
     };
 
@@ -423,7 +588,7 @@
   }
 
   // -----------------------------------------------------------------
-  // 6. AI STRATEGIST CHAT
+  // 11. AI STRATEGIST CHAT
   // -----------------------------------------------------------------
   function setupAIStrategistChat() {
     const form = document.getElementById('agent-chat-form');
@@ -499,8 +664,9 @@
           <button class="btn-clean primary" style="font-size: 12px; padding: 8px 18px;" onclick="document.querySelector('.nav-item[data-tab=journey]').click()">Open Campaign Wizard →</button>
         `;
         chat.scrollTop = chat.scrollHeight;
+        showToast('AI Strategist generated 3 data-driven recommendations');
       }
-    }, 700);
+    }, 600);
   }
 
   function escapeHtml(str) {
@@ -508,7 +674,7 @@
   }
 
   // -----------------------------------------------------------------
-  // 7. CHART.JS CLEAN WARM ANALYTICS CHART
+  // 12. CHART.JS CLEAN WARM ANALYTICS CHART
   // -----------------------------------------------------------------
   let chartInstance = null;
 
