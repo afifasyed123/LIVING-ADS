@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LivingADs — Autonomous AI Growth Platform (UX Redesign)</title>
   
-  <!-- Modern SaaS & Editorial Typography Pairing -->
+  <!-- Modern Cybercore, Display & Precision Typography Pairing -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- CDN Libraries: GSAP, Canvas Confetti & Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -17,10 +17,20 @@
 
   <link rel="stylesheet" href="redesign.css">
 </head>
-<body class="ux-redesign-app">
+<body class="ux-redesign-app theme-cyberpunk">
 
-  <!-- GSAP Magnetic Follower Cursor -->
-  <div id="magnetic-cursor"></div>
+  <!-- Interactive Cyber Background Canvas & HUD Scanlines -->
+  <canvas id="cyber-bg-canvas"></canvas>
+  <div class="cyber-scanline-overlay"></div>
+
+  <!-- GSAP Magnetic Follower Cursor & Reticle -->
+  <div id="magnetic-cursor">
+    <div class="cursor-reticle-ring"></div>
+    <div class="cursor-reticle-corner c-tl"></div>
+    <div class="cursor-reticle-corner c-tr"></div>
+    <div class="cursor-reticle-corner c-bl"></div>
+    <div class="cursor-reticle-corner c-br"></div>
+  </div>
   <div id="magnetic-cursor-dot"></div>
 
   <!-- Main Redesigned Layout -->
@@ -129,6 +139,22 @@
         </div>
 
         <div class="topbar-right">
+          <!-- Aesthetic Matrix Selector -->
+          <div class="aesthetic-control-group">
+            <span class="m-lbl">STYLE MATRIX</span>
+            <select id="aesthetic-switcher" class="cyber-select" aria-label="Aesthetic Style Matrix">
+              <option value="cyberpunk" selected>⚡ Cyberpunk / Cybercore</option>
+              <option value="glassmorphism">💎 Dark Glassmorphism</option>
+              <option value="synthwave">🌆 Synthwave '84</option>
+              <option value="neobrutalism">⚡ Neo-Brutalism</option>
+            </select>
+          </div>
+
+          <!-- Tactical Audio SFX Toggle -->
+          <button class="cyber-sfx-btn" id="sfx-toggle" title="Toggle Tactical Cyber SFX">
+            <span id="sfx-icon">🔊</span> <span id="sfx-label">SFX ON</span>
+          </button>
+
           <!-- Real-Time Metrics -->
           <div class="topbar-metric-chip">
             <span class="m-lbl">BLENDED ROAS</span>
@@ -144,7 +170,7 @@
           </div>
 
           <button class="btn-cta" id="btn-quick-audit-top">
-            <span>✦</span> Run Proactive Audit
+            <span class="btn-cta-glitch">⚡</span> Run Deep Cyber Audit
           </button>
         </div>
       </header>
