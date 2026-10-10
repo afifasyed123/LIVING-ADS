@@ -1117,13 +1117,20 @@
           <span class="dm-title">Live Device Simulator</span>
           <span class="dm-sub">Apple iPhone 16 Pro • Meta Advertising Network</span>
         </div>
-        <button type="button" class="btn-close-modal" id="btn-close-sim-modal">✕</button>
+        <div class="dm-controls-right">
+          <button type="button" class="btn-sim-theme-toggle" id="btn-toggle-sim-theme" title="Toggle Titanium / Midnight Bezel">🎨 Bezel</button>
+          <button type="button" class="btn-close-modal" id="btn-close-sim-modal">✕</button>
+        </div>
       </div>
 
       <div class="iphone-frame-wrapper">
-        <div class="iphone-bezel">
-          <!-- Dynamic Island Notch -->
-          <div class="iphone-notch">
+        <div class="iphone-bezel" id="iphone-bezel-frame">
+          <!-- Interactive Dynamic Island Notch -->
+          <div class="iphone-notch" id="sim-dynamic-island" title="Click Dynamic Island for CAPI Telemetry">
+            <div class="dynamic-island-content" id="di-pill-content">
+              <span class="notch-audio-dot"></span>
+              <span class="di-live-text">Meta CAPI: 99.8%</span>
+            </div>
             <span class="notch-camera"></span>
           </div>
 
@@ -1136,12 +1143,22 @@
             </div>
           </div>
 
+          <!-- Simulated iOS Push Notification Banner -->
+          <div class="ios-push-banner" id="sim-push-banner">
+            <div class="push-icon-pill">🌿</div>
+            <div class="push-text-wrap">
+              <span class="push-app-name">Living Ads • Autonomous Engine</span>
+              <p class="push-message">Campaign ROAS peaked at 4.12x! 🚀 24 new signups logged.</p>
+            </div>
+            <span class="push-time-tag">now</span>
+          </div>
+
           <!-- Phone Screen Content (Instagram Feed Mockup) -->
           <div class="iphone-screen-scroll">
             <div class="ig-post-card">
               <!-- Post Header -->
               <div class="ig-post-header">
-                <div class="ig-avatar">☕</div>
+                <div class="ig-avatar">🌿</div>
                 <div class="ig-user-meta">
                   <span class="ig-username">livingads.official</span>
                   <span class="ig-sponsored">Sponsored • Paid Partnership</span>
@@ -1155,7 +1172,7 @@
               </div>
 
               <!-- CTA Bar -->
-              <div class="ig-cta-bar">
+              <div class="ig-cta-bar" id="sim-cta-bar">
                 <span>Learn More & Enroll</span>
                 <span>➔</span>
               </div>
@@ -1163,19 +1180,18 @@
               <!-- Action Icons -->
               <div class="ig-actions-row">
                 <div class="ig-actions-left">
-                  <span>❤️</span>
-                  <span>💬</span>
-                  <span>↗️</span>
+                  <span class="sim-like-btn" id="sim-btn-like" title="Double tap or click to Like">❤️ <strong id="sim-like-count">1,842</strong></span>
+                  <span title="Comment">💬 148</span>
+                  <span title="Share">↗️</span>
                 </div>
-                <span>🔖</span>
+                <span class="sim-bm-btn" id="sim-btn-bookmark">🔖</span>
               </div>
 
               <!-- Likes & Caption -->
               <div class="ig-caption-block">
-                <strong>1,842 likes</strong>
                 <p><strong>livingads.official</strong> <span id="sim-caption-text">A magical learning retreat for children in the heart of Bali. Nature immersion, creative workshops, and memory-making.</span></p>
                 <span class="ig-view-comments">View all 148 comments</span>
-                <span class="ig-time-stamp">2 HOURS AGO</span>
+                <span class="ig-time-stamp">JUST NOW • SPONSORED</span>
               </div>
             </div>
           </div>
@@ -1185,6 +1201,153 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Spotlight Command Palette Modal (⌘K / Ctrl+K) -->
+  <div id="command-palette-modal" class="cmd-modal-backdrop" style="display: none;">
+    <div class="cmd-palette-dialog">
+      <div class="cmd-palette-search">
+        <span class="cmd-search-icon">🔍</span>
+        <input type="text" id="cmd-search-input" class="cmd-input-field" placeholder="Type a command or jump to feature (e.g. Autopilot, Reels, ROAS)..." autocomplete="off" />
+        <kbd class="cmd-esc-badge">ESC</kbd>
+      </div>
+
+      <div class="cmd-results-list" id="cmd-results-container">
+        <div class="cmd-group-label">SUGGESTED ACTIONS</div>
+        
+        <div class="cmd-item active" data-action="autopilot">
+          <span class="cmd-item-icon">⚡</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Run 1-Click Autopilot Demo</span>
+            <span class="cmd-item-sub">Simulate complete AI campaign formulation</span>
+          </div>
+          <span class="cmd-badge">Demo</span>
+        </div>
+
+        <div class="cmd-item" data-action="bali">
+          <span class="cmd-item-icon">🌴</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Load Bali Children's Retreat</span>
+            <span class="cmd-item-sub">Target parents & holistic educators on Meta</span>
+          </div>
+          <span class="cmd-badge">Preset</span>
+        </div>
+
+        <div class="cmd-item" data-action="coffee">
+          <span class="cmd-item-icon">☕</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Load Specialty Coffee Subscription</span>
+            <span class="cmd-item-sub">Single-origin Chemex ritual video hooks</span>
+          </div>
+          <span class="cmd-badge">Preset</span>
+        </div>
+
+        <div class="cmd-item" data-action="simulator">
+          <span class="cmd-item-icon">📱</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Open Apple iPhone 16 Pro Simulator</span>
+            <span class="cmd-item-sub">Preview Instagram feed ad with live micro-interactions</span>
+          </div>
+          <span class="cmd-badge">Preview</span>
+        </div>
+
+        <div class="cmd-item" data-action="reels">
+          <span class="cmd-item-icon">🎬</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Switch Preview to 9:16 Instagram Reels UGC</span>
+            <span class="cmd-item-sub">View vertical video creative with audio waveform</span>
+          </div>
+          <span class="cmd-badge">Format</span>
+        </div>
+
+        <div class="cmd-item" data-action="google">
+          <span class="cmd-item-icon">🔍</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Switch Preview to Google Search SERP</span>
+            <span class="cmd-item-sub">High-intent keyword sponsored ad</span>
+          </div>
+          <span class="cmd-badge">Format</span>
+        </div>
+
+        <div class="cmd-item" data-action="linkedin">
+          <span class="cmd-item-icon">💼</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Switch Preview to LinkedIn Sponsored Ad</span>
+            <span class="cmd-item-sub">Professional B2B sponsored ad placement</span>
+          </div>
+          <span class="cmd-badge">Format</span>
+        </div>
+
+        <div class="cmd-item" data-action="analytics">
+          <span class="cmd-item-icon">📊</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">View Blended ROAS Telemetry Dashboard</span>
+            <span class="cmd-item-sub">Inspect spend vs signups curve & AI insights</span>
+          </div>
+          <span class="cmd-badge">Analytics</span>
+        </div>
+
+        <div class="cmd-item" data-action="sound">
+          <span class="cmd-item-icon">🔊</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Toggle Web Audio Micro-Interactions</span>
+            <span class="cmd-item-sub">Turn ambient tactile clicks & celebration chimes on/off</span>
+          </div>
+          <span class="cmd-badge">Audio</span>
+        </div>
+
+        <div class="cmd-item" data-action="export">
+          <span class="cmd-item-icon">📦</span>
+          <div class="cmd-item-info">
+            <span class="cmd-item-title">Export Campaign Architecture (JSON Spec)</span>
+            <span class="cmd-item-sub">Meta Graph API & Google Ads sync payload</span>
+          </div>
+          <span class="cmd-badge">Export</span>
+        </div>
+      </div>
+
+      <div class="cmd-palette-footer">
+        <span class="cmd-tip">Use <kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
+        <span class="cmd-tip">Press <kbd>↵ Enter</kbd> to select</span>
+        <span class="cmd-tip">Press <kbd>ESC</kbd> to dismiss</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Campaign Export Spec Modal -->
+  <div id="export-modal" class="device-modal-backdrop" style="display: none;">
+    <div class="export-modal-dialog">
+      <div class="device-modal-header">
+        <div class="dm-meta">
+          <span class="dm-title">Export Campaign Architecture</span>
+          <span class="dm-sub">Living Ads Standard Meta & Google Marketing Payload</span>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-export-modal">✕</button>
+      </div>
+
+      <div class="export-modal-body">
+        <div class="export-summary-row">
+          <div class="export-badge-tag">STATUS: READY TO SYNC</div>
+          <span class="export-ts" id="export-ts-label">Version 2.4.0 • CAPI 99.8%</span>
+        </div>
+
+        <div class="export-code-wrapper">
+          <pre><code id="export-json-code">...</code></pre>
+        </div>
+
+        <div class="export-actions-row">
+          <button type="button" class="btn-clean secondary" id="btn-copy-export-json">📋 Copy JSON</button>
+          <button type="button" class="btn-clean secondary" id="btn-download-export-json">💾 Download .json</button>
+          <button type="button" class="btn-clean primary" id="btn-copy-preview-link">🔗 Copy Live Share Link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Keyboard Shortcut Hint Pill (Bottom-Right) -->
+  <div class="floating-cmd-hint" id="floating-cmd-hint" title="Open Command Palette">
+    <kbd class="f-kbd">⌘K</kbd>
+    <span class="f-text">Quick Actions</span>
   </div>
 
   <!-- Floating Organic Pill Toast Engine -->
