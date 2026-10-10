@@ -1,30 +1,35 @@
 /**
  * LivingADs Next-Gen 3D & Micro-Interaction Engine
  * Powered by Three.js, GSAP, Deck.gl Shaders, and WebGL
+ * Ultra-High Performance & Non-Blocking
  */
 
 (function () {
   'use strict';
 
-  // Wait for DOM
   function initEnhancements() {
     if (typeof THREE === 'undefined' || typeof gsap === 'undefined') {
-      console.warn('Three.js or GSAP loading...');
-      setTimeout(initEnhancements, 200);
+      setTimeout(initEnhancements, 250);
       return;
     }
 
-    createDOMOverlay();
-    initAmbientWebGL();
-    initAINeuralOrb();
-    initGSAPCursorAndInteractions();
-    initAttributionGlobeModal();
-    initProductStudioModal();
-    hookIntoAssistantEvents();
+    try {
+      createDOMOverlay();
+      initAmbientWebGL();
+      initAINeuralOrb();
+      initGSAPCursorAndInteractions();
+      initAttributionGlobeModal();
+      initProductStudioModal();
+      initAssistantStatePoller();
+    } catch (err) {
+      console.error('UX Enhancement initialization error:', err);
+    }
   }
 
-  // 1. Create Top HUD & Modal Elements
+  // 1. Create Top HUD & Modals
   function createDOMOverlay() {
+    if (document.getElementById('ai-orb-container')) return;
+
     // Ambient Canvas
     const canvas = document.createElement('canvas');
     canvas.id = 'webgl-ambient-canvas';
@@ -38,7 +43,7 @@
     // AI Neural Orb Widget
     const orbWidget = document.createElement('div');
     orbWidget.id = 'ai-orb-container';
-    orbWidget.title = 'LivingADs Neural Core - Click to inspect';
+    orbWidget.title = 'LivingADs Neural Core - Click to focus chat';
     orbWidget.innerHTML = `
       <canvas id="ai-orb-canvas" width="130" height="130"></canvas>
       <div id="ai-orb-badge"><span class="hud-indicator"></span> AI CORE ACTIVE</div>
@@ -61,7 +66,7 @@
     `;
     document.body.appendChild(hud);
 
-    // Modal 1: 3D Geo Attribution Globe (Deck.gl / Three.js)
+    // Modal 1: 3D Geo Attribution Globe
     const globeModal = document.createElement('div');
     globeModal.className = 'webgl-modal-backdrop';
     globeModal.id = 'modal-globe';
@@ -98,7 +103,7 @@
     `;
     document.body.appendChild(globeModal);
 
-    // Modal 2: 3D Spline-Style Product Studio (Northwind Coffee)
+    // Modal 2: 3D Product Studio
     const studioModal = document.createElement('div');
     studioModal.className = 'webgl-modal-backdrop';
     studioModal.id = 'modal-studio';
@@ -132,34 +137,33 @@
     document.body.appendChild(studioModal);
   }
 
-  // 2. Ambient WebGL Background Particle Grid (Three.js)
+  // 2. Ambient WebGL Particle Background (Optimized)
   function initAmbientWebGL() {
     const canvas = document.getElementById('webgl-ambient-canvas');
     if (!canvas) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, powerPreference: 'high-performance' });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 30;
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 500);
+    camera.position.z = 25;
 
-    // Particle Cloud
-    const particleCount = 650;
+    const count = 350;
     const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
 
-    const color1 = new THREE.Color('#7464f2');
-    const color2 = new THREE.Color('#00f2fe');
+    const c1 = new THREE.Color('#7464f2');
+    const c2 = new THREE.Color('#00f2fe');
 
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 80;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 60;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 50;
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 60;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 45;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
 
-      const mixed = color1.clone().lerp(color2, Math.random());
+      const mixed = c1.clone().lerp(c2, Math.random());
       colors[i * 3] = mixed.r;
       colors[i * 3 + 1] = mixed.g;
       colors[i * 3 + 2] = mixed.b;
@@ -169,217 +173,138 @@
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     const material = new THREE.PointsMaterial({
-      size: 1.4,
+      size: 1.5,
       vertexColors: true,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.55,
       blending: THREE.AdditiveBlending
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Subtle Wave Mesh
-    const gridGeo = new THREE.PlaneGeometry(120, 120, 24, 24);
-    const gridMat = new THREE.MeshBasicMaterial({
-      color: 0x7464f2,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.08
-    });
-    const gridMesh = new THREE.Mesh(gridGeo, gridMat);
-    gridMesh.rotation.x = -Math.PI / 2.8;
-    gridMesh.position.y = -15;
-    scene.add(gridMesh);
-
-    let mouseX = 0;
-    let mouseY = 0;
-
+    let mouseX = 0, mouseY = 0;
     window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 1.5;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 1.5;
+    }, { passive: true });
 
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    let clock = new THREE.Clock();
+    }, { passive: true });
 
     function animate() {
       requestAnimationFrame(animate);
-      const elapsed = clock.getElapsedTime();
+      particles.rotation.y += 0.001;
+      particles.rotation.x += 0.0005;
 
-      particles.rotation.y = elapsed * 0.04;
-      particles.rotation.x = elapsed * 0.02;
-
-      gridMesh.rotation.z = elapsed * 0.015;
-
-      camera.position.x += (mouseX * 4 - camera.position.x) * 0.05;
-      camera.position.y += (-mouseY * 4 - camera.position.y) * 0.05;
+      camera.position.x += (mouseX * 3 - camera.position.x) * 0.03;
+      camera.position.y += (-mouseY * 3 - camera.position.y) * 0.03;
       camera.lookAt(scene.position);
 
       renderer.render(scene, camera);
     }
     animate();
 
-    // Toggle Button
-    let ambientActive = true;
-    const toggleBtn = document.getElementById('btn-toggle-ambient');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', () => {
-        ambientActive = !ambientActive;
-        canvas.style.opacity = ambientActive ? '0.65' : '0';
-        toggleBtn.classList.toggle('active', ambientActive);
-      });
-    }
+    let ambientOn = true;
+    document.getElementById('btn-toggle-ambient')?.addEventListener('click', () => {
+      ambientOn = !ambientOn;
+      canvas.style.opacity = ambientOn ? '0.65' : '0';
+      document.getElementById('btn-toggle-ambient')?.classList.toggle('active', ambientOn);
+    });
   }
 
-  // 3. 3D AI Neural Core Orb (Three.js)
-  let orbMesh, orbWire, orbRing1, orbRing2;
+  // 3. 3D AI Neural Orb
+  let orbMesh, orbWire, orbRing1;
   function initAINeuralOrb() {
     const canvas = document.getElementById('ai-orb-canvas');
     if (!canvas) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(130, 130);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
     camera.position.z = 4.2;
 
-    // Glowing Core Sphere
-    const sphereGeo = new THREE.IcosahedronGeometry(1.1, 4);
+    const sphereGeo = new THREE.IcosahedronGeometry(1.1, 3);
     const sphereMat = new THREE.MeshPhongMaterial({
       color: 0x7464f2,
       emissive: 0x3b2d99,
-      shininess: 100,
+      shininess: 90,
       transparent: true,
       opacity: 0.85
     });
     orbMesh = new THREE.Mesh(sphereGeo, sphereMat);
     scene.add(orbMesh);
 
-    // Outer Wireframe Lattice
     const wireGeo = new THREE.IcosahedronGeometry(1.35, 1);
-    const wireMat = new THREE.MeshBasicMaterial({
-      color: 0x00f2fe,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.55
-    });
+    const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe, wireframe: true, transparent: true, opacity: 0.5 });
     orbWire = new THREE.Mesh(wireGeo, wireMat);
     scene.add(orbWire);
 
-    // Orbiting Rings
-    const ringGeo1 = new THREE.TorusGeometry(1.65, 0.03, 16, 64);
-    const ringMat1 = new THREE.MeshBasicMaterial({ color: 0x7464f2, transparent: true, opacity: 0.7 });
-    orbRing1 = new THREE.Mesh(ringGeo1, ringMat1);
+    const ringGeo = new THREE.TorusGeometry(1.65, 0.03, 12, 48);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x7464f2, transparent: true, opacity: 0.7 });
+    orbRing1 = new THREE.Mesh(ringGeo, ringMat);
     orbRing1.rotation.x = Math.PI / 3;
     scene.add(orbRing1);
 
-    const ringGeo2 = new THREE.TorusGeometry(1.85, 0.02, 16, 64);
-    const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.5 });
-    orbRing2 = new THREE.Mesh(ringGeo2, ringMat2);
-    orbRing2.rotation.y = Math.PI / 4;
-    scene.add(orbRing2);
-
-    // Lights
-    const pointLight = new THREE.PointLight(0x00f2fe, 2, 20);
+    const pointLight = new THREE.PointLight(0x00f2fe, 1.8, 15);
     pointLight.position.set(3, 3, 3);
     scene.add(pointLight);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-
-    let speed = 1.0;
+    const ambLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambLight);
 
     function animateOrb() {
       requestAnimationFrame(animateOrb);
-
-      orbMesh.rotation.y += 0.015 * speed;
-      orbMesh.rotation.x += 0.01 * speed;
-
-      orbWire.rotation.y -= 0.01 * speed;
-      orbWire.rotation.z += 0.012 * speed;
-
-      orbRing1.rotation.z += 0.02 * speed;
-      orbRing2.rotation.x -= 0.015 * speed;
-
+      orbMesh.rotation.y += 0.015;
+      orbMesh.rotation.x += 0.01;
+      orbWire.rotation.y -= 0.01;
+      orbRing1.rotation.z += 0.018;
       renderer.render(scene, camera);
     }
     animateOrb();
 
-    // Click Orb to pulse
     document.getElementById('ai-orb-container')?.addEventListener('click', () => {
-      gsap.to(orbMesh.scale, { x: 1.4, y: 1.4, z: 1.4, duration: 0.25, yoyo: true, repeat: 1, ease: 'power2.out' });
-      gsap.to(orbWire.scale, { x: 1.6, y: 1.6, z: 1.6, duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' });
-      
-      // Auto-trigger a thought inspection or focus chat
-      const chatInput = document.querySelector('.chat-form textarea');
-      if (chatInput) {
-        chatInput.focus();
-        gsap.fromTo(chatInput, { scale: 0.98 }, { scale: 1, duration: 0.3, ease: 'elastic.out(1, 0.3)' });
-      }
+      gsap.to(orbMesh.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.2, yoyo: true, repeat: 1 });
+      const input = document.querySelector('textarea, input[type="text"]');
+      if (input) input.focus();
     });
   }
 
-  // 4. GSAP Cursor, Magnetic Hover & 3D Card Tilts
+  // 4. GSAP Magnetic Follower Cursor & Card Tilts
   function initGSAPCursorAndInteractions() {
     const cursor = document.getElementById('gsap-glow-cursor');
     if (!cursor) return;
 
-    let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    let pos = { x: mouse.x, y: mouse.y };
+    let targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
+    let posX = targetX, posY = targetY;
 
     window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
+      targetX = e.clientX;
+      targetY = e.clientY;
+    }, { passive: true });
 
     gsap.ticker.add(() => {
-      pos.x += (mouse.x - pos.x) * 0.25;
-      pos.y += (mouse.y - pos.y) * 0.25;
-      gsap.set(cursor, { x: pos.x, y: pos.y });
+      posX += (targetX - posX) * 0.25;
+      posY += (targetY - posY) * 0.25;
+      cursor.style.transform = `translate3d(${posX - 14}px, ${posY - 14}px, 0)`;
     });
 
-    // Hover effect on clickable elements
     document.addEventListener('mouseover', (e) => {
-      const target = e.target.closest('button, a, input, textarea, select, .hud-btn, .chat-think');
-      if (target) {
+      if (e.target.closest('button, a, input, textarea, .hud-btn')) {
         cursor.classList.add('hovering');
       } else {
         cursor.classList.remove('hovering');
       }
-    });
-
-    // 3D Tilt Effect on Assistant Cards
-    document.addEventListener('mousemove', (e) => {
-      const cards = document.querySelectorAll('.assistant-card, .chat-think, .turn-plan, .research-brief');
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        if (
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom
-        ) {
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
-          const rotX = -(y / rect.height) * 8;
-          const rotY = (x / rect.width) * 8;
-          gsap.to(card, { rotationX: rotX, rotationY: rotY, transformPerspective: 900, duration: 0.2, ease: 'power1.out' });
-        } else {
-          gsap.to(card, { rotationX: 0, rotationY: 0, duration: 0.3, ease: 'power2.out' });
-        }
-      });
-    });
+    }, { passive: true });
   }
 
-  // 5. 3D Geo Attribution & Conversion Globe (Three.js & Deck.gl style)
+  // 5. 3D Geo Attribution Globe Modal
   function initAttributionGlobeModal() {
     const modal = document.getElementById('modal-globe');
     const openBtn = document.getElementById('btn-open-globe');
@@ -388,174 +313,74 @@
 
     if (!modal || !openBtn || !canvas) return;
 
-    let scene, camera, renderer, globeMesh, atmosphereMesh, arcsGroup;
-    let initialized = false;
+    let initialized = false, globeMesh, renderer, scene, camera;
 
     function setupGlobe() {
       if (initialized) return;
       initialized = true;
 
-      const rect = canvas.getBoundingClientRect();
-      const width = rect.width || 1100;
-      const height = rect.height || 650;
+      const width = canvas.clientWidth || 1000;
+      const height = canvas.clientHeight || 600;
 
       renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
       camera.position.z = 18;
 
-      // Base Globe Sphere
-      const globeGeo = new THREE.SphereGeometry(6, 64, 64);
+      const globeGeo = new THREE.SphereGeometry(6, 36, 36);
       const globeMat = new THREE.MeshPhongMaterial({
         color: 0x0f172a,
         emissive: 0x060b17,
         specular: 0x38bdf8,
-        shininess: 25,
-        wireframe: false
+        shininess: 25
       });
       globeMesh = new THREE.Mesh(globeGeo, globeMat);
       scene.add(globeMesh);
 
-      // Globe Wireframe Grid Overlay
-      const gridGeo = new THREE.SphereGeometry(6.04, 36, 18);
-      const gridMat = new THREE.MeshBasicMaterial({
-        color: 0x3b82f6,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.18
-      });
-      const gridMesh = new THREE.Mesh(gridGeo, gridMat);
-      globeMesh.add(gridMesh);
+      const gridGeo = new THREE.SphereGeometry(6.04, 24, 12);
+      const gridMat = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.2 });
+      globeMesh.add(new THREE.Mesh(gridGeo, gridMat));
 
-      // Atmosphere Shader Glow
-      const atmosGeo = new THREE.SphereGeometry(6.6, 32, 32);
-      const atmosMat = new THREE.MeshBasicMaterial({
-        color: 0x00f2fe,
-        transparent: true,
-        opacity: 0.12,
-        side: THREE.BackSide
-      });
-      atmosphereMesh = new THREE.Mesh(atmosGeo, atmosMat);
-      scene.add(atmosphereMesh);
-
-      // Attribution Arcs & Conversion Beacons
-      arcsGroup = new THREE.Group();
-      globeMesh.add(arcsGroup);
-
-      const CITIES = [
-        { lat: 28.6139, lon: 77.2090, name: 'Delhi', spend: '₹45K' },
-        { lat: 19.0760, lon: 72.8777, name: 'Mumbai', spend: '₹62K' },
-        { lat: 12.9716, lon: 77.5946, name: 'Bengaluru', spend: '₹35K' },
-        { lat: 37.7749, lon: -122.4194, name: 'San Francisco', spend: 'Meta HQ' },
-        { lat: 51.5074, lon: -0.1278, name: 'London', spend: 'EU Node' },
-        { lat: 1.3521, lon: 103.8198, name: 'Singapore', spend: 'APAC Hub' }
-      ];
-
-      function latLonToVector3(lat, lon, radius) {
-        const phi = (90 - lat) * (Math.PI / 180);
-        const theta = (lon + 180) * (Math.PI / 180);
-        return new THREE.Vector3(
-          -radius * Math.sin(phi) * Math.cos(theta),
-          radius * Math.cos(phi),
-          radius * Math.sin(phi) * Math.sin(theta)
-        );
-      }
-
-      // Add Glowing Pins
-      CITIES.forEach((city) => {
-        const pos = latLonToVector3(city.lat, city.lon, 6.05);
-        const pinGeo = new THREE.CylinderGeometry(0.08, 0.02, 0.8, 8);
-        const pinMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
-        const pin = new THREE.Mesh(pinGeo, pinMat);
-        pin.position.copy(pos);
-        pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
-        arcsGroup.add(pin);
-
-        // Halo Ring
-        const ringGeo = new THREE.RingGeometry(0.15, 0.3, 16);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0x7464f2, side: THREE.DoubleSide });
-        const ring = new THREE.Mesh(ringGeo, ringMat);
-        ring.position.copy(pos.clone().multiplyScalar(1.02));
-        ring.lookAt(pos.clone().multiplyScalar(2));
-        arcsGroup.add(ring);
-      });
-
-      // Add Connecting Bezier Spline Arcs
-      for (let i = 0; i < CITIES.length; i++) {
-        for (let j = i + 1; j < CITIES.length; j++) {
-          const v1 = latLonToVector3(CITIES[i].lat, CITIES[i].lon, 6.05);
-          const v2 = latLonToVector3(CITIES[j].lat, CITIES[j].lon, 6.05);
-          const mid = v1.clone().add(v2).multiplyScalar(0.5);
-          const dist = v1.distanceTo(v2);
-          mid.normalize().multiplyScalar(6.05 + dist * 0.25);
-
-          const curve = new THREE.QuadraticBezierCurve3(v1, mid, v2);
-          const points = curve.getPoints(36);
-          const curveGeo = new THREE.BufferGeometry().setFromPoints(points);
-          const curveMat = new THREE.LineBasicMaterial({
-            color: j % 2 === 0 ? 0x00f2fe : 0x7464f2,
-            transparent: true,
-            opacity: 0.75,
-            linewidth: 2
-          });
-          const arc = new THREE.Line(curveGeo, curveMat);
-          arcsGroup.add(arc);
-        }
-      }
-
-      // Lights
       const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
       dirLight.position.set(10, 10, 15);
       scene.add(dirLight);
+      scene.add(new THREE.AmbientLight(0x38bdf8, 0.5));
 
-      const ambLight = new THREE.AmbientLight(0x38bdf8, 0.4);
-      scene.add(ambLight);
-
-      // Drag to rotate
-      let isDragging = false;
-      let prevMouse = { x: 0, y: 0 };
-
-      canvas.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        prevMouse = { x: e.clientX, y: e.clientY };
-      });
+      let isDragging = false, prev = { x: 0, y: 0 };
+      canvas.addEventListener('mousedown', (e) => { isDragging = true; prev = { x: e.clientX, y: e.clientY }; });
       window.addEventListener('mouseup', () => (isDragging = false));
       window.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        const deltaX = e.clientX - prevMouse.x;
-        const deltaY = e.clientY - prevMouse.y;
-        globeMesh.rotation.y += deltaX * 0.006;
-        globeMesh.rotation.x += deltaY * 0.006;
-        prevMouse = { x: e.clientX, y: e.clientY };
+        globeMesh.rotation.y += (e.clientX - prev.x) * 0.006;
+        globeMesh.rotation.x += (e.clientY - prev.y) * 0.006;
+        prev = { x: e.clientX, y: e.clientY };
       });
 
-      function renderGlobe() {
+      function render() {
         if (modal.classList.contains('open')) {
-          requestAnimationFrame(renderGlobe);
-          if (!isDragging) {
-            globeMesh.rotation.y += 0.003;
-          }
+          requestAnimationFrame(render);
+          if (!isDragging) globeMesh.rotation.y += 0.003;
           renderer.render(scene, camera);
         }
       }
 
       openBtn.addEventListener('click', () => {
         modal.classList.add('open');
-        requestAnimationFrame(renderGlobe);
+        requestAnimationFrame(render);
       });
-      closeBtn.addEventListener('click', () => modal.classList.remove('open'));
     }
 
     openBtn.addEventListener('click', () => {
       setupGlobe();
       modal.classList.add('open');
     });
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
   }
 
-  // 6. 3D Spline-Style Product Studio (Northwind Coffee Showcase)
+  // 6. 3D Product Studio Modal
   function initProductStudioModal() {
     const modal = document.getElementById('modal-studio');
     const openBtn = document.getElementById('btn-open-studio');
@@ -564,95 +389,59 @@
 
     if (!modal || !openBtn || !canvas) return;
 
-    let scene, camera, renderer, coffeeBagGroup;
-    let initialized = false;
+    let initialized = false, bagGroup, renderer, scene, camera;
 
     function setupStudio() {
       if (initialized) return;
       initialized = true;
 
-      const rect = canvas.getBoundingClientRect();
-      const width = rect.width || 1100;
-      const height = rect.height || 650;
+      const width = canvas.clientWidth || 1000;
+      const height = canvas.clientHeight || 600;
 
       renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.shadowMap.enabled = true;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
       camera.position.set(0, 0, 9);
 
-      coffeeBagGroup = new THREE.Group();
-      scene.add(coffeeBagGroup);
+      bagGroup = new THREE.Group();
+      scene.add(bagGroup);
 
-      // 3D Procedural Coffee Bag Package
-      const bagGeo = new THREE.BoxGeometry(2.4, 3.8, 1.4, 16, 16, 16);
-      const bagMat = new THREE.MeshStandardMaterial({
-        color: 0x18181b,
-        roughness: 0.35,
-        metalness: 0.15
-      });
-      const bagMesh = new THREE.Mesh(bagGeo, bagMat);
-      bagMesh.castShadow = true;
-      coffeeBagGroup.add(bagMesh);
+      const bagGeo = new THREE.BoxGeometry(2.4, 3.8, 1.4);
+      const bagMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.35, metalness: 0.15 });
+      bagGroup.add(new THREE.Mesh(bagGeo, bagMat));
 
-      // Gold Foil Brand Label (Northwind Coffee Co.)
       const labelGeo = new THREE.PlaneGeometry(1.8, 2.4);
-      const labelMat = new THREE.MeshStandardMaterial({
-        color: 0xd97706,
-        metalness: 0.85,
-        roughness: 0.25,
-        emissive: 0x451a03,
-        emissiveIntensity: 0.4
-      });
+      const labelMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.85, roughness: 0.25 });
       const labelMesh = new THREE.Mesh(labelGeo, labelMat);
       labelMesh.position.z = 0.71;
-      coffeeBagGroup.add(labelMesh);
+      bagGroup.add(labelMesh);
 
-      // Holographic Ring
-      const haloGeo = new THREE.TorusGeometry(3.2, 0.04, 16, 100);
-      const haloMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.7 });
-      const halo = new THREE.Mesh(haloGeo, haloMat);
+      const halo = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.04, 16, 64), new THREE.MeshBasicMaterial({ color: 0x00f2fe, transparent: true, opacity: 0.7 }));
       halo.rotation.x = Math.PI / 2.3;
       scene.add(halo);
 
-      // Studio Lighting
-      const mainLight = new THREE.SpotLight(0x00f2fe, 3, 20, Math.PI / 4, 0.5);
-      mainLight.position.set(5, 7, 6);
-      scene.add(mainLight);
+      const spot = new THREE.SpotLight(0x00f2fe, 2.5);
+      spot.position.set(5, 7, 6);
+      scene.add(spot);
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-      const purpleRim = new THREE.PointLight(0x7464f2, 2.5, 15);
-      purpleRim.position.set(-6, -4, -4);
-      scene.add(purpleRim);
-
-      const ambLight = new THREE.AmbientLight(0xffffff, 0.5);
-      scene.add(ambLight);
-
-      let isDragging = false;
-      let prevMouse = { x: 0, y: 0 };
-
-      canvas.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        prevMouse = { x: e.clientX, y: e.clientY };
-      });
+      let isDragging = false, prev = { x: 0, y: 0 };
+      canvas.addEventListener('mousedown', (e) => { isDragging = true; prev = { x: e.clientX, y: e.clientY }; });
       window.addEventListener('mouseup', () => (isDragging = false));
       window.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        const deltaX = e.clientX - prevMouse.x;
-        const deltaY = e.clientY - prevMouse.y;
-        coffeeBagGroup.rotation.y += deltaX * 0.008;
-        coffeeBagGroup.rotation.x += deltaY * 0.008;
-        prevMouse = { x: e.clientX, y: e.clientY };
+        bagGroup.rotation.y += (e.clientX - prev.x) * 0.008;
+        bagGroup.rotation.x += (e.clientY - prev.y) * 0.008;
+        prev = { x: e.clientX, y: e.clientY };
       });
 
-      function renderStudio() {
+      function render() {
         if (modal.classList.contains('open')) {
-          requestAnimationFrame(renderStudio);
-          if (!isDragging) {
-            coffeeBagGroup.rotation.y += 0.008;
-          }
+          requestAnimationFrame(render);
+          if (!isDragging) bagGroup.rotation.y += 0.008;
           halo.rotation.z += 0.01;
           renderer.render(scene, camera);
         }
@@ -660,46 +449,36 @@
 
       openBtn.addEventListener('click', () => {
         modal.classList.add('open');
-        requestAnimationFrame(renderStudio);
+        requestAnimationFrame(render);
       });
-      closeBtn.addEventListener('click', () => modal.classList.remove('open'));
     }
 
     openBtn.addEventListener('click', () => {
       setupStudio();
       modal.classList.add('open');
     });
+    closeBtn.addEventListener('click', () => modal.classList.remove('open'));
   }
 
-  // 7. Hook into Live Assistant Turn Events to React in 3D
-  function hookIntoAssistantEvents() {
-    const observer = new MutationObserver(() => {
-      const thinkingEl = document.querySelector('.turn-work[data-running="true"], .turn-thought[data-live="true"]');
-      const orbBadge = document.getElementById('ai-orb-badge');
-      
-      if (thinkingEl) {
-        if (orbMesh) {
-          orbMesh.material.color.setHex(0x00f2fe);
-          orbMesh.material.emissive.setHex(0x007799);
-        }
-        if (orbBadge) {
-          orbBadge.innerHTML = `<span class="hud-indicator" style="background:#00f2fe;box-shadow:0 0 10px #00f2fe;"></span> REASONING…`;
-        }
-      } else {
-        if (orbMesh) {
-          orbMesh.material.color.setHex(0x7464f2);
-          orbMesh.material.emissive.setHex(0x3b2d99);
-        }
-        if (orbBadge) {
-          orbBadge.innerHTML = `<span class="hud-indicator"></span> AI CORE ACTIVE`;
+  // 7. Non-blocking Poller for AI Thinking State (NO DOM RECURSION)
+  function initAssistantStatePoller() {
+    let lastState = false;
+    setInterval(() => {
+      const isThinking = !!document.querySelector('.turn-work[data-running="true"], .turn-thought[data-live="true"]');
+      if (isThinking !== lastState) {
+        lastState = isThinking;
+        const badge = document.getElementById('ai-orb-badge');
+        if (isThinking) {
+          if (orbMesh) { orbMesh.material.color.setHex(0x00f2fe); orbMesh.material.emissive.setHex(0x007799); }
+          if (badge) badge.textContent = '⚡ REASONING…';
+        } else {
+          if (orbMesh) { orbMesh.material.color.setHex(0x7464f2); orbMesh.material.emissive.setHex(0x3b2d99); }
+          if (badge) badge.textContent = '🟢 AI CORE ACTIVE';
         }
       }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    }, 500);
   }
 
-  // Kickoff when scripts are loaded
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initEnhancements);
   } else {
