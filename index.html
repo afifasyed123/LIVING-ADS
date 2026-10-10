@@ -128,6 +128,18 @@
         </div>
 
         <div class="topbar-right">
+          <!-- Spotlight Quick Action Button -->
+          <button class="topbar-search-btn" id="btn-open-command-palette" title="Open Command Palette (⌘K / Ctrl+K)">
+            <span class="cmd-icon">⌘K</span>
+            <span class="cmd-text">Quick Actions</span>
+          </button>
+
+          <!-- Ambient Audio Sound FX Toggle -->
+          <button class="topbar-sound-btn" id="btn-toggle-sound" title="Toggle Sound FX">
+            <span id="sound-icon">🔊</span>
+            <span id="sound-text">Sound: On</span>
+          </button>
+
           <!-- Real-Time Metrics -->
           <div class="topbar-metric-chip">
             <span class="m-lbl">BLENDED ROAS</span>
@@ -141,6 +153,11 @@
             <span class="m-lbl">CAPI SYNC</span>
             <span class="m-val highlight">99.8%</span>
           </div>
+
+          <!-- Export Campaign Spec Modal Trigger -->
+          <button class="topbar-export-btn" id="btn-open-export-modal" title="Export Campaign Spec">
+            <span>📦</span> Export
+          </button>
 
           <button class="btn-top-cta" id="btn-quick-audit-top">
             <span>✨</span> Proactive Audit
@@ -159,14 +176,36 @@
           <!-- Natural Language Goal Prompt Banner (from screenshot) -->
           <div class="welcome-prompt-banner">
             <div class="welcome-header-text">
-              <h2 class="welcome-heading">Welcome to Living Ads</h2>
-              <p class="welcome-subheading">Tell us what you want to achieve, and our AI will turn it into a complete ad campaign in minutes.</p>
+              <div class="welcome-title-row">
+                <div>
+                  <h2 class="welcome-heading">Welcome to Living Ads</h2>
+                  <p class="welcome-subheading">Tell us what you want to achieve, and our AI will turn it into a complete ad campaign in minutes.</p>
+                </div>
+                <button type="button" class="autopilot-spark-btn" id="btn-trigger-autopilot">
+                  <span class="spark-icon">⚡</span> 1-Click Autopilot Demo
+                </button>
+              </div>
             </div>
 
             <div class="prompt-input-wrapper">
               <span class="prompt-sparkle-icon">✨</span>
               <input type="text" id="campaign-goal-prompt" class="prompt-input-field" placeholder="I want to promote... (e.g. a children's retreat in Bali / organic coffee subscription)" value="I want to promote a children's retreat in Bali" />
               <button type="button" id="btn-submit-prompt" class="prompt-submit-btn" title="Generate with AI">➔</button>
+            </div>
+
+            <!-- Real-Time AI Neural Streaming HUD -->
+            <div id="ai-neural-stream-hud" class="neural-stream-hud" style="display: none;">
+              <div class="stream-hud-header">
+                <div class="hud-pulse-dot"></div>
+                <span class="hud-title">Living Ads Autonomous Reasoning Engine</span>
+                <span class="hud-timer" id="hud-timer-tag">0.6s elapsed</span>
+              </div>
+              <div class="hud-steps-list" id="hud-steps-list">
+                <div class="hud-step-item in-progress" id="hud-s1"><span class="h-icon">⚙️</span><span class="h-text">Analyzing market vertical & customer avatar...</span></div>
+                <div class="hud-step-item" id="hud-s2"><span class="h-icon">📊</span><span class="h-text">Benchmarking ROAS (3.89x) & allocating Meta + Google ad budget...</span></div>
+                <div class="hud-step-item" id="hud-s3"><span class="h-icon">🎨</span><span class="h-text">Generating multi-modal creative hooks (Reels, Feed, Search SERP)...</span></div>
+                <div class="hud-step-item" id="hud-s4"><span class="h-icon">🚀</span><span class="h-text">Synchronizing Conversions API event payload (12ms latency)...</span></div>
+              </div>
             </div>
 
             <div class="prompt-quick-chips">
@@ -431,6 +470,64 @@
                     <span class="slider-hint">Recommended: ₹350 – ₹600 for optimal remarketing frequency.</span>
                   </div>
 
+                  <!-- Real-Time Predictive Revenue & Profit Matrix -->
+                  <div class="edit-card full-span matrix-kpi-card">
+                    <div class="matrix-card-header">
+                      <div class="matrix-header-left">
+                        <span class="matrix-kpi-tag">⚡ REAL-TIME PREDICTIVE REVENUE ENGINE</span>
+                        <h4 class="matrix-title">Projected Campaign Elasticity & Gross ROI</h4>
+                      </div>
+                      <span class="matrix-confidence">AI Confidence: <strong>96.4%</strong></span>
+                    </div>
+                    <div class="matrix-stats-row">
+                      <div class="matrix-stat-cell">
+                        <span class="ms-lbl">PROJECTED REACH</span>
+                        <span class="ms-val" id="dyn-reach-val">198,000</span>
+                        <span class="ms-trend positive">↑ 34% over baseline</span>
+                      </div>
+                      <div class="matrix-stat-cell">
+                        <span class="ms-lbl">EST. SIGNUPS / SALES</span>
+                        <span class="ms-val" id="dyn-conversions-val">342 enrollments</span>
+                        <span class="ms-trend positive">CAC: ₹41.20</span>
+                      </div>
+                      <div class="matrix-stat-cell">
+                        <span class="ms-lbl">BLENDED ROAS</span>
+                        <span class="ms-val highlight" id="dyn-roas-val">3.89x</span>
+                        <div class="roas-meter-bar"><div class="roas-meter-fill" id="roas-meter-fill" style="width: 78%;"></div></div>
+                      </div>
+                      <div class="matrix-stat-cell">
+                        <span class="ms-lbl">EST. GROSS REVENUE</span>
+                        <span class="ms-val green" id="dyn-profit-val">₹1,98,400</span>
+                        <span class="ms-trend positive">Net Lift: +₹48,000</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- AI Psychological Hook Lab -->
+                  <div class="edit-card full-span hook-lab-card">
+                    <div class="edit-card-head">
+                      <label>✨ AI Psychological Hook Lab (Click to Test Real-Time Impact)</label>
+                      <span class="hook-badge-chip">High-Converting Copy Formulas</span>
+                    </div>
+                    <div class="hooks-selector-grid">
+                      <div class="hook-choice-card active" data-hook="1">
+                        <span class="hook-type-pill">EMOTIONAL & NOSTALGIC</span>
+                        <h5 class="hook-quote">"A Global Learning Experience for Curious Minds"</h5>
+                        <p class="hook-sub">Bali nature immersion, accredited facilitators, and holistic friendships.</p>
+                      </div>
+                      <div class="hook-choice-card" data-hook="2">
+                        <span class="hook-type-pill">PATTERN INTERRUPT</span>
+                        <h5 class="hook-quote">"Screen-Free Summers: Where Wonder Meets Education"</h5>
+                        <p class="hook-sub">Break the tablet doomscroll with hands-on ecology & creative workshops.</p>
+                      </div>
+                      <div class="hook-choice-card" data-hook="3">
+                        <span class="hook-type-pill">VIP SCARCITY</span>
+                        <h5 class="hook-quote">"Only 6 Family Villas Left for July 2026 Young Explorers"</h5>
+                        <p class="hook-sub">High-urgency cohort cap with early bird reservation privilege.</p>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Creative Angle Picker -->
                   <div class="edit-card full-span">
                     <label class="edit-label">Active Creative Variations (Select to Deploy):</label>
@@ -459,6 +556,7 @@
                         </div>
                       </div>
                     </div>
+                  </div>
                   <!-- Audience Breakdown & Age Demographics (from screenshot) -->
                   <div class="edit-card full-span audience-demographics-card">
                     <div class="edit-card-head">
@@ -641,6 +739,7 @@
                   <button type="button" class="af-tab active" data-format="feed">📱 Feed Post</button>
                   <button type="button" class="af-tab" data-format="reels">🎬 Reels UGC</button>
                   <button type="button" class="af-tab" data-format="search">🔍 Google Ad</button>
+                  <button type="button" class="af-tab" data-format="linkedin">💼 LinkedIn</button>
                 </div>
 
                 <div class="preview-media-frame" id="preview-media-container">
@@ -650,12 +749,24 @@
                   </div>
                   <!-- Reels overlay indicator -->
                   <div class="reels-overlay-badge" id="reels-overlay-ui" style="display: none;">
-                    <span class="reels-music-tag">🎵 Morning Acoustic • Original Audio</span>
+                    <div class="reels-audio-meta">
+                      <span class="reels-music-tag">🎵 Morning Acoustic • Original Audio</span>
+                      <div class="sound-wave-bars">
+                        <span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span><span class="sw-bar"></span>
+                      </div>
+                    </div>
                     <div class="reels-actions-col">
-                      <span>❤️ 14.8k</span>
+                      <span id="reels-like-trigger">❤️ 14.8k</span>
                       <span>💬 384</span>
                       <span>↗️ Share</span>
+                      <div class="reels-spinning-disc">💿</div>
                     </div>
+                  </div>
+                  <!-- Creative Carousel Dots -->
+                  <div class="media-carousel-dots" id="carousel-dots-bar">
+                    <span class="c-dot active" data-slide="0" title="Angle 1: Nature Immersion"></span>
+                    <span class="c-dot" data-slide="1" title="Angle 2: Morning Ritual"></span>
+                    <span class="c-dot" data-slide="2" title="Angle 3: Comparison Hook"></span>
                   </div>
                 </div>
 
@@ -673,11 +784,45 @@
                     </div>
                   </div>
 
+                  <!-- LinkedIn Format Preview (hidden by default) -->
+                  <div id="linkedin-ad-box" class="linkedin-ad-box" style="display: none;">
+                    <div class="li-ad-header">
+                      <div class="li-logo">🌿</div>
+                      <div class="li-meta">
+                        <span class="li-name">Living Ads • Sponsored</span>
+                        <span class="li-followers">38,420 followers • Promoted</span>
+                      </div>
+                    </div>
+                    <p class="li-post-text" id="li-post-caption">Empowering curious children with transformative nature-led learning in Bali. Small cohorts, accredited facilitators, and daily immersion.</p>
+                    <div class="li-banner-img-wrap">
+                      <img src="retreat_bali_ad.jpg" id="li-preview-img" alt="LinkedIn Creative" class="li-preview-img" />
+                    </div>
+                    <div class="li-bottom-bar">
+                      <div class="li-cta-info">
+                        <span class="li-domain">livingads.com › bali-retreat</span>
+                        <strong class="li-title" id="li-headline">Children's Learning Retreat — Bali Summer 2026</strong>
+                      </div>
+                      <button type="button" class="li-cta-btn" id="li-cta-btn">Learn more</button>
+                    </div>
+                  </div>
+
                   <!-- Standard Feed & Reels Content -->
                   <div id="social-ad-content-box">
                     <h4 class="preview-ad-title" id="preview-title">Children's Retreat in Bali</h4>
                     <p class="preview-ad-desc" id="preview-caption">A magical learning retreat for children in the heart of Bali. Nature immersion and creative education.</p>
                     
+                    <div class="social-interactive-bar">
+                      <button type="button" class="social-engage-btn" id="btn-preview-like">
+                        <span class="heart-icon">❤️</span> <span id="preview-like-count">1,842</span>
+                      </button>
+                      <button type="button" class="social-engage-btn" id="btn-preview-bookmark">
+                        <span class="bm-icon">🔖</span> <span id="preview-save-txt">Save</span>
+                      </button>
+                      <button type="button" class="social-engage-btn" id="btn-preview-share">
+                        <span>↗️</span> Share
+                      </button>
+                    </div>
+
                     <div class="preview-channels-row">
                       <span class="channel-icon-pill">📘 Facebook</span>
                       <span class="channel-icon-pill">📷 Instagram</span>
