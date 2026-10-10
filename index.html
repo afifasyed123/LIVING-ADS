@@ -563,12 +563,26 @@
   const WRITES = window.__REPLICA_WRITES__ || {};
   const recordedWrite = (key) => (WRITES[key] ? JSON.parse(WRITES[key].body || '{}') : null);
 
-  // ---- signing in and out ------------------------------------------------------------------------
+  // ---- signing in and out (universal mock support) --------------------------------
   const auth = (F.auth = { signedIn: true });
-  F.on('GET', /^\/api\/auth\/session$/, () => (auth.signedIn ? undefined : { authenticated: false, user: null, organizations: [], selected_workspace: null }));
-  F.on('GET', /^\/api\/session$/, () => (auth.signedIn ? undefined : { enabled: false, authenticated: false, door: null, brand_id: '' }));
-  F.on('POST', /^\/api\/auth\/(login|signup|register)$/, () => { auth.signedIn = true; return recordedWrite('POST /api/auth/login') || F.recorded('GET /api/auth/session') || { authenticated: true }; });
-  F.on('POST', /^\/api\/(auth\/)?logout$/, () => { auth.signedIn = false; return { ok: true }; });
+  const defaultSession = F.recorded('GET /api/auth/session') || {
+    authenticated: true,
+    user: { id: '1', email: 'asha@northwind.example', name: 'Asha' },
+    organizations: [{ id: 'fa35c642-b8cb-47ef-94d4-86093f3f5975', name: 'Northwind Coffee Co.', slug: 'northwind', role: 'owner' }],
+    selected_workspace: { id: '4dcf67d9-ccc5-4f81-85d0-2a8621d07b2d', organization_id: 'fa35c642-b8cb-47ef-94d4-86093f3f5975', name: 'Northwind Coffee Co.', slug: 'test' },
+    selected_connections: {},
+    selected_product: { id: 'b2a81416-0474-4913-a3aa-fff8a24ddc6', name: 'Northwind Coffee', status: 'active' }
+  };
+
+  F.on('GET', /^\/api\/(auth\/)?session$/, () => defaultSession);
+  F.on('POST', /^\/api\/(auth\/)?(login|signup|register|create-account|signin|accounts|users)$/, () => {
+    auth.signedIn = true;
+    return defaultSession;
+  });
+  F.on('POST', /^\/api\/(auth\/)?logout$/, () => {
+    auth.signedIn = false;
+    return { ok: true };
+  });
 
   // ---- which brand the session has selected -------------------------------------------------------
   F.on('POST', /^\/api\/products\/([^/]+)\/select$/, ({ match }) => {
